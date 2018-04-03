@@ -7,12 +7,18 @@ using System.Linq;
 using System.Net;
 using TestProject.Models;
 using Newtonsoft.Json;
+using System.Configuration;
 
 namespace TestProject
 {
     public class RequestService
     {
-        public RequestService() { }
+        private string ApiKey { get; set; }
+
+        public RequestService()
+        {
+            ApiKey = ConfigurationManager.AppSettings["apiKey"];
+        }
 
         /// <summary>
         /// Loads fake match data from a file into a string for testing purposes
@@ -53,7 +59,7 @@ namespace TestProject
         /// the sample data provided by the developers on the pubg data
         /// </remarks>
 		/// 
-        public void MakePlayerRequest(string[] playerNames, string apiKey)
+        public void MakePlayerRequest(string[] playerNames)
         {
 			
 
@@ -67,7 +73,7 @@ namespace TestProject
 			}
 			RestRequest request = new RestRequest(queryEndpoint);
 			
-			request.AddHeader("Authorization", apiKey);
+			request.AddHeader("Authorization", ApiKey);
 			request.AddHeader("Accept", "application/vnd.api+json");
 
 			Console.WriteLine("Firing off rest request...");
