@@ -3,6 +3,13 @@ using System.Collections.Generic;
 
 namespace TestProject.Models
 {
+    public class Match
+    {
+
+    }
+
+    #region DTO
+
     public class MatchDTO
     {
 		//Player Data
@@ -109,4 +116,6 @@ namespace TestProject.Models
         public int WinPoints { get; set; }
         public decimal WinPointsDelta { get; set; }
     }
+
+    #endregion
 }
