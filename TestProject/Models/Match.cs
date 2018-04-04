@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using Newtonsoft.Json;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestProject.Models
 {
-    public class ResponseObject
+    public class MatchDTO
     {
 		//Player Data
         public List<Data> Data { get; set; }
