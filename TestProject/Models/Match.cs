@@ -92,14 +92,7 @@ namespace TestProject.Models
     public class MatchDTO
     {
         public Data Data { get; set; }
-
-        /// <remarks>
-        /// This isn't right. They're not all player objects,
-        /// rather some are players, and some are rosters,
-        /// determined by the type field
-        /// TODO: How the fuck do you deserialize an object that might
-        /// be one of a couple things?
-        /// </remarks>
+        //TODO: Better deserialization then dynamic and second pass
         public List<dynamic> Included { get; set; } 
         public Links Links { get; set; }
         public Meta Meta { get; set; }
@@ -186,13 +179,6 @@ namespace TestProject.Models
 
     public class Meta
     { }
-
-    /*public class IncludedRosterDTO
-    {
-        public string Type { get; set; }
-        public string Id { get; set; }
-        public string
-    }*/
 
     #endregion
 }
