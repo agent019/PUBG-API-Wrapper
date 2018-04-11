@@ -37,9 +37,13 @@ namespace TestProject
         {
             RequestService svc = new RequestService(ApiKey);
 
-            string id = svc.GetPlayerIdByName(PlayerNames[1]);
+            svc.GetStatus();
 
-            svc.MakePlayerRequest(id);
+            //svc.GetMatch("160908f6-75a2-4578-8de6-3227e377d0ea");
+
+            /*string id = svc.GetPlayerId(PlayerNames[1]);
+
+            svc.GetPlayer(id);*/
         }
     }
 }

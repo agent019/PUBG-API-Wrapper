@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="Models\Match.cs" />
     <Compile Include="Models\Player.cs" />
+    <Compile Include="Models\Status.cs" />
     <Compile Include="RestWrapper\RestWrapper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
