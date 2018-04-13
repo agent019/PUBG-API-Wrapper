@@ -1,5 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Configuration;
+using TestProject.Models;
 
 namespace TestProject
 {
@@ -30,20 +32,22 @@ namespace TestProject
             Program.Run();
         }
 
-        /// <summary>
-        /// Makes 2 requests, we get 10 per min
-        /// </summary>
         private void Run()
         {
             RequestService svc = new RequestService(ApiKey);
 
-            svc.GetStatus();
+            Player player = svc.GetPlayer(PlayerIds[0]);
 
-            //svc.GetMatch("160908f6-75a2-4578-8de6-3227e377d0ea");
+            Console.WriteLine(player.ToString());
 
-            /*string id = svc.GetPlayerId(PlayerNames[1]);
+            foreach (string matchId in player.MatchIds)
+            {
+                Match match = svc.GetMatch(matchId);
+                Console.WriteLine(match.ToString());
+                Console.WriteLine();
+            }
 
-            svc.GetPlayer(id);*/
+            Console.ReadLine();
         }
     }
 }

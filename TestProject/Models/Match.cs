@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TestProject.Models
 {
@@ -12,7 +14,7 @@ namespace TestProject.Models
         }
 
         public string Id { get; set; }
-        public DateTime MatchStart { get; set; }
+        public DateTime MatchCompletion { get; set; }
         public long Duration { get; set; }
         public string GameMode { get; set; } 
         public string Map { get; set; }
@@ -26,7 +28,105 @@ namespace TestProject.Models
 
         public override string ToString()
         {
-            return "Match: " + Id + "\nMode: " + GameMode;
+            string matchString = "Id: " + Id + "\n";
+            matchString += "Region: " + Shard + "\n";
+            matchString += "Duration: " + Duration + "\n";
+            matchString += "Match completion: " + MatchCompletion.ToString() + "\n";
+            matchString += "Map: " + Map + "\n";
+            matchString += "Mode: " + GameMode + "\n";
+
+            return matchString;
+        }
+
+
+
+        public static Match DeserializeMatch(string matchJson)
+        {
+            MatchDTO dto = JsonConvert.DeserializeObject<MatchDTO>(matchJson);
+            Match match = new Match()
+            {
+                Id = dto.Data.Id,
+                MatchCompletion = DateTime.Parse(dto.Data.Attributes.CreatedAt),
+                Duration = dto.Data.Attributes.Duration,
+                GameMode = dto.Data.Attributes.GameMode,
+                Map = dto.Data.Attributes.MapName,
+                Shard = dto.Data.Attributes.ShardId,
+                Title = dto.Data.Attributes.TitleId,
+                RosterIds = dto.Data.Relationships.Rosters.Data.Select(x => x.Id).ToList()
+            };
+
+            foreach (dynamic obj in dto.Included)
+            {
+                switch ((string)obj.type)
+                {
+                    case "roster":
+                        Roster r = new Roster()
+                        {
+                            Id = obj.id,
+                            Rank = obj.attributes.stats.rank,
+                            TeamId = obj.attributes.stats.teamId,
+                            Won = obj.attributes.won,
+                            //PlayerIds = obj.relationships.participants.data.Select(x => x.id)
+                        };
+                        match.Rosters.Add(r);
+                        break;
+                    case "participant":
+                        Participant p = new Participant()
+                        {
+                            Id = obj.id,
+                            Stats = new PlayerStats()
+                            {
+                                DBNOs = obj.attributes.stats.DBNOs,
+                                Assists = obj.attributes.stats.assists,
+                                Boosts = obj.attributes.stats.boosts,
+                                DamageDealt = obj.attributes.stats.damageDealt,
+                                DeathType = obj.attributes.stats.deathType,
+                                HeadshotKills = obj.attributes.stats.headshotKills,
+                                Heals = obj.attributes.stats.heals,
+                                KillPlace = obj.attributes.stats.killPlace,
+                                KillPoints = obj.attributes.stats.killPoints,
+                                KillPointsDelta = obj.attributes.stats.killPointsDelta,
+                                Kills = obj.attributes.stats.killStreaks,
+                                KillStreaks = obj.attributes.stats.kills,
+                                LastKillPoints = obj.attributes.stats.lastKillPoints,
+                                LastWinPoints = obj.attributes.stats.lastWinPoints,
+                                LongestKill = obj.attributes.stats.longestKill,
+                                MostDamage = obj.attributes.stats.mostDamage,
+                                Name = obj.attributes.stats.name,
+                                PlayerId = obj.attributes.stats.playerId,
+                                Revives = obj.attributes.stats.revives,
+                                RideDistance = obj.attributes.stats.rideDistance,
+                                RoadKills = obj.attributes.stats.roadKills,
+                                TeamKills = obj.attributes.stats.teamKills,
+                                TimeSurvived = obj.attributes.stats.timeSurvived,
+                                VehicleDestroys = obj.attributes.stats.vehicleDestroys,
+                                WalkDistance = obj.attributes.stats.walkDistance,
+                                WeaponsAcquired = obj.attributes.stats.weaponsAcquired,
+                                WinPlace = obj.attributes.stats.winPlace,
+                                WinPoints = obj.attributes.stats.winPoints,
+                                WinPointsDelta = obj.attributes.stats.winPointsDelta,
+
+                            }
+                        };
+                        match.Participants.Add(p);
+                        break;
+                    case "asset": // Garbage. If more then one of these exists (which is possible), it will overwrite the old with the new
+                        Telemetry t = new Telemetry()
+                        {
+                            Id = obj.id,
+                            URL = obj.attributes.URL,
+                            Description = obj.attributes.description,
+                            Created = DateTime.Parse((string)obj.attributes.createdAt),
+                            Name = obj.attributes.name
+                        };
+                        match.Telemetry = t;
+                        break;
+                    default:
+                        throw new NotImplementedException("match.included contained object of type " + obj.type);
+                }
+            }
+
+            return match;
         }
     }
 

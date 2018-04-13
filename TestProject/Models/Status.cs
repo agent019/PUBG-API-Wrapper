@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace TestProject.Models
 {
@@ -14,7 +11,23 @@ namespace TestProject.Models
 
         public override string ToString()
         {
-            return "Version: " + Version + "\nDate Released: " + Released;
+            string statusString = "Id: " + Id + "\n";
+            statusString += "Version: " + Version + "\n";
+            statusString += "Date Released: " + Released + "\n";
+
+            return statusString;
+        }
+
+        public static Status DeserializeStatus(string statusJson)
+        {
+            StatusDTO dto = JsonConvert.DeserializeObject<StatusDTO>(statusJson);
+            Status s = new Status()
+            {
+                Id = dto.Data.Id,
+                Released = DateTime.Parse(dto.Data.Attributes.ReleasedAt),
+                Version = dto.Data.Attributes.Version
+            };
+            return s;
         }
     }
 

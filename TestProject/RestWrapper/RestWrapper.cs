@@ -1,16 +1,28 @@
 ﻿using RestSharp;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
+using System.Threading;
 
 namespace TestProject.RestWrapper
 {
     public class Client
     {
         private IRestClient _client { get; set; }
-        public DateTime LastRequestTime { get; set; }
-        public int RecentRequestCount { get; set; }
 
+        /// <summary>
+        /// Amount of requests left before being rate limited
+        /// </summary>
+        public int RateLimitRemaining { get; set; }
+
+        /// <summary>
+        /// Time when rate limit resets, in seconds from the unix utc epoch
+        /// </summary>
+        public int RateLimitReset { get; set; }
+
+        private const string RateLimitRemainingHeaderName = "X-Ratelimit-Remaining";
+        private const string RateLimitResetHeaderName = "X-Ratelimit-Reset";
 
         public Client(string baseUrl)
         {
@@ -19,14 +31,28 @@ namespace TestProject.RestWrapper
 
         /// <summary>
         /// Executes rest request with the given request.
-        /// </summary>
+        /// </summary> 
         /// <remarks>
-        /// Throws on Too Many Requests response.
+        /// Using the rate limit information from the response headers,
+        /// sleeps until the rate limit reset when out of requests.
+        /// TODO: Async this to not stop the main thread?
         /// </remarks>
         public Response Execute(Request request)
         {
             var response = _client.Execute(request.ToRestRequest());
             if (response.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
+            RateLimitRemaining = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitRemainingHeaderName).Select(h => h.Value).Single());
+            RateLimitReset = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitResetHeaderName).Select(h => h.Value).Single());
+            Console.WriteLine("REquests remaining: " + RateLimitRemaining + "\nRequest reset Time: " + RateLimitReset);
+
+            if (RateLimitRemaining == 0)
+            {
+                Console.WriteLine("Rate limited. Sleeping.");
+                int now = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                int secondsUntilReset = RateLimitReset - now;
+                Thread.Sleep(secondsUntilReset);
+            }
+
             return new Response(response);
         }
     }
