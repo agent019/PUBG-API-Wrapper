@@ -13,9 +13,9 @@ namespace TestProject.GUI
         private const int DotSize = 12;
         private const int FontSize = 6;
 
-        /// <summary>
+        /// <remarks>
         /// This is business logic in the GUI. No no
-        /// </summary>
+        /// </remarks>
         private const int CoordinateMaxValue = 816000;
 
         private List<LogPlayerPosition> Locations;
