@@ -24,7 +24,7 @@ namespace TestProject.Models
 
         public List<Participant> Participants { get; set; }
         public List<Roster> Rosters { get; set; }
-        public Telemetry Telemetry { get; set; }
+        public MatchTelemetry Telemetry { get; set; }
 
         public override string ToString()
         {
@@ -110,8 +110,8 @@ namespace TestProject.Models
                         };
                         match.Participants.Add(p);
                         break;
-                    case "asset": // Garbage. If more then one of these exists (which is possible), it will overwrite the old with the new
-                        Telemetry t = new Telemetry()
+                    case "asset":
+                        MatchTelemetry t = new MatchTelemetry()
                         {
                             Id = obj.id,
                             URL = obj.attributes.URL,
@@ -178,9 +178,15 @@ namespace TestProject.Models
         public decimal WinPointsDelta { get; set; }
     }
 
-    public class Telemetry
+    public class MatchTelemetry
     {
+        /// <summary>
+        /// ID for this asset
+        /// </summary>
         public string Id { get; set; }
+        /// <summary>
+        /// URL to an endpoint containing all the telemetry data for a match.
+        /// </summary>
         public string URL { get; set; }
         public DateTime Created { get; set; }
         public string Description { get; set; }

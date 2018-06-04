@@ -14,7 +14,7 @@ namespace TestProject.RestWrapper
         /// <summary>
         /// Amount of requests left before being rate limited
         /// </summary>
-        public int RateLimitRemaining { get; set; }
+        public int? RateLimitRemaining { get; set; }
 
         /// <summary>
         /// Time when rate limit resets, in seconds from the unix utc epoch
@@ -39,13 +39,25 @@ namespace TestProject.RestWrapper
         /// </remarks>
         public Response Execute(Request request)
         {
-            var response = _client.Execute(request.ToRestRequest());
-            if (response.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
-            RateLimitRemaining = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitRemainingHeaderName).Select(h => h.Value).Single());
-            RateLimitReset = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitResetHeaderName).Select(h => h.Value).Single());
-            Console.WriteLine("REquests remaining: " + RateLimitRemaining + "\nRequest reset Time: " + RateLimitReset);
+            var innerResponse = _client.Execute(request.ToRestRequest());
+            if (innerResponse.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
+            Response response = new Response(innerResponse);
 
-            if (RateLimitRemaining == 0)
+            try
+            {
+                RateLimitRemaining = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitRemainingHeaderName).Select(h => h.Value).Single());
+                RateLimitReset = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitResetHeaderName).Select(h => h.Value).Single());
+                Console.WriteLine("Requests remaining: " + RateLimitRemaining + "\nRequest reset Time: " + RateLimitReset);
+            }
+            catch (InvalidOperationException e)
+            {
+                RateLimitRemaining = null;
+                Console.WriteLine("Rate limit header was missing.");
+                //Console.WriteLine("Request:\n" + request.ToString());
+                //Console.WriteLine("Response:\n" + response.ToString());
+            }
+
+            if (RateLimitRemaining.HasValue && RateLimitRemaining == 0)
             {
                 Console.WriteLine("Rate limited. Sleeping.");
                 int now = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
@@ -53,7 +65,7 @@ namespace TestProject.RestWrapper
                 Thread.Sleep(secondsUntilReset);
             }
 
-            return new Response(response);
+            return response;
         }
     }
 
@@ -89,6 +101,11 @@ namespace TestProject.RestWrapper
         public void AddHeader(string name, string value)
         {
             _request.AddHeader(name, value);
+        }
+
+        public override string ToString()
+        {
+            return _request.ToString();
         }
     }
 
@@ -140,5 +157,18 @@ namespace TestProject.RestWrapper
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            string toString = "Success: " + _response.IsSuccessful + "\n"
+                + "Status Code: " + _response.StatusCode + "\n"
+                + "Status Description: " + _response.StatusDescription + "\n";
+            if (_response.IsSuccessful)
+                toString += "Content: " + _response.Content + "\n";
+            else
+                toString += "Error Exception: " + _response.ErrorException + "\n"
+                + "Error Message: " + _response.ErrorMessage + "\n";
+            return toString;
+        }
     }
 }

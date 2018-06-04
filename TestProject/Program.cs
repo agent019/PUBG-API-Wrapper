@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Linq;
+using System.Windows.Forms;
+using TestProject.GUI;
 using TestProject.Models;
 
 namespace TestProject
@@ -26,8 +29,12 @@ namespace TestProject
             };
         }
 
+        [STAThread]
         static void Main(string[] args)
         {
+            Application.EnableVisualStyles();
+            Application.SetCompatibleTextRenderingDefault(false);
+
             Program Program = new Program();
             Program.Run();
         }
@@ -40,12 +47,14 @@ namespace TestProject
 
             Console.WriteLine(player.ToString());
 
-            foreach (string matchId in player.MatchIds)
-            {
-                Match match = svc.GetMatch(matchId);
-                Console.WriteLine(match.ToString());
-                Console.WriteLine();
-            }
+            string matchId = player.MatchIds[0];
+
+            Match match = svc.GetMatch(matchId);
+
+            Telemetry telemetry = svc.GetTelemetry(match.Telemetry.URL);
+
+            List<LogPlayerPosition> myLocations = telemetry.PlayerPositionEvents.Where(ppe => ppe.Character.AccountId == player.Id).OrderBy(ppe => ppe.ElapsedTime).ToList();
+            Application.Run(new Form1(myLocations));
 
             Console.ReadLine();
         }

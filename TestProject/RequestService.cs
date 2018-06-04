@@ -42,11 +42,6 @@ namespace TestProject
             string statusUri = "/status";
             Response response = MakeRequest(statusUri);
 
-            Console.WriteLine();
-            Console.Write("Body: ");
-            //File.WriteAllText("../../../Data/status.json", response.Content);
-            Console.WriteLine("written");
-
             Status status = Status.DeserializeStatus(response.Content);
             return status;
         }
@@ -59,11 +54,6 @@ namespace TestProject
         {
             string matchUri = "/shards/pc-na/matches/" + matchId;
             Response response = MakeRequest(matchUri);
-
-            Console.WriteLine();
-            Console.Write("Body: ");
-            //File.WriteAllText("../../../Data/matchdata.json", response.Content);
-            Console.WriteLine("written");
 
             Match match = Match.DeserializeMatch(response.Content);
             return match;
@@ -92,12 +82,6 @@ namespace TestProject
         {
             string playerUri = "shards/pc-na/players/" + id;
             Response response = MakeRequest(playerUri);
-
-            Console.WriteLine();
-            Console.Write("Body: ");
-            //File.WriteAllText("../../../Data/playerdata.json", response.Content);
-            Console.WriteLine("written");
-            Console.ReadLine();
 
             Player player = Player.DeserializePlayer(response.Content);
             return player;
@@ -129,15 +113,31 @@ namespace TestProject
 
             Response response = MakeRequest(playerUri);
 
-            Console.WriteLine();
-            Console.Write("Body: ");
-            //File.WriteAllText("../../../Data/playerdata.json", response.Content);
-            Console.WriteLine("written");
-
             List<Player> players = Player.DeserializePlayerList(response.Content);
             return players;
         }
 
         #endregion
+
+        public List<Season> GetSeasons()
+        {
+            string seasonUri = "/seasons";
+            Response response = MakeRequest(seasonUri);
+
+            List<Season> seasons = Season.DeserializeSeason(response.Content);
+            return seasons;
+        }
+
+        public Telemetry GetTelemetry(string url)
+        {
+            Response response = MakeRequest(url);
+            Telemetry telemetry = Telemetry.DeserializeTelemetry(response.Content);
+            return telemetry;
+        }
+
+        public void WriteResponse(string filename, string body)
+        {
+            File.WriteAllText("../../../Data/" + filename, body);
+        }
     }
 }
