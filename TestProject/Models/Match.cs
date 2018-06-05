@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace TestProject.Models
 {
+    /// <summary>
+    /// Represents a PUBG match
+    /// </summary>
+    /// <remarks>
+    /// Flattened representation of the DTO.
+    /// </remarks>
     public class Match
     {
         public Match()
@@ -13,6 +19,9 @@ namespace TestProject.Models
             Rosters = new List<Roster>();
         }
 
+        /// <summary>
+        /// Unique GUID for a match
+        /// </summary>
         public string Id { get; set; }
         public DateTime MatchCompletion { get; set; }
         public long Duration { get; set; }

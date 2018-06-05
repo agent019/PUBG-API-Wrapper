@@ -47,14 +47,12 @@ namespace TestProject.RestWrapper
             {
                 RateLimitRemaining = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitRemainingHeaderName).Select(h => h.Value).Single());
                 RateLimitReset = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitResetHeaderName).Select(h => h.Value).Single());
-                Console.WriteLine("Requests remaining: " + RateLimitRemaining + "\nRequest reset Time: " + RateLimitReset);
+                Console.WriteLine("Requests remaining: " + RateLimitRemaining + "\nRequest reset time: " + RateLimitReset);
             }
             catch (InvalidOperationException e)
             {
                 RateLimitRemaining = null;
                 Console.WriteLine("Rate limit header was missing.");
-                //Console.WriteLine("Request:\n" + request.ToString());
-                //Console.WriteLine("Response:\n" + response.ToString());
             }
 
             if (RateLimitRemaining.HasValue && RateLimitRemaining == 0)
@@ -105,7 +103,17 @@ namespace TestProject.RestWrapper
 
         public override string ToString()
         {
-            return _request.ToString();
+            string toString = "Method: " + _request.Method + "\n"
+                + "Resource: " + _request.Resource + "\n";
+            foreach (Parameter prm in _request.Parameters)
+            {
+                toString += "Parameter:\n"
+                    + "Name: " + prm.Name + "\n"
+                    + "Type: " + prm.Type + "\n"
+                    + "Value: " + prm.Value + "\n"
+                    + "ContentType: " + prm.ContentType + "\n";
+            }
+            return toString;
         }
     }
 
@@ -162,7 +170,25 @@ namespace TestProject.RestWrapper
         {
             string toString = "Success: " + _response.IsSuccessful + "\n"
                 + "Status Code: " + _response.StatusCode + "\n"
-                + "Status Description: " + _response.StatusDescription + "\n";
+                + "Status Description: " + _response.StatusDescription + "\n"
+                + "ContentType: " + _response.ContentType + "\n"
+                + "ContentEncoding: " + _response.ContentEncoding + "\n";
+
+            foreach (Parameter head in _response.Headers)
+            {
+                toString += "Header:\n"
+                    + " Name: " + head.Name + "\n"
+                    + " Type: " + head.Type + "\n"
+                    + " Value: " + head.Value + "\n"
+                    + " ContentType: " + head.ContentType + "\n";
+            }
+
+            foreach (RestResponseCookie cook in _response.Cookies)
+            {
+                toString += "Cookie:\n"
+                    + " Value: " + cook.Value + "\n";
+            }
+
             if (_response.IsSuccessful)
                 toString += "Content: " + _response.Content + "\n";
             else
