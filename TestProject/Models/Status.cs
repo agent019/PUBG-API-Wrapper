@@ -3,6 +3,12 @@ using System;
 
 namespace TestProject.Models
 {
+    /// <summary>
+    /// Object representation of the status of the PUBG Servers.
+    /// </summary>
+    /// <remarks>
+    /// Flattened representation of the DTO.
+    /// </remarks>
     public class Status
     {
         public string Id { get; set; }

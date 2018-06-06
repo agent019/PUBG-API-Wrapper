@@ -5,15 +5,46 @@ using System.Linq;
 
 namespace TestProject.Models
 {
+    /// <summary>
+    /// Object representation of a PUBG Player.
+    /// </summary>
+    /// <remarks>
+    /// Flattened representation of the DTO.
+    /// </remarks>
     public class Player
     {
+        /// <summary>
+        /// Unique GUID for a player.
+        /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Username of the player.
+        /// </summary>
         public string Name { get; set; }
         public string Version { get; set; }
         public string Shard { get; set; }
         public string Title { get; set; }
-        public DateTime Created { get; set; }
-        public DateTime Updated { get; set; }
+
+        /// <summary>
+        /// Date this account was created.
+        /// </summary>
+        /// <remarks>
+        /// Nullable because it is sometimes missing from the response.
+        /// </remarks>
+        public DateTime? Created { get; set; }
+
+        /// <summary>
+        /// Date this account was last accessed.
+        /// </summary>
+        /// <remarks>
+        /// Nullable because it is sometimes missing from the response.
+        /// </remarks>
+        public DateTime? Updated { get; set; }
+
+        /// <summary>
+        /// Unique GUIDs of the five most recent matches played.
+        /// </summary>
         public List<string> MatchIds { get; set; }
 
         public override string ToString()
@@ -37,12 +68,12 @@ namespace TestProject.Models
             Player player = new Player()
             {
                 Id = dto.Data.Id,
-                Created = DateTime.Parse(dto.Data.Attributes.Created),
+                //Created = DateTime.Parse(dto.Data.Attributes.Created),
                 Name = dto.Data.Attributes.Name,
                 Version = dto.Data.Attributes.Version,
                 Shard = dto.Data.Attributes.Shard,
                 Title = dto.Data.Attributes.Title,
-                Updated = DateTime.Parse(dto.Data.Attributes.Updated),
+                //Updated = DateTime.Parse(dto.Data.Attributes.Updated),
                 MatchIds = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
             };
 
@@ -58,12 +89,12 @@ namespace TestProject.Models
                 players.Add(new Player()
                 {
                     Id = player.Data.Id,
-                    Created = DateTime.Parse(player.Data.Attributes.Created),
+                    //Created = DateTime.Parse(player.Data.Attributes.Created),
                     Name = player.Data.Attributes.Name,
                     Version = player.Data.Attributes.Version,
                     Shard = player.Data.Attributes.Shard,
                     Title = player.Data.Attributes.Title,
-                    Updated = DateTime.Parse(player.Data.Attributes.Updated),
+                    //Updated = DateTime.Parse(player.Data.Attributes.Updated),
                     MatchIds = player.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
                 });
             }

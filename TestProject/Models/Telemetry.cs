@@ -6,6 +6,10 @@ using System.Linq;
 
 namespace TestProject.Models
 {
+    /// <summary>
+    /// Object representation of the Telemetry for a specific PUBG Match.
+    /// Contains lists for each of the type of possible events.
+    /// </summary>
     public class Telemetry
     {
         #region Properties

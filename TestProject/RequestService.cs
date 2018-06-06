@@ -8,6 +8,13 @@ using TestProject.RestWrapper;
 
 namespace TestProject
 {
+    /// <summary>
+    /// Service for making requests to the PUBG API.
+    /// Wraps all provided endpoints.
+    /// </summary>
+    /// <remarks>
+    /// TODO: dynamically construct "/shards/{shard}"
+    /// </remarks>
     public class RequestService
     {
         private const string BaseUri = "https://api.playbattlegrounds.com/";
@@ -25,23 +32,29 @@ namespace TestProject
 
         #endregion
 
-        private Response MakeRequest(string queryString, bool requestCompressed = false)
+        private Response MakeRequest(string queryString, bool compressResponse = false)
         {
             Request request = new Request(queryString);
 
-            if (requestCompressed)
-            {
-                throw new NotImplementedException(); // and needs support for unzipping
-            }
-
-            request.AddHeader("Authorization", ApiKey);
+            request.AddHeader("Authorization", "Bearer " + ApiKey);
             request.AddHeader("Accept", "application/vnd.api+json");
 
-            return Client.Execute(request);
+            if (compressResponse)
+                request.AddHeader("Accept-Encoding", "gzip");
+
+
+            Response response = Client.Execute(request);
+
+            Console.WriteLine(response);
+
+            return response;
         }
 
         #region Status
 
+        /// <summary>
+        /// Gets the status of the PUBG Api.
+        /// </summary>
         public Status GetStatus()
         {
             string statusUri = "/status";
@@ -55,6 +68,9 @@ namespace TestProject
 
         #region Matches
 
+        /// <summary>
+        /// Gets a PUBG match by ID.
+        /// </summary>
         public Match GetMatch(string matchId)
         {
             string matchUri = "/shards/pc-na/matches/" + matchId;
@@ -62,11 +78,6 @@ namespace TestProject
 
             Match match = Match.DeserializeMatch(response.Content);
             return match;
-        }
-
-        public List<Match> GetSampleMatches(DateTime createdAtFilter)
-        {
-            throw new NotImplementedException();
         }
 
         #endregion
@@ -86,13 +97,12 @@ namespace TestProject
         }
 
         /// <summary>
-        /// Makes a request to the pubg API for information about a player, by player id.
+        /// Makes a request to the PUBG API for information about a player, by player id.
         /// </summary>
         public Player GetPlayer(string id)
         {
             string playerUri = "shards/pc-na/players/" + id;
             Response response = MakeRequest(playerUri);
-
             Player player = Player.DeserializePlayer(response.Content);
             return player;
         }
@@ -103,11 +113,11 @@ namespace TestProject
         /// <remarks>
         /// Cannot query by both names and ids. Prefers ids when provided.
         /// </remarks>
-        /// <exception cref="System.ArgumentException">
-        /// Thrown when no arguments are provided
-        /// </exception>
         public List<Player> GetPlayers(List<string> ids, List<string> names)
         {
+            if ((ids == null || !ids.Any()) && (names == null || !names.Any()))
+                return new List<Player>();
+
             string playerUri = "shards/pc-na/players";
             if (ids != null && ids.Any())
             {
@@ -119,7 +129,6 @@ namespace TestProject
                 string concatenatedNames = string.Join(",", names);
                 playerUri = playerUri + "filters[playerIds]" + concatenatedNames;
             }
-            else throw new ArgumentException("ids and names cannot be empty"); // should probably short circuit instead of throwing
 
             Response response = MakeRequest(playerUri);
 
@@ -127,22 +136,23 @@ namespace TestProject
             return players;
         }
 
-        public dynamic GetPlayerSeason(string id, string seasonId)
-        {
-            throw new NotImplementedException();
-        }
-
         #endregion
-
+        
+        /// <summary>
+        /// Makes a request to the PUBG Api for all of the seasons.
+        /// </summary>
         public List<Season> GetSeasons()
         {
-            string seasonUri = "/seasons";
+            string seasonUri = "/shards/pc-na/seasons";
             Response response = MakeRequest(seasonUri);
-
             List<Season> seasons = Season.DeserializeSeason(response.Content);
             return seasons;
         }
 
+        /// <summary>
+        /// Given a telemetry URL from a match object,
+        /// Makes a request to the PUBG API for that telemetry object.
+        /// </summary>
         public Telemetry GetTelemetry(string url)
         {
             Response response = MakeRequest(url);
@@ -150,6 +160,9 @@ namespace TestProject
             return telemetry;
         }
 
+        /// <summary>
+        /// Writes the given string to the given filename in the Data folder.
+        /// </summary>
         public void WriteResponse(string filename, string body)
         {
             File.WriteAllText("../../../Data/" + filename, body);

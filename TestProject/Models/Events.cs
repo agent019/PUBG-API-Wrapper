@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace TestProject.Models
 {
+    /// <summary>
+    /// Parent class. Holds the fields common to every event subclass.
+    /// </summary>
     public abstract class Event
     {
         [JsonProperty("_V")]
