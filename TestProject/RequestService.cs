@@ -25,9 +25,14 @@ namespace TestProject
 
         #endregion
 
-        private Response MakeRequest(string queryString)
+        private Response MakeRequest(string queryString, bool requestCompressed = false)
         {
             Request request = new Request(queryString);
+
+            if (requestCompressed)
+            {
+                throw new NotImplementedException(); // and needs support for unzipping
+            }
 
             request.AddHeader("Authorization", ApiKey);
             request.AddHeader("Accept", "application/vnd.api+json");
@@ -57,6 +62,11 @@ namespace TestProject
 
             Match match = Match.DeserializeMatch(response.Content);
             return match;
+        }
+
+        public List<Match> GetSampleMatches(DateTime createdAtFilter)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -115,6 +125,11 @@ namespace TestProject
 
             List<Player> players = Player.DeserializePlayerList(response.Content);
             return players;
+        }
+
+        public dynamic GetPlayerSeason(string id, string seasonId)
+        {
+            throw new NotImplementedException();
         }
 
         #endregion

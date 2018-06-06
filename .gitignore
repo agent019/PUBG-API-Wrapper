@@ -326,3 +326,9 @@ Thumbs.db
 # Explicit Files
 /SampleData/ogs
 /TestProject/App.config
+/Data/telemetry-temp.json
+/Data/status.json
+/Data/reece-playerdata.json
+/Data/playerdata.json
+/Data/matchdata.json
+/Data/match-temp.json
