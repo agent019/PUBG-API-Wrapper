@@ -80,6 +80,11 @@ namespace TestProject
             return match;
         }
 
+        public List<Match> GetSampleMatches(DateTime createdAtFilter)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
 
         #region Players
@@ -136,8 +141,13 @@ namespace TestProject
             return players;
         }
 
+        public dynamic GetPlayerSeason(string id, string seasonId)
+        {
+            throw new NotImplementedException();
+        }
+
         #endregion
-        
+
         /// <summary>
         /// Makes a request to the PUBG Api for all of the seasons.
         /// </summary>
