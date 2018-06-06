@@ -16,7 +16,7 @@ namespace TestProject.Models
         public bool IsCurrentSeason { get; set; }
         public bool IsOffSeason { get; set; }
 
-        public static List<Season> DeserializeSeason(string seasonJson)
+        public static List<Season> Deserialize(string seasonJson)
         {
             SeasonDTO dto = JsonConvert.DeserializeObject<SeasonDTO>(seasonJson);
             List<Season> seasons = new List<Season>();

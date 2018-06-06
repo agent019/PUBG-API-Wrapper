@@ -62,7 +62,7 @@ namespace TestProject.Models
             return playerString;
         }
         
-        public static Player DeserializePlayer(string playerJson)
+        public static Player Deserialize(string playerJson)
         {
             PlayerDTO dto = JsonConvert.DeserializeObject<PlayerDTO>(playerJson);
             Player player = new Player()

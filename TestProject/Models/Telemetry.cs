@@ -73,7 +73,7 @@ namespace TestProject.Models
             this.VehicleRideEvents = new List<LogVehicleRide>();
         }
 
-        public static Telemetry DeserializeTelemetry(string json)
+        public static Telemetry Deserialize(string json)
         {
             List<dynamic> results = JsonConvert.DeserializeObject<List<dynamic>>(json);
 

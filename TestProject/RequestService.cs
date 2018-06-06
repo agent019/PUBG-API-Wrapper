@@ -60,7 +60,7 @@ namespace TestProject
             string statusUri = "/status";
             Response response = MakeRequest(statusUri);
 
-            Status status = Status.DeserializeStatus(response.Content);
+            Status status = Status.Deserialize(response.Content);
             return status;
         }
 
@@ -76,13 +76,17 @@ namespace TestProject
             string matchUri = "/shards/pc-na/matches/" + matchId;
             Response response = MakeRequest(matchUri);
 
-            Match match = Match.DeserializeMatch(response.Content);
+            Match match = Match.Deserialize(response.Content);
             return match;
         }
 
-        public List<Match> GetSampleMatches(DateTime createdAtFilter)
+        public Sample GetSampleMatches(DateTime createdAtFilter)
         {
-            throw new NotImplementedException();
+            string sampleUri = "/shards/pc-na/samples";
+            Response response = MakeRequest(sampleUri);
+
+            Sample sample = Sample.Deserialize(response.Content);
+            return sample;
         }
 
         #endregion
@@ -108,7 +112,7 @@ namespace TestProject
         {
             string playerUri = "shards/pc-na/players/" + id;
             Response response = MakeRequest(playerUri);
-            Player player = Player.DeserializePlayer(response.Content);
+            Player player = Player.Deserialize(response.Content);
             return player;
         }
 
@@ -155,7 +159,7 @@ namespace TestProject
         {
             string seasonUri = "/shards/pc-na/seasons";
             Response response = MakeRequest(seasonUri);
-            List<Season> seasons = Season.DeserializeSeason(response.Content);
+            List<Season> seasons = Season.Deserialize(response.Content);
             return seasons;
         }
 
@@ -166,7 +170,7 @@ namespace TestProject
         public Telemetry GetTelemetry(string url)
         {
             Response response = MakeRequest(url);
-            Telemetry telemetry = Telemetry.DeserializeTelemetry(response.Content);
+            Telemetry telemetry = Telemetry.Deserialize(response.Content);
             return telemetry;
         }
 

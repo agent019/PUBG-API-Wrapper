@@ -24,7 +24,7 @@ namespace TestProject.Models
             return statusString;
         }
 
-        public static Status DeserializeStatus(string statusJson)
+        public static Status Deserialize(string statusJson)
         {
             StatusDTO dto = JsonConvert.DeserializeObject<StatusDTO>(statusJson);
             Status s = new Status()

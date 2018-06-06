@@ -49,7 +49,7 @@ namespace TestProject.Models
 
 
 
-        public static Match DeserializeMatch(string matchJson)
+        public static Match Deserialize(string matchJson)
         {
             MatchDTO dto = JsonConvert.DeserializeObject<MatchDTO>(matchJson);
             Match match = new Match()
