@@ -41,11 +41,8 @@ namespace TestProject
 
             if (compressResponse)
                 request.AddHeader("Accept-Encoding", "gzip");
-
-
+            
             Response response = Client.Execute(request);
-
-            Console.WriteLine(response);
 
             return response;
         }
@@ -80,7 +77,7 @@ namespace TestProject
             return match;
         }
 
-        public Sample GetSampleMatches(DateTime createdAtFilter)
+        public Sample GetSampleMatches(DateTime? createdAtFilter = null)
         {
             string sampleUri = "/shards/pc-na/samples";
             Response response = MakeRequest(sampleUri);

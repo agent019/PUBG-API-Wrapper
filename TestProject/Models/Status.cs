@@ -30,7 +30,7 @@ namespace TestProject.Models
             Status s = new Status()
             {
                 Id = dto.Data.Id,
-                Released = DateTime.Parse(dto.Data.Attributes.ReleasedAt),
+                Released = DateTime.Parse(dto.Data.Attributes.Released),
                 Version = dto.Data.Attributes.Version
             };
             return s;
@@ -41,19 +41,28 @@ namespace TestProject.Models
 
     public class StatusDTO
     {
+        [JsonProperty("data")]
         public StatusData Data { get; set; }
     }
 
     public class StatusData
     {
+        [JsonProperty("type")]
         public string Type { get; set; }
+
+        [JsonProperty("id")]
         public string Id { get; set; }
+
+        [JsonProperty("attributes")]
         public StatusAttributes Attributes { get; set; }
     }
 
     public class StatusAttributes
     {
-        public string ReleasedAt { get; set; }
+        [JsonProperty("releasedAt")]
+        public string Released { get; set; }
+
+        [JsonProperty("version")]
         public string Version { get; set; }
     }
 

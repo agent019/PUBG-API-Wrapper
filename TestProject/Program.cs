@@ -34,7 +34,7 @@ namespace TestProject
         private void Run()
         {
             RequestService svc = new RequestService(ApiKey);
-            
+
             Player player = svc.GetPlayer(PlayerId);
 
             Console.WriteLine(player.ToString());

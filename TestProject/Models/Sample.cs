@@ -1,9 +1,5 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TestProject.Models
 {
@@ -13,19 +9,92 @@ namespace TestProject.Models
     public class Sample
     {
         /// <summary>
-        /// Match
+        /// Match IDs
         /// </summary>
-        public string Type { get; set; }
-        
-        /// <summary>
-        /// Match ID
-        /// </summary>
-        public string Id { get; set; }
+        public List<string> Ids { get; set; }
+
+        public Sample()
+        {
+            Ids = new List<string>();
+        }
 
         public static Sample Deserialize(string json)
         {
-            Sample sample = JsonConvert.DeserializeObject<Sample>(json);
+            SampleDTO dto = JsonConvert.DeserializeObject<SampleDTO>(json);
+            Sample sample = new Sample();
+            foreach (InnerSampleData matchInfo in dto.Data.Relationships.Matches.Data)
+            {
+                sample.Ids.Add(matchInfo.Id);
+            }
             return sample;
         }
+
+        public override string ToString()
+        {
+            string toString = "Sample:\n";
+            foreach (string id in Ids)
+            {
+                toString += "Id: " + id + "\n";
+            }
+            return toString;
+        }
     }
+
+    #region DTO
+
+    public class SampleDTO
+    {
+        [JsonProperty("data")]
+        public SampleData Data { get; set; }
+    }
+
+    public class SampleData
+    {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("id")]
+        public string Id { get; set; }
+
+        [JsonProperty("attributes")]
+        public SampleAttributes Attributes { get; set; }
+
+        [JsonProperty("relationships")]
+        public SampleRelationships Relationships { get; set; }
+    }
+
+    public class SampleAttributes
+    {
+        [JsonProperty("createdAt")]
+        public string Created { get; set; }
+
+        [JsonProperty("titleId")]
+        public string Title { get; set; }
+
+        [JsonProperty("shardId")]
+        public string Shard { get; set; }
+    }
+
+    public class SampleRelationships
+    {
+        [JsonProperty("matches")]
+        public SampleMatches Matches { get; set; }
+    }
+
+    public class SampleMatches
+    {
+        [JsonProperty("data")]
+        public List<InnerSampleData> Data { get; set; }
+    }
+
+    public class InnerSampleData
+    {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
+        [JsonProperty("id")]
+        public string Id { get; set; }
+    }
+
+    #endregion
 }
