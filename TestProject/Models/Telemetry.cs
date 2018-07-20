@@ -10,6 +10,9 @@ namespace PUBGAPIWrapper.Models
     /// Object representation of the Telemetry for a specific PUBG Match.
     /// Contains lists for each of the type of possible events.
     /// </summary>
+    /// <remarks>
+    /// TODO: Added some new objects/properties that need deserialization.
+    /// </remarks>
     public class Telemetry
     {
         #region Properties
@@ -86,31 +89,23 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerLogin":
                         LogPlayerLogin playerLogin = new LogPlayerLogin()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
-                            AccountId = obj.accountId,
-                            ErrorMessge = obj.errorMessage,
-                            Result = obj.result
+                            AccountId = obj.accountId
                         };
                         break;
                     case "LogPlayerCreate":
                         LogPlayerCreate playerCreate = new LogPlayerCreate()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
                             Character = new Character()
                             {
@@ -133,14 +128,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerPosition":
                         LogPlayerPosition playerPosition = new LogPlayerPosition()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
                             Character = new Character()
                             {
@@ -165,14 +157,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerAttack":
                         LogPlayerAttack playerAttack = new LogPlayerAttack()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
                             Attacker = new Character()
                             {
@@ -210,14 +199,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemPickup":
                         LogItemPickup playerPickup = new LogItemPickup()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
                             Character = new Character()
                             {
@@ -246,14 +232,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemEquip":
                         LogItemEquip playerEquip = new LogItemEquip()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             },
                             Character = new Character()
                             {
@@ -282,14 +265,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemUnequip":
                         LogItemUnequip playerUnequip = new LogItemUnequip()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -297,14 +277,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogVehicleRide":
                         LogVehicleRide playerRide = new LogVehicleRide()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -312,7 +289,6 @@ namespace PUBGAPIWrapper.Models
                     case "LogMatchDefinition":
                         LogMatchDefinition matchDefinition = new LogMatchDefinition()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T
                         };
@@ -320,14 +296,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogMatchStart":
                         LogMatchStart matchStart = new LogMatchStart()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -335,14 +308,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogGameStatePeriodic":
                         LogGameStatePeriodic GameStatePeriodic = new LogGameStatePeriodic()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -350,14 +320,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogVehicleLeave":
                         LogVehicleLeave vehicleLeave = new LogVehicleLeave()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -365,14 +332,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerTakeDamage":
                         LogPlayerTakeDamage playerTakeDamage = new LogPlayerTakeDamage()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -380,14 +344,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerLogout":
                         LogPlayerLogout playerLogout = new LogPlayerLogout()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -395,14 +356,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemAttach":
                         LogItemAttach itemAttach = new LogItemAttach()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -410,14 +368,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemDrop":
                         LogItemDrop itemDrop = new LogItemDrop()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -425,14 +380,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogPlayerKill":
                         LogPlayerKill playerKill = new LogPlayerKill()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -440,14 +392,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemDetach":
                         LogItemDetach itemDetach = new LogItemDetach()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -455,14 +404,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogItemUse":
                         LogItemUse itemUse = new LogItemUse()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -470,14 +416,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogCarePackageSpawn":
                         LogCarePackageSpawn carePackageSpawn = new LogCarePackageSpawn()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -485,14 +428,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogVehicleDestroy":
                         LogVehicleDestroy vehicleDestroy = new LogVehicleDestroy()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -500,14 +440,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogCarePackageLand":
                         LogCarePackageLand carePackageLand = new LogCarePackageLand()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -515,14 +452,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogMatchEnd":
                         LogMatchEnd matchEnd = new LogMatchEnd()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -530,14 +464,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogSwimStart":
                         LogSwimStart swimStart = new LogSwimStart()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -545,14 +476,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogSwimEnd":
                         LogSwimEnd swimEnd = new LogSwimEnd()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -560,14 +488,11 @@ namespace PUBGAPIWrapper.Models
                     case "LogArmorDestroy":
                         LogArmorDestroy armorDestroy = new LogArmorDestroy()
                         {
-                            Version = obj._V,
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
-                                IsGame = obj.common.isGame,
-                                MapName = String.IsNullOrWhiteSpace(Convert.ToString(obj.common.mapName)) ? null : Enum.Parse(typeof(MapName), Convert.ToString(obj.common.mapName)),
-                                MatchId = obj.common.matchId
+                                IsGame = obj.common.isGame
                             }
 
                         };
@@ -598,37 +523,6 @@ namespace PUBGAPIWrapper.Models
         }
     }
 
-    public class Common
-    {
-        public string MatchId { get; set; }
-        public MapName? MapName { get; set; }
-        public float IsGame { get; set; }
-    }
-
-    public class Location
-    {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
-
-        public override string ToString()
-        {
-            string toString = "X: " + this.X + "\n"
-                + "Y: " + this.Y + "\n"
-                + "Z: " + this.Z + "\n";
-                
-            return toString;
-        }
-    }
-
-    public class Asset
-    {
-        public DateTime CreatedAt { get; set; }
-        public string Url { get; set; }
-        public string Description { get; set; }
-        public string Name { get; set; }
-    }
-
     public class Character
     {
         public string Name { get; set; }
@@ -651,10 +545,20 @@ namespace PUBGAPIWrapper.Models
         }
     }
 
-    public enum MapName
+    public class Common
     {
-        Desert_Main,
-        Erangel_Main
+        /// <remarks>
+        /// isGame represents the phase of the game defined by the status of bluezone and safezone:
+        /// isGame = 0 -> Before lift off
+        /// isGame = 0.1->On airplane
+        /// isGame = 0.5->When there’s no ‘zone’ on map(before game starts)
+        /// isGame = 1.0 -> First safezone and bluezone appear
+        /// isGame = 1.5->First bluezone shrinks
+        /// isGame = 2.0 -> Second bluezone appears
+        /// isGame = 2.5->Second bluezone shrinks
+        /// ...
+        /// </remarks>
+        public float IsGame { get; set; }
     }
 
     public class GameState
@@ -679,6 +583,49 @@ namespace PUBGAPIWrapper.Models
         public Category? Category { get; set; }
         public SubCategory? SubCategory { get; set; }
         public string[] AttachedItems { get; set; }
+    }
+
+    public class ItemPackage
+    {
+        public string ItemPackageId { get; set; }
+        public Location Location { get; set; }
+        public IEnumerable<Item> Items { get; set; }
+    }
+
+    /// <remarks>
+    /// The range for the X and Y axes is 0 - 816,000 for 8km maps.
+    /// Location values are measured in centimeters
+    /// </remarks>
+    public class Location
+    {
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Z { get; set; }
+
+        public override string ToString()
+        {
+            string toString = "X: " + this.X + "\n"
+                + "Y: " + this.Y + "\n"
+                + "Z: " + this.Z + "\n";
+                
+            return toString;
+        }
+    }
+
+    public class Vehicle
+    {
+        public VehicleType? VehicleType { get; set; }
+        public string VehicleId { get; set; }
+        public float? HealthPercent { get; set; }
+        public float? FuelPercent { get; set; }
+    }
+
+    public class Asset
+    {
+        public DateTime CreatedAt { get; set; }
+        public string Url { get; set; }
+        public string Description { get; set; }
+        public string Name { get; set; }
     }
 
     public enum Category
@@ -706,20 +653,13 @@ namespace PUBGAPIWrapper.Models
         Vest
     }
 
-    public class ItemPackage
+    public enum MapName
     {
-        public string ItemPackageId { get; set; }
-        public Location Location { get; set; }
-        public IEnumerable<Item> Items { get; set; }
+        Desert_Main,
+        Erangel_Main,
+        Savage_Main
     }
 
-    public class Vehicle
-    {
-        public VehicleType? VehicleType { get; set; }
-        public string VehicleId { get; set; }
-        public float? HealthPercent { get; set; }
-        public float? FuelPercent { get; set; }
-    }
     public enum VehicleType
     {
         FloatingVehicle,

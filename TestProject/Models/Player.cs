@@ -27,22 +27,6 @@ namespace PUBGAPIWrapper.Models
         public string Title { get; set; }
 
         /// <summary>
-        /// Date this account was created.
-        /// </summary>
-        /// <remarks>
-        /// Nullable because it is sometimes missing from the response.
-        /// </remarks>
-        public DateTime? Created { get; set; }
-
-        /// <summary>
-        /// Date this account was last accessed.
-        /// </summary>
-        /// <remarks>
-        /// Nullable because it is sometimes missing from the response.
-        /// </remarks>
-        public DateTime? Updated { get; set; }
-
-        /// <summary>
         /// Unique GUIDs of the five most recent matches played.
         /// </summary>
         public List<string> MatchIds { get; set; }
@@ -52,8 +36,6 @@ namespace PUBGAPIWrapper.Models
             string playerString = "Player: " + Name + "\n";
             playerString += "Id: " + Id + "\n";
             playerString += "Region: " + Shard + "\n";
-            playerString += "Date created: " + Created.ToString() + "\n";
-            playerString += "Last played: " + Updated.ToString() + "\n"; ;
             playerString += "Recent Matches:\n";
 
             foreach (string id in MatchIds)
@@ -68,12 +50,10 @@ namespace PUBGAPIWrapper.Models
             Player player = new Player()
             {
                 Id = dto.Data.Id,
-                //Created = DateTime.Parse(dto.Data.Attributes.Created),
                 Name = dto.Data.Attributes.Name,
                 Version = dto.Data.Attributes.Version,
                 Shard = dto.Data.Attributes.Shard,
                 Title = dto.Data.Attributes.Title,
-                //Updated = DateTime.Parse(dto.Data.Attributes.Updated),
                 MatchIds = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
             };
 
@@ -89,12 +69,10 @@ namespace PUBGAPIWrapper.Models
                 players.Add(new Player()
                 {
                     Id = player.Data.Id,
-                    //Created = DateTime.Parse(player.Data.Attributes.Created),
                     Name = player.Data.Attributes.Name,
                     Version = player.Data.Attributes.Version,
                     Shard = player.Data.Attributes.Shard,
                     Title = player.Data.Attributes.Title,
-                    //Updated = DateTime.Parse(player.Data.Attributes.Updated),
                     MatchIds = player.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
                 });
             }
@@ -142,8 +120,6 @@ namespace PUBGAPIWrapper.Models
 
     public class Attributes
     {
-        [JsonProperty("createdAt")]
-        public string Created { get; set; }
 
         [JsonProperty("name")]
         public string Name { get; set; }
@@ -156,9 +132,6 @@ namespace PUBGAPIWrapper.Models
 
         [JsonProperty("titleId")]
         public string Title { get; set; }
-
-        [JsonProperty("updatedAt")]
-        public string Updated { get; set; }
     }
 
     #endregion

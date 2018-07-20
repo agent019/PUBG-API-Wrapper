@@ -8,9 +8,6 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public abstract class Event
     {
-        [JsonProperty("_V")]
-        public int Version { get; set; }
-
         [JsonProperty("_D")]
         public string Timestamp { get; set; }
 
@@ -94,6 +91,7 @@ namespace PUBGAPIWrapper.Models
     public class LogMatchDefinition : Event
     {
         public string MatchId { get; set; }
+        public string PingQuality { get; set; }
     }
 
     public class LogMatchEnd : Event
@@ -103,7 +101,14 @@ namespace PUBGAPIWrapper.Models
 
     public class LogMatchStart : Event
     {
+        public string MapName { get; set; }
+        public string WeatherId { get; set; }
         public IEnumerable<Character> Characters { get; set; }
+        public string CameraViewBehaviour { get; set; }
+        public int TeamSize { get; set; }
+        public bool IsCustomGame { get; set; }
+        public bool IsEventMode { get; set; }
+        public string BlueZoneCustomOptions { get; set; } //TODO: stringified array of objects
     }
 
     public class LogPlayerAttack : Event
@@ -122,7 +127,6 @@ namespace PUBGAPIWrapper.Models
         public override string ToString()
         {
             return "Type: " + this.Type + "\n"
-                + "Version: " + this.Version + "\n"
                 + "Timestamp: " + this.Timestamp + "\n"
                 + Character.ToString();
         }
@@ -135,19 +139,30 @@ namespace PUBGAPIWrapper.Models
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
+        public string DamageReason { get; set; }
         public float Distance { get; set; }
     }
 
     public class LogPlayerLogin : Event
     {
-        public bool Result { get; set; }
-        public string ErrorMessge { get; set; }
         public string AccountId { get; set; }
     }
 
     public class LogPlayerLogout : Event
     {
         public string AccountId { get; set; }
+    }
+
+    public class LogPlayerMakeGroggy : Event
+    {
+        public int AttackId { get; set; }
+        public Character Attacker { get; set; }
+        public Character Victim { get; set; }
+        public string DamageTypeCategory { get; set; }
+        public string DamageCauserName { get; set; }
+        public float Distance { get; set; }
+        public bool IsAttackerInVehicle { get; set; }
+        public int DBNOID { get; set; }
     }
 
     public class LogPlayerPosition : Event
@@ -161,12 +176,17 @@ namespace PUBGAPIWrapper.Models
             string toString = "ElapsedTime: " + this.ElapsedTime + "\n"
                 + "NumAlivePlayers: " + this.NumAlivePlayers + "\n"
                 + "Type: " + this.Type + "\n"
-                + "Version: " + this.Version + "\n"
                 + "Timestamp: " + this.Timestamp + "\n"
                 + Character.ToString();
 
             return toString;
         }
+    }
+
+    public class LogPlayerRevive : Event
+    {
+        public Character Reviver { get; set; }
+        public Character Victim { get; set; }
     }
 
     public class LogPlayerTakeDamage : Event
@@ -176,6 +196,10 @@ namespace PUBGAPIWrapper.Models
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
         public DamageReason DamageReason { get; set; }
+        /// <remarks>
+        /// 1.0 Damage = 1.0 Health
+        /// Net damage after armor; Damage to health
+        /// </remarks>
         public float Damage { get; set; }
         public string DamageCauserName { get; set; }
     }
@@ -183,6 +207,7 @@ namespace PUBGAPIWrapper.Models
     public class LogSwimEnd : Event
     {
         public Character Character { get; set; }
+        public float SwimDistance { get; set; }
     }
 
     public class LogSwimStart : Event
@@ -213,5 +238,14 @@ namespace PUBGAPIWrapper.Models
         public Character Character { get; set; }
         public Vehicle Vehicle { get; set; }
         public int SeatIndex { get; set; }
+    }
+
+    public class LogWheelDestroy : Event
+    {
+        public int AttackId { get; set; }
+        public Character Attacker { get; set; }
+        public Vehicle Vehicle { get; set; }
+        public string DamageTypeCategory { get; set; }
+        public string DamageCauserName { get; set; }
     }
 }

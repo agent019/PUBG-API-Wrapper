@@ -170,7 +170,7 @@ namespace PUBGAPIWrapper.Models
         public int Kills { get; set; }
         public int LastKillPoints { get; set; }
         public int LastWinPoints { get; set; }
-        public int LongestKill { get; set; }
+        public long LongestKill { get; set; }
         public int MostDamage { get; set; }
         public string Name { get; set; }
         public string PlayerId { get; set; }
@@ -178,7 +178,7 @@ namespace PUBGAPIWrapper.Models
         public decimal RideDistance { get; set; }
         public int RoadKills { get; set; }
         public int TeamKills { get; set; }
-        public int TimeSurvived { get; set; }
+        public long TimeSurvived { get; set; }
         public int VehicleDestroys { get; set; }
         public decimal WalkDistance { get; set; }
         public int WeaponsAcquired { get; set; }

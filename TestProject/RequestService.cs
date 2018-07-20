@@ -12,6 +12,9 @@ namespace PUBGAPIWrapper
     /// Service for making requests to the PUBG API.
     /// Wraps all provided endpoints.
     /// </summary>
+    /// <remarks>
+    /// TODO: Tournaments resource
+    /// </remarks>
     public class RequestService
     {
         private const string BaseUri = "https://api.playbattlegrounds.com/";
