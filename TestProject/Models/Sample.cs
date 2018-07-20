@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TestProject.Models
+namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Sample objects contain the ID and shard of a match.

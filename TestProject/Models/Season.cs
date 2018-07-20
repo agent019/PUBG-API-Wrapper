@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TestProject.Models
+namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of a PUBG Season.

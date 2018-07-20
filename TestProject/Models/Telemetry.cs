@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace TestProject.Models
+namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of the Telemetry for a specific PUBG Match.

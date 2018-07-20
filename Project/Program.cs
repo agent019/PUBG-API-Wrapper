@@ -1,10 +1,11 @@
-﻿using System;
+﻿using PUBGAPIWrapper;
+using PUBGAPIWrapper.Models;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
 using System.Windows.Forms;
 using TestProject.GUI;
-using TestProject.Models;
 
 namespace TestProject
 {
@@ -13,12 +14,14 @@ namespace TestProject
         private string ApiKey { get; set; }
         private string PlayerName { get; set; }
         private string PlayerId { get; set; }
+        private Shard DefaultShard { get; set; }
 
         public Program()
         {
             ApiKey = ConfigurationManager.AppSettings["apiKey"];
             PlayerName = ConfigurationManager.AppSettings["playerName"];
             PlayerId = ConfigurationManager.AppSettings["playerId"];
+            DefaultShard = Shard.PC_NA;
         }
 
         [STAThread]
@@ -35,13 +38,13 @@ namespace TestProject
         {
             RequestService svc = new RequestService(ApiKey);
 
-            Player player = svc.GetPlayer(PlayerId);
+            Player player = svc.GetPlayer(DefaultShard, PlayerId);
 
             Console.WriteLine(player.ToString());
 
             string matchId = player.MatchIds[0];
 
-            Match match = svc.GetMatch(matchId);
+            Match match = svc.GetMatch(DefaultShard, matchId);
 
             Telemetry telemetry = svc.GetTelemetry(match.Telemetry.URL);
 

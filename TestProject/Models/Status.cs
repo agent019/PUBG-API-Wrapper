@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 
-namespace TestProject.Models
+namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of the status of the PUBG Servers.

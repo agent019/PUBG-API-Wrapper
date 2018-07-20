@@ -1,20 +1,17 @@
 ﻿using Newtonsoft.Json.Linq;
+using PUBGAPIWrapper.Models;
+using PUBGAPIWrapper.RestWrapper;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using TestProject.Models;
-using TestProject.RestWrapper;
 
-namespace TestProject
+namespace PUBGAPIWrapper
 {
     /// <summary>
     /// Service for making requests to the PUBG API.
     /// Wraps all provided endpoints.
     /// </summary>
-    /// <remarks>
-    /// TODO: dynamically construct "/shards/{shard}"
-    /// </remarks>
     public class RequestService
     {
         private const string BaseUri = "https://api.playbattlegrounds.com/";
@@ -32,20 +29,45 @@ namespace TestProject
 
         #endregion
 
+        #region Helpers
+
         private Response MakeRequest(string queryString, bool compressResponse = false)
         {
             Request request = new Request(queryString);
 
             request.AddHeader("Authorization", "Bearer " + ApiKey);
-            request.AddHeader("Accept", "application/vnd.api+json");
 
             if (compressResponse)
                 request.AddHeader("Accept-Encoding", "gzip");
-            
+            else
+                request.AddHeader("Accept", "application/vnd.api+json");
+
             Response response = Client.Execute(request);
 
             return response;
         }
+
+        /// <summary>
+        /// Given a Shard enum, builds the shard portion of the Uri string for a request.
+        /// </summary>
+        /// <remarks>
+        /// We must do this because C# doesn't allow enums with the '-' character,
+        /// so we have to pull the uri-friendly string out of the description of the Shard value.s
+        /// </remarks>
+        private string BuildShardUri(Shard shard)
+        {
+            return "/shards/" + shard.GetDescription() + "/";
+        }
+
+        /// <summary>
+        /// Writes the given string to the given filename in the Data folder.
+        /// </summary>
+        public void WriteResponse(string filename, string body)
+        {
+            File.WriteAllText("../../../Data/" + filename, body);
+        }
+
+        #endregion
 
         #region Status
 
@@ -68,18 +90,26 @@ namespace TestProject
         /// <summary>
         /// Gets a PUBG match by ID.
         /// </summary>
-        public Match GetMatch(string matchId)
+        public Match GetMatch(Shard shard, string matchId)
         {
-            string matchUri = "/shards/pc-na/matches/" + matchId;
+            string shardUri = BuildShardUri(shard);
+            string matchUri = shardUri + "matches/" + matchId;
             Response response = MakeRequest(matchUri);
 
             Match match = Match.Deserialize(response.Content);
             return match;
         }
 
-        public Sample GetSampleMatches(DateTime? createdAtFilter = null)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <remarks>
+        /// TODO: Implement createdAt filter
+        /// </remarks>
+        public Sample GetSampleMatches(Shard shard, DateTime? createdAtFilter = null)
         {
-            string sampleUri = "/shards/pc-na/samples";
+            string shardUri = BuildShardUri(shard);
+            string sampleUri = shardUri + "samples";
             Response response = MakeRequest(sampleUri);
 
             Sample sample = Sample.Deserialize(response.Content);
@@ -93,9 +123,10 @@ namespace TestProject
         /// <summary>
         /// Given a players username, gets the Id associated for that account.
         /// </summary>
-        public string GetPlayerId(string playerName)
+        public string GetPlayerId(Shard shard, string playerName)
         {
-            string playerUri = "shards/pc-na/players?filter[playerNames]=" + playerName;
+            string shardUri = BuildShardUri(shard);
+            string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
             Response response = MakeRequest(playerUri);
 
             JObject obj = JObject.Parse(response.Content);
@@ -105,9 +136,10 @@ namespace TestProject
         /// <summary>
         /// Makes a request to the PUBG API for information about a player, by player id.
         /// </summary>
-        public Player GetPlayer(string id)
+        public Player GetPlayer(Shard shard, string id)
         {
-            string playerUri = "shards/pc-na/players/" + id;
+            string shardUri = BuildShardUri(shard);
+            string playerUri = shardUri + "players/" + id;
             Response response = MakeRequest(playerUri);
             Player player = Player.Deserialize(response.Content);
             return player;
@@ -119,12 +151,13 @@ namespace TestProject
         /// <remarks>
         /// Cannot query by both names and ids. Prefers ids when provided.
         /// </remarks>
-        public List<Player> GetPlayers(List<string> ids, List<string> names)
+        public List<Player> GetPlayers(Shard shard, List<string> ids, List<string> names)
         {
             if ((ids == null || !ids.Any()) && (names == null || !names.Any()))
                 return new List<Player>();
 
-            string playerUri = "shards/pc-na/players";
+            string shardUri = BuildShardUri(shard);
+            string playerUri = shardUri + "players";
             if (ids != null && ids.Any())
             {
                 string concatenatedIds = string.Join(",", ids);
@@ -149,16 +182,23 @@ namespace TestProject
 
         #endregion
 
+        #region Seasons
+
         /// <summary>
         /// Makes a request to the PUBG Api for all of the seasons.
         /// </summary>
-        public List<Season> GetSeasons()
+        public List<Season> GetSeasons(Shard shard)
         {
-            string seasonUri = "/shards/pc-na/seasons";
+            string shardUri = BuildShardUri(shard);
+            string seasonUri = shardUri + "seasons";
             Response response = MakeRequest(seasonUri);
             List<Season> seasons = Season.Deserialize(response.Content);
             return seasons;
         }
+
+        #endregion
+
+        #region Telemetry
 
         /// <summary>
         /// Given a telemetry URL from a match object,
@@ -171,12 +211,6 @@ namespace TestProject
             return telemetry;
         }
 
-        /// <summary>
-        /// Writes the given string to the given filename in the Data folder.
-        /// </summary>
-        public void WriteResponse(string filename, string body)
-        {
-            File.WriteAllText("../../../Data/" + filename, body);
-        }
+        #endregion
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 using System.Net;
 using System.Threading;
 
-namespace TestProject.RestWrapper
+namespace PUBGAPIWrapper.RestWrapper
 {
     public class Client
     {
