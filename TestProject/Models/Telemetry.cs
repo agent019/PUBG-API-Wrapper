@@ -12,6 +12,7 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     /// <remarks>
     /// TODO: Added some new objects/properties that need deserialization.
+    /// Also finish the old ones yeah?
     /// </remarks>
     public class Telemetry
     {
