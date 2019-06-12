@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
+using PUBGAPIWrapper.Interfaces;
 using PUBGAPIWrapper.Models;
-using PUBGAPIWrapper.RestWrapper;
+using PUBGAPIWrapper.Service;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,7 @@ namespace PUBGAPIWrapper
         private const string BaseUri = "https://api.playbattlegrounds.com/";
 
         private string ApiKey { get; set; }
-        private Client Client { get; set; }
+        private IClient Client { get; set; }
 
         #region Constructors
 
@@ -104,7 +105,7 @@ namespace PUBGAPIWrapper
         }
 
         /// <summary>
-        /// 
+        /// Gets a set of sample matches
         /// </summary>
         /// <remarks>
         /// TODO: Implement createdAt filter
