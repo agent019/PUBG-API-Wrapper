@@ -63,7 +63,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\TestProject\Wrapper.csproj">
+    <ProjectReference Include="..\Wrapper\Wrapper.csproj">
       <Project>{1fbb603b-7fba-4e37-9a78-e100045a9017}</Project>
       <Name>Wrapper</Name>
     </ProjectReference>
