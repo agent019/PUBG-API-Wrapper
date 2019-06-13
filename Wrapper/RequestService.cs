@@ -1,7 +1,7 @@
 ﻿using Newtonsoft.Json.Linq;
-using PUBGAPIWrapper.Interfaces;
 using PUBGAPIWrapper.Models;
 using PUBGAPIWrapper.Service;
+using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -21,13 +21,13 @@ namespace PUBGAPIWrapper
         private const string BaseUri = "https://api.playbattlegrounds.com/";
 
         private string ApiKey { get; set; }
-        private IClient Client { get; set; }
+        public IRestClient Client { get; set; }
 
         #region Constructors
 
         public RequestService(string key)
         {
-            Client = new Client(BaseUri);
+            Client = new RestClient(BaseUri);
             this.ApiKey = key;
         }
 
@@ -35,18 +35,18 @@ namespace PUBGAPIWrapper
 
         #region Helpers
 
-        private Response MakeRequest(string queryString, bool compressResponse = false)
+        private IRestResponse MakeRequest(string queryString/*, bool compressResponse = false*/)
         {
-            Request request = new Request(queryString);
+            IRestRequest request = new RestRequest(queryString);
 
             request.AddHeader("Authorization", "Bearer " + ApiKey);
 
-            if (compressResponse)
+            /*if (compressResponse)
                 request.AddHeader("Accept-Encoding", "gzip");
-            else
-                request.AddHeader("Accept", "application/vnd.api+json");
+            else*/
+            request.AddHeader("Accept", "application/vnd.api+json");
 
-            Response response = Client.Execute(request);
+            IRestResponse response = Client.Execute(request);
 
             return response;
         }
@@ -81,7 +81,7 @@ namespace PUBGAPIWrapper
         public Status GetStatus()
         {
             string statusUri = "/status";
-            Response response = MakeRequest(statusUri);
+            IRestResponse response = MakeRequest(statusUri);
 
             Status status = Status.Deserialize(response.Content);
             return status;
@@ -98,7 +98,7 @@ namespace PUBGAPIWrapper
         {
             string shardUri = BuildShardUri(shard);
             string matchUri = shardUri + "matches/" + matchId;
-            Response response = MakeRequest(matchUri);
+            IRestResponse response = MakeRequest(matchUri);
 
             Match match = Match.Deserialize(response.Content);
             return match;
@@ -114,7 +114,7 @@ namespace PUBGAPIWrapper
         {
             string shardUri = BuildShardUri(shard);
             string sampleUri = shardUri + "samples";
-            Response response = MakeRequest(sampleUri);
+            IRestResponse response = MakeRequest(sampleUri);
 
             Sample sample = Sample.Deserialize(response.Content);
             return sample;
@@ -131,7 +131,7 @@ namespace PUBGAPIWrapper
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
-            Response response = MakeRequest(playerUri);
+            IRestResponse response = MakeRequest(playerUri);
 
             JObject obj = JObject.Parse(response.Content);
             return (string)obj["data"][0]["id"];
@@ -144,7 +144,7 @@ namespace PUBGAPIWrapper
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players/" + id;
-            Response response = MakeRequest(playerUri);
+            IRestResponse response = MakeRequest(playerUri);
             Player player = Player.Deserialize(response.Content);
             return player;
         }
@@ -173,7 +173,7 @@ namespace PUBGAPIWrapper
                 playerUri = playerUri + "filters[playerIds]" + concatenatedNames;
             }
 
-            Response response = MakeRequest(playerUri);
+            IRestResponse response = MakeRequest(playerUri);
 
             List<Player> players = Player.DeserializePlayerList(response.Content);
             return players;
@@ -195,7 +195,7 @@ namespace PUBGAPIWrapper
         {
             string shardUri = BuildShardUri(shard);
             string seasonUri = shardUri + "seasons";
-            Response response = MakeRequest(seasonUri);
+            IRestResponse response = MakeRequest(seasonUri);
             List<Season> seasons = Season.Deserialize(response.Content);
             return seasons;
         }
@@ -210,7 +210,7 @@ namespace PUBGAPIWrapper
         /// </summary>
         public Telemetry GetTelemetry(string url)
         {
-            Response response = MakeRequest(url);
+            IRestResponse response = MakeRequest(url);
             Telemetry telemetry = Telemetry.Deserialize(response.Content);
             return telemetry;
         }
