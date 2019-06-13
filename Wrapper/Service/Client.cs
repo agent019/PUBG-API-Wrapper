@@ -1,5 +1,4 @@
-﻿using PUBGAPIWrapper.Interfaces;
-using RestSharp;
+﻿using RestSharp;
 using System;
 using System.Linq;
 using System.Net;
@@ -7,7 +6,7 @@ using System.Threading;
 
 namespace PUBGAPIWrapper.Service
 {
-    public class Client : IClient
+    public class Client
     {
         private IRestClient _client { get; set; }
 
@@ -36,8 +35,9 @@ namespace PUBGAPIWrapper.Service
         /// Using the rate limit information from the response headers,
         /// sleeps until the rate limit reset when out of requests.
         /// TODO: Async this to not stop the main thread?
+        /// TODO: Move this somewhere useful.
         /// </remarks>
-        public Response Execute(Request request)
+        /*public Response Execute(Request request)
         {
             var innerResponse = _client.Execute(request.ToRestRequest());
             if (innerResponse.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
@@ -64,6 +64,6 @@ namespace PUBGAPIWrapper.Service
             }
 
             return response;
-        }
+        }*/
     }
 }
