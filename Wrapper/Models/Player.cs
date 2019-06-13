@@ -47,37 +47,35 @@ namespace PUBGAPIWrapper.Models
         public static Player Deserialize(string playerJson)
         {
             PlayerDTO dto = JsonConvert.DeserializeObject<PlayerDTO>(playerJson);
-            Player player = new Player()
-            {
-                Id = dto.Data.Id,
-                Name = dto.Data.Attributes.Name,
-                Version = dto.Data.Attributes.Version,
-                Shard = dto.Data.Attributes.Shard,
-                Title = dto.Data.Attributes.Title,
-                MatchIds = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
-            };
-
-            return player;
+            return BuildPlayerFromDTO(dto);
         }
 
+        // TODO: Reduce duplication here
         public static List<Player> DeserializePlayerList(string playerJson)
         {
             List<PlayerDTO> dto = JsonConvert.DeserializeObject<List<PlayerDTO>>(playerJson);
             List<Player> players = new List<Player>();
             foreach (PlayerDTO player in dto)
             {
-                players.Add(new Player()
-                {
-                    Id = player.Data.Id,
-                    Name = player.Data.Attributes.Name,
-                    Version = player.Data.Attributes.Version,
-                    Shard = player.Data.Attributes.Shard,
-                    Title = player.Data.Attributes.Title,
-                    MatchIds = player.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
-                });
+                players.Add(BuildPlayerFromDTO(player));
             }
 
             return players;
+        }
+
+        private static Player BuildPlayerFromDTO(PlayerDTO dto)
+        {
+            Player player = new Player()
+            {
+                Id = dto?.Data?.Id,
+                Name = dto?.Data?.Attributes?.Name,
+                Version = dto?.Data?.Attributes?.Version,
+                Shard = dto?.Data?.Attributes?.Shard, // TODO: use enum?
+                Title = dto?.Data?.Attributes?.Title,
+                MatchIds = dto?.Data?.Relationships?.Matches?.Data?.Select(x => x.Id).ToList()
+            };
+
+            return player;
         }
     }
 
