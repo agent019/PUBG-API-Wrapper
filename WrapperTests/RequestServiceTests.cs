@@ -27,7 +27,7 @@ namespace WrapperTests
                 Content = "{ Id: 1, Version: \"v3\" }"
             };
 
-            [TestMethod, TestCategory("Unit")]
+            /*[TestMethod, TestCategory("Unit")]
             public void GetStatus_ItMakesTheCorrectRequest()
             {
                 Mock<IRestClient> mockClient = new Mock<IRestClient>();
@@ -56,7 +56,7 @@ namespace WrapperTests
 
                 Assert.AreEqual(1, result.Id);
                 Assert.AreEqual("v3", result.Version);
-            }
+            }*/
         }
 
         [TestClass]

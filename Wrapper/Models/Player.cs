@@ -7,6 +7,9 @@ namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of a PUBG Player.
+    /// Player objects contain information about a player and a 
+    /// list of their recent matches (up to 14 days old). 
+    /// Note: player objects are specific to platform shards.
     /// </summary>
     /// <remarks>
     /// Flattened representation of the DTO.
@@ -17,6 +20,11 @@ namespace PUBGAPIWrapper.Models
         /// Unique GUID for a player.
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Identifier for this object type ("player")
+        /// </summary>
+        public string Type { get; set; }
 
         /// <summary>
         /// Username of the player.
@@ -49,8 +57,7 @@ namespace PUBGAPIWrapper.Models
             PlayerDTO dto = JsonConvert.DeserializeObject<PlayerDTO>(playerJson);
             return BuildPlayerFromDTO(dto);
         }
-
-        // TODO: Reduce duplication here
+        
         public static List<Player> DeserializePlayerList(string playerJson)
         {
             List<PlayerDTO> dto = JsonConvert.DeserializeObject<List<PlayerDTO>>(playerJson);
