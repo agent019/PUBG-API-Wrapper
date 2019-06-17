@@ -227,7 +227,9 @@ namespace PUBGAPIWrapper.Models
         public long Duration { get; set; }
         public string GameMode { get; set; }
         public string MapName { get; set; }
+        public bool IsCustomMatch { get; set; }
         public string PatchVersion { get; set; }
+        public string SeasonState { get; set; }
         public string ShardId { get; set; }
         public dynamic Stats { get; set; }
         public dynamic Tags { get; set; }

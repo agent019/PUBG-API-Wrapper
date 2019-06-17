@@ -58,7 +58,7 @@ namespace PUBGAPIWrapper
         /// We must do this because C# doesn't allow enums with the '-' character,
         /// so we have to pull the uri-friendly string out of the description of the Shard value.s
         /// </remarks>
-        private string BuildShardUri(Shard shard)
+        private string BuildShardUri(PlatformRegionShard shard)
         {
             return "/shards/" + shard.GetDescription() + "/";
         }
@@ -94,7 +94,7 @@ namespace PUBGAPIWrapper
         /// <summary>
         /// Gets a PUBG match by ID.
         /// </summary>
-        public Match GetMatch(Shard shard, string matchId)
+        public Match GetMatch(PlatformRegionShard shard, string matchId)
         {
             string shardUri = BuildShardUri(shard);
             string matchUri = shardUri + "matches/" + matchId;
@@ -110,7 +110,7 @@ namespace PUBGAPIWrapper
         /// <remarks>
         /// TODO: Implement createdAt filter
         /// </remarks>
-        public Sample GetSampleMatches(Shard shard, DateTime? createdAtFilter = null)
+        public Sample GetSampleMatches(PlatformRegionShard shard, DateTime? createdAtFilter = null)
         {
             string shardUri = BuildShardUri(shard);
             string sampleUri = shardUri + "samples";
@@ -127,7 +127,7 @@ namespace PUBGAPIWrapper
         /// <summary>
         /// Given a players username, gets the Id associated for that account.
         /// </summary>
-        public string GetPlayerId(Shard shard, string playerName)
+        public string GetPlayerId(PlatformRegionShard shard, string playerName)
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
@@ -139,8 +139,9 @@ namespace PUBGAPIWrapper
 
         /// <summary>
         /// Makes a request to the PUBG API for information about a player, by player id.
+        /// Get a single player.
         /// </summary>
-        public Player GetPlayer(Shard shard, string id)
+        public Player GetPlayer(PlatformRegionShard shard, string id)
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players/" + id;
@@ -151,11 +152,12 @@ namespace PUBGAPIWrapper
 
         /// <summary>
         /// Given a list of player ids or player names, queries for those players
+        /// Get a collection of up to 10 players.
         /// </summary>
         /// <remarks>
         /// Cannot query by both names and ids. Prefers ids when provided.
         /// </remarks>
-        public List<Player> GetPlayers(Shard shard, List<string> ids, List<string> names)
+        public List<Player> GetPlayers(PlatformRegionShard shard, List<string> ids, List<string> names)
         {
             if ((ids == null || !ids.Any()) && (names == null || !names.Any()))
                 return new List<Player>();
@@ -191,7 +193,7 @@ namespace PUBGAPIWrapper
         /// <summary>
         /// Makes a request to the PUBG Api for all of the seasons.
         /// </summary>
-        public List<Season> GetSeasons(Shard shard)
+        public List<Season> GetSeasons(PlatformRegionShard shard)
         {
             string shardUri = BuildShardUri(shard);
             string seasonUri = shardUri + "seasons";

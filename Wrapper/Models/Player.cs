@@ -83,6 +83,11 @@ namespace PUBGAPIWrapper.Models
 
     #region DTO
 
+    /// <summary>
+    /// Player objects contain information about a player 
+    /// and a list of their recent matches (up to 14 days old). 
+    /// Note: player objects are specific to platform shards.
+    /// </summary>
     public class PlayerDTO
     {
         [JsonProperty("data")]
@@ -91,6 +96,9 @@ namespace PUBGAPIWrapper.Models
 
     public class PlayerData
     {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
         [JsonProperty("id")]
         public string Id { get; set; }
 
@@ -114,13 +122,15 @@ namespace PUBGAPIWrapper.Models
 
     public class PlayerMatchesData
     {
+        [JsonProperty("type")]
+        public string Type { get; set; }
+
         [JsonProperty("id")]
         public string Id { get; set; }
     }
 
     public class Attributes
     {
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
@@ -132,6 +142,9 @@ namespace PUBGAPIWrapper.Models
 
         [JsonProperty("titleId")]
         public string Title { get; set; }
+
+        [JsonProperty("stats")]
+        public dynamic Stats { get; set; }
     }
 
     #endregion
