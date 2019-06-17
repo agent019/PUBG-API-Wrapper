@@ -51,6 +51,7 @@
     <Compile Include="Models\Player.cs" />
     <Compile Include="Models\Season.cs" />
     <Compile Include="Models\Shards.cs" />
+    <Compile Include="Models\Stats.cs" />
     <Compile Include="Models\Status.cs" />
     <Compile Include="Models\Telemetry.cs" />
     <Compile Include="Service\Client.cs" />

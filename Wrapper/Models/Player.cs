@@ -117,10 +117,10 @@ namespace PUBGAPIWrapper.Models
     public class PlayerMatches
     {
         [JsonProperty("data")]
-        public List<PlayerMatchesData> Data { get; set; }
+        public List<MatchReference> Data { get; set; }
     }
 
-    public class PlayerMatchesData
+    public class MatchReference
     {
         [JsonProperty("type")]
         public string Type { get; set; }
