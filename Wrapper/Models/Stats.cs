@@ -8,6 +8,8 @@ namespace PUBGAPIWrapper.Models
     {
     }
 
+    #region DTO
+
     public class StatsDTO
     {
         public StatsData Data { get; set; }
@@ -69,9 +71,6 @@ namespace PUBGAPIWrapper.Models
         public int DailyWins { get; set; }
         public int HeadshotKills { get; set; }
         public int Heals { get; set; }
-        
-        [Obsolete]
-        public long KillPoints { get; set; }
         public int Kills { get; set; }
         public long LongestKill { get; set; }
         public long LongestTimeSurvived { get; set; }
@@ -95,15 +94,26 @@ namespace PUBGAPIWrapper.Models
         public int WeaponsAcquired { get; set; }
         public int WeeklyKills { get; set; }
         public int WeeklyWins { get; set; }
+        public int Wins { get; set; }
+
+        [Obsolete]
+        public long KillPoints { get; set; }
 
         [Obsolete]
         public long WinPoints { get; set; }
-        public int Wins { get; set; }
     }
 
     public class StatsRelationships
     {
-        // todo: this isnt right, they're seperate objects, each with a list of data
-        public List<MatchReference> Data { get; set; }
+        public MultiRelationship MatchesSolo { get; set; }
+        public MultiRelationship MatchesSoloFPP { get; set; }
+        public MultiRelationship MatchesDuo { get; set; }
+        public MultiRelationship MatchesDuoFPP { get; set; }
+        public MultiRelationship MatchesSquad { get; set; }
+        public MultiRelationship MatchesSquadFPP { get; set; }
+        public Relationship Season { get; set; }
+        public Relationship Player { get; set; }
     }
+
+    #endregion
 }

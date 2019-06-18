@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -94,6 +93,17 @@ namespace PUBGAPIWrapper.Models
         public PlayerData Data { get; set; }
     }
 
+    /// <summary>
+    /// Players objects contain information about multiple players 
+    /// and a list of their recent matches (up to 14 days old). 
+    /// Note: player objects are specific to platform shards.
+    /// </summary>
+    public class PlayersDTO
+    {
+        [JsonProperty("data")]
+        public List<PlayerData> Data { get; set; }
+    }
+
     public class PlayerData
     {
         [JsonProperty("type")]
@@ -112,21 +122,7 @@ namespace PUBGAPIWrapper.Models
     public class PlayerRelationships
     {
         [JsonProperty("matches")]
-        public PlayerMatches Matches { get; set; }
-    }
-    public class PlayerMatches
-    {
-        [JsonProperty("data")]
-        public List<MatchReference> Data { get; set; }
-    }
-
-    public class MatchReference
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        public MultiRelationship Matches { get; set; }
     }
 
     public class Attributes
