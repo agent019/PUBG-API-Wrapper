@@ -22,9 +22,9 @@ namespace PUBGAPIWrapper.Models
         {
             SampleDTO dto = JsonConvert.DeserializeObject<SampleDTO>(json);
             Sample sample = new Sample();
-            foreach (InnerSampleData matchInfo in dto.Data.Relationships.Matches.Data)
+            foreach (Reference match in dto.Data.Relationships.Matches.Data)
             {
-                sample.Ids.Add(matchInfo.Id);
+                sample.Ids.Add(match.Id);
             }
             return sample;
         }
@@ -78,22 +78,7 @@ namespace PUBGAPIWrapper.Models
     public class SampleRelationships
     {
         [JsonProperty("matches")]
-        public SampleMatches Matches { get; set; }
-    }
-
-    public class SampleMatches
-    {
-        [JsonProperty("data")]
-        public List<InnerSampleData> Data { get; set; }
-    }
-
-    public class InnerSampleData
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        public MultiRelationship Matches { get; set; }
     }
 
     #endregion

@@ -206,18 +206,18 @@ namespace PUBGAPIWrapper.Models
 
     public class MatchDTO
     {
-        public Data Data { get; set; }
+        public MatchData Data { get; set; }
         //TODO: Better deserialization then dynamic and second pass
         public List<dynamic> Included { get; set; } 
         public Links Links { get; set; }
         public Meta Meta { get; set; }
     }
 
-	public class Data {
+	public class MatchData {
 		public string Type { get; set; }
 		public string Id { get; set; }
         public MatchAttributes Attributes { get; set; }
-        public Relationships Relationships { get; set; }
+        public MatchRelationships Relationships { get; set; }
         public Links Links { get; set; }
     }
 
@@ -227,14 +227,16 @@ namespace PUBGAPIWrapper.Models
         public long Duration { get; set; }
         public string GameMode { get; set; }
         public string MapName { get; set; }
+        public bool IsCustomMatch { get; set; }
         public string PatchVersion { get; set; }
+        public string SeasonState { get; set; }
         public string ShardId { get; set; }
         public dynamic Stats { get; set; }
         public dynamic Tags { get; set; }
         public string TitleId { get; set; }
     }
 
-    public class Relationships {
+    public class MatchRelationships {
         public Assets Assets { get; set; }
         public RosterDTO Rosters { get; set; }
         public Round Rounds { get; set; }
@@ -269,11 +271,11 @@ namespace PUBGAPIWrapper.Models
     }
 
 	public class Matches {
-		public List<Data> Data { get; set; }
+		public List<MatchData> Data { get; set; }
 	}
 
 	public class Assets {
-		public List<Data> Data { get; set; }
+		public List<MatchData> Data { get; set; }
 	}
 
 	public class PlayerAttributes {
