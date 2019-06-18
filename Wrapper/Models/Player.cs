@@ -54,31 +54,31 @@ namespace PUBGAPIWrapper.Models
         public static Player Deserialize(string playerJson)
         {
             PlayerDTO dto = JsonConvert.DeserializeObject<PlayerDTO>(playerJson);
-            return BuildPlayerFromDTO(dto);
+            return BuildPlayerFromDTO(dto.Data);
         }
         
         public static List<Player> DeserializePlayerList(string playerJson)
         {
-            List<PlayerDTO> dto = JsonConvert.DeserializeObject<List<PlayerDTO>>(playerJson);
+            PlayersDTO dto = JsonConvert.DeserializeObject<PlayersDTO>(playerJson);
             List<Player> players = new List<Player>();
-            foreach (PlayerDTO player in dto)
+            foreach (PlayerData data in dto.Data)
             {
-                players.Add(BuildPlayerFromDTO(player));
+                players.Add(BuildPlayerFromDTO(data));
             }
 
             return players;
         }
 
-        private static Player BuildPlayerFromDTO(PlayerDTO dto)
+        private static Player BuildPlayerFromDTO(PlayerData data)
         {
             Player player = new Player()
             {
-                Id = dto?.Data?.Id,
-                Name = dto?.Data?.Attributes?.Name,
-                Version = dto?.Data?.Attributes?.Version,
-                Shard = dto?.Data?.Attributes?.Shard, // TODO: use enum?
-                Title = dto?.Data?.Attributes?.Title,
-                MatchIds = dto?.Data?.Relationships?.Matches?.Data?.Select(x => x.Id).ToList()
+                Id = data?.Id,
+                Name = data?.Attributes?.Name,
+                Version = data?.Attributes?.Version,
+                Shard = data?.Attributes?.Shard, // TODO: use enum?
+                Title = data?.Attributes?.Title,
+                MatchIds = data?.Relationships?.Matches?.Data?.Select(x => x.Id).ToList()
             };
 
             return player;
@@ -96,6 +96,8 @@ namespace PUBGAPIWrapper.Models
     {
         [JsonProperty("data")]
         public PlayerData Data { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
     }
 
     /// <summary>
@@ -107,6 +109,8 @@ namespace PUBGAPIWrapper.Models
     {
         [JsonProperty("data")]
         public List<PlayerData> Data { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
     }
 
     public class PlayerData
@@ -122,6 +126,9 @@ namespace PUBGAPIWrapper.Models
 
         [JsonProperty("relationships")]
         public PlayerRelationships Relationships { get; set; }
+
+        //todo: this guy has schema too
+        //public Links Links { get; set; }
     }
 
     public class PlayerRelationships
