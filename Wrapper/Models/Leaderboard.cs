@@ -5,6 +5,14 @@ namespace PUBGAPIWrapper.Models
 {
     public class Leaderboard
     {
+        public string Shard { get; set; }
+        public string GameMode { get; set; }
+        public SortedList<LeaderboardStats> PlayerStats { get; set; }
+    }
+
+    public class LeaderboardStats
+    {
+
     }
 
     #region DTO
