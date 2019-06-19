@@ -1,9 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -13,7 +8,6 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class Relationship
     {
-        [JsonProperty("data")]
         public Reference Data { get; set; }
     }
 
@@ -23,7 +17,6 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class MultiRelationship
     {
-        [JsonProperty("data")]
         public List<Reference> Data { get; set; }
     }
 
@@ -32,12 +25,16 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class Reference
     {
-        [JsonProperty("type")]
         public string Type { get; set; }
-
-        [JsonProperty("id")]
         public string Id { get; set; }
     }
+    
+    public class Links
+    {
+        public string Self { get; set; }
+        public string Schema { get; set; }
+    }
 
-
+    public class Meta
+    { }
 }

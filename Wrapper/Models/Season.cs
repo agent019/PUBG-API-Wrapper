@@ -51,40 +51,21 @@ namespace PUBGAPIWrapper.Models
 
     public class SeasonDTO
     {
-        [JsonProperty("data")]
         public List<SeasonData> Data { get; set; }
-
-        [JsonProperty("links")]
-        public SeasonLinks Links { get; set; }
-
-        [JsonProperty("meta")]
+        public Links Links { get; set; }
         public Meta Meta { get; set; }
     }
 
     public class SeasonData
     {
-        [JsonProperty("type")]
         public string Type { get; set; }
-
-        [JsonProperty("id")]
         public string Id { get; set; }
-
-        [JsonProperty("attributes")]
         public SeasonAttributes Attributes { get; set; }
-    }
-
-    public class SeasonLinks
-    {
-        [JsonProperty("self")]
-        public string Self { get; set; }
     }
     
     public class SeasonAttributes
     {
-        [JsonProperty("isCurrentSeason")]
         public bool IsCurrentSeason { get; set; }
-
-        [JsonProperty("isOffSeason")]
         public bool IsOffSeason { get; set; }
     }
 

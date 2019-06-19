@@ -89,8 +89,9 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class PlayerDTO
     {
-        [JsonProperty("data")]
         public PlayerData Data { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
     }
 
     /// <summary>
@@ -100,34 +101,28 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class PlayersDTO
     {
-        [JsonProperty("data")]
         public List<PlayerData> Data { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
     }
 
     public class PlayerData
     {
-        [JsonProperty("type")]
         public string Type { get; set; }
-
-        [JsonProperty("id")]
         public string Id { get; set; }
-
-        [JsonProperty("attributes")]
         public Attributes Attributes { get; set; }
-
-        [JsonProperty("relationships")]
         public PlayerRelationships Relationships { get; set; }
+        public Links Links { get; set; }
     }
 
     public class PlayerRelationships
     {
-        [JsonProperty("matches")]
         public MultiRelationship Matches { get; set; }
+        public MultiRelationship Assets { get; set; }
     }
 
     public class Attributes
     {
-        [JsonProperty("name")]
         public string Name { get; set; }
 
         [JsonProperty("patchVersion")]
@@ -138,8 +133,6 @@ namespace PUBGAPIWrapper.Models
 
         [JsonProperty("titleId")]
         public string Title { get; set; }
-
-        [JsonProperty("stats")]
         public dynamic Stats { get; set; }
     }
 

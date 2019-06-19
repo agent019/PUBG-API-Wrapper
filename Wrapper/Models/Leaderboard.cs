@@ -16,6 +16,9 @@ namespace PUBGAPIWrapper.Models
     public class LeaderboardDTO
     {
         public LeaderboardData Data { get; set; }
+        public List<LeaderboardIncluded> Included { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
     }
 
     public class LeaderboardData
@@ -24,8 +27,6 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
         public LeaderboardAttributes Attributes { get; set; }
         public LeaderboardRelationships Relationships { get; set; }
-        public List<LeaderboardIncluded> Included { get; set; }
-        public Links Links { get; set; }
     }
 
     public class LeaderboardAttributes

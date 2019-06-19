@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+// TODO: Verify the Match objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -47,20 +48,18 @@ namespace PUBGAPIWrapper.Models
             return matchString;
         }
 
-
-
         public static Match Deserialize(string matchJson)
         {
             MatchDTO dto = JsonConvert.DeserializeObject<MatchDTO>(matchJson);
             Match match = new Match()
             {
                 Id = dto.Data.Id,
-                MatchCompletion = DateTime.Parse(dto.Data.Attributes.CreatedAt),
+                MatchCompletion = dto.Data.Attributes.Created,
                 Duration = dto.Data.Attributes.Duration,
                 GameMode = dto.Data.Attributes.GameMode,
                 Map = dto.Data.Attributes.MapName,
-                Shard = dto.Data.Attributes.ShardId,
-                Title = dto.Data.Attributes.TitleId,
+                Shard = dto.Data.Attributes.Shard,
+                Title = dto.Data.Attributes.Title,
                 RosterIds = dto.Data.Relationships.Rosters.Data.Select(x => x.Id).ToList()
             };
 
@@ -213,9 +212,9 @@ namespace PUBGAPIWrapper.Models
         public Meta Meta { get; set; }
     }
 
-	public class MatchData {
-		public string Type { get; set; }
-		public string Id { get; set; }
+    public class MatchData {
+        public string Type { get; set; }
+        public string Id { get; set; }
         public MatchAttributes Attributes { get; set; }
         public MatchRelationships Relationships { get; set; }
         public Links Links { get; set; }
@@ -223,79 +222,38 @@ namespace PUBGAPIWrapper.Models
 
     public class MatchAttributes
     {
-        public string CreatedAt { get; set; }
+        [JsonProperty("createdAt")]
+        public DateTime Created { get; set; }
         public long Duration { get; set; }
         public string GameMode { get; set; }
         public string MapName { get; set; }
         public bool IsCustomMatch { get; set; }
         public string PatchVersion { get; set; }
         public string SeasonState { get; set; }
-        public string ShardId { get; set; }
+        [JsonProperty("shardId")]
+        public string Shard { get; set; }
         public dynamic Stats { get; set; }
         public dynamic Tags { get; set; }
-        public string TitleId { get; set; }
+        [JsonProperty("titleId")]
+        public string Title { get; set; }
     }
 
     public class MatchRelationships {
-        public Assets Assets { get; set; }
-        public RosterDTO Rosters { get; set; }
-        public Round Rounds { get; set; }
-        public Spectator Spectator { get; set; }
+        public MultiRelationship Assets { get; set; }
+        public MultiRelationship Rosters { get; set; }
+        public MultiRelationship Rounds { get; set; }
+        public MultiRelationship Spectator { get; set; }
     }
 
-    public class Round
-    {
-        public List<RoundData> Data { get; set; }
-    }
-
-    public class RoundData
-    { }
-
-    public class Spectator
-    {
-        public List<SpectatorData> Data { get; set; }
-    }
-
-    public class SpectatorData
-    { }
-
-    public class RosterDTO
-    {
-        public List<RosterData> Data { get; set; }
-    }
-
-    public class RosterData
-    {
-        public string Type { get; set; }
-        public string Id { get; set; }
-    }
-
-	public class Matches {
-		public List<MatchData> Data { get; set; }
+    public class PlayerAttributes {
+        [JsonProperty("createdAt")]
+        public DateTime Created { get; set; }
+        public string Name { get; set; }
+        public string Actor { get; set; }
+        public string ShardId { get; set; }
+        public PlayerStats Stats { get; set; }
+        public string UpdatedAt { get; set; }
 	}
-
-	public class Assets {
-		public List<MatchData> Data { get; set; }
-	}
-
-	public class PlayerAttributes {
-		public string CreatedAt { get; set; }
-		public string Name { get; set; }
-		public string Actor { get; set; }
-		public string ShardId { get; set; }
-		public PlayerStats Stats { get; set; }
-		public string UpdatedAt { get; set; }
-	}
-
-	public class Links
-    {
-        public string Next { get; set; }
-        public string Self { get; set; }
-		public string Schema { get; set; }
-	}
-
-    public class Meta
-    { }
 
     #endregion
 }

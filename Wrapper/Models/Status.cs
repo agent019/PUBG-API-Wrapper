@@ -12,14 +12,12 @@ namespace PUBGAPIWrapper.Models
     public class Status
     {
         public string Id { get; set; }
-        public DateTime Released { get; set; }
-        public string Version { get; set; }
+        public string Type { get; set; }
 
         public override string ToString()
         {
             string statusString = "Id: " + Id + "\n";
-            statusString += "Version: " + Version + "\n";
-            statusString += "Date Released: " + Released + "\n";
+            statusString += "Type: " + Type + "\n";
 
             return statusString;
         }
@@ -30,8 +28,7 @@ namespace PUBGAPIWrapper.Models
             Status s = new Status()
             {
                 Id = dto.Data.Id,
-                Released = DateTime.Parse(dto.Data.Attributes.Released),
-                Version = dto.Data.Attributes.Version
+                Type = dto.Data.Type
             };
             return s;
         }
@@ -41,29 +38,7 @@ namespace PUBGAPIWrapper.Models
 
     public class StatusDTO
     {
-        [JsonProperty("data")]
-        public StatusData Data { get; set; }
-    }
-
-    public class StatusData
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
-
-        [JsonProperty("attributes")]
-        public StatusAttributes Attributes { get; set; }
-    }
-
-    public class StatusAttributes
-    {
-        [JsonProperty("releasedAt")]
-        public string Released { get; set; }
-
-        [JsonProperty("version")]
-        public string Version { get; set; }
+        public Reference Data { get; set; }
     }
 
     #endregion

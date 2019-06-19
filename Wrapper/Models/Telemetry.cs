@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+// TODO: Verify all of these objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -623,7 +624,8 @@ namespace PUBGAPIWrapper.Models
 
     public class Asset
     {
-        public DateTime CreatedAt { get; set; }
+        [JsonProperty("createdAt")]
+        public DateTime Created { get; set; }
         public string Url { get; set; }
         public string Description { get; set; }
         public string Name { get; set; }

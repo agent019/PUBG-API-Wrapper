@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -21,16 +20,12 @@ namespace PUBGAPIWrapper.Models
     public class StatsData
     {
         /// <summary>
-        /// Identifier for this object type ("season")
+        /// Identifier for this object type ("playerSeason")
         /// </summary>
         public string Type { get; set; }
 
-        /// <summary>
-        /// Season ID - Used to lookup a player's stats for this season on the /players endpoint
-        /// </summary>
-        public StatsAttributes Id { get; set; }
-
         public StatsRelationships Relationships { get; set; }
+        public StatsAttributes Attributes { get; set; }
     }
 
     public class StatsAttributes
@@ -40,21 +35,16 @@ namespace PUBGAPIWrapper.Models
 
     public class GameModeStatsWrapper
     {
-        [JsonProperty("duo")]
-        public GameModeStats Duo { get; set; }
-
-        [JsonProperty("duo-fpp")]
-        public GameModeStats DuoFPP { get; set; }
-
-        [JsonProperty("solo")]
         public GameModeStats Solo { get; set; }
+        public GameModeStats Duo { get; set; }
+        public GameModeStats Squad { get; set; }
 
         [JsonProperty("solo-fpp")]
         public GameModeStats SoloFPP { get; set; }
 
-        [JsonProperty("squad")]
-        public GameModeStats Squad { get; set; }
-
+        [JsonProperty("duo-fpp")]
+        public GameModeStats DuoFPP { get; set; }
+        
         [JsonProperty("squad-fpp")]
         public GameModeStats SquadFPP { get; set; }
     }
@@ -62,35 +52,35 @@ namespace PUBGAPIWrapper.Models
     public class GameModeStats
     {
         public int Assists { get; set; }
-        public long BestRankPoint { get; set; }
+        public float BestRankPoint { get; set; }
         public int Boosts { get; set; }
         public int DBNOs { get; set; }
         public int DailyKills { get; set; }
-        public long DamageDealt { get; set; }
+        public float DamageDealt { get; set; }
         public int Days { get; set; }
         public int DailyWins { get; set; }
         public int HeadshotKills { get; set; }
         public int Heals { get; set; }
         public int Kills { get; set; }
-        public long LongestKill { get; set; }
-        public long LongestTimeSurvived { get; set; }
+        public float LongestKill { get; set; }
+        public float LongestTimeSurvived { get; set; }
         public int Losses { get; set; }
         public int MaxKillStreaks { get; set; }
-        public long MostSurvivalTime { get; set; }
-        public long RankPoints { get; set; }
+        public float MostSurvivalTime { get; set; }
+        public float RankPoints { get; set; }
         public string RankPointsTitle { get; set; }
         public int Revives { get; set; }
-        public int RideDistance { get; set; }
+        public float RideDistance { get; set; }
         public int RoadKills { get; set; }
         public int RoundMostKills { get; set; }
         public int RoundsPlayed { get; set; }
         public int Suicides { get; set; }
-        public long SwimDistance { get; set; }
+        public float SwimDistance { get; set; }
         public int TeamKills { get; set; }
-        public int TimeSurvived { get; set; }
+        public float TimeSurvived { get; set; }
         public int Top10s { get; set; }
         public int VehicleDestroys { get; set; }
-        public long WalkDistance { get; set; }
+        public float WalkDistance { get; set; }
         public int WeaponsAcquired { get; set; }
         public int WeeklyKills { get; set; }
         public int WeeklyWins { get; set; }

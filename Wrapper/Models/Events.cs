@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
+// TODO: Verify these objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
