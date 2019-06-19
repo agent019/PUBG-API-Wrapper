@@ -12,7 +12,6 @@ namespace PUBGAPIWrapper.Models
     public class StatsDTO
     {
         public StatsData Data { get; set; }
-
         public Links Links { get; set; }
         public Meta Meta { get; set; }
     }
