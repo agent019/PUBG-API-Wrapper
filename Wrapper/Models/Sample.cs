@@ -7,6 +7,9 @@ namespace PUBGAPIWrapper.Models
     /// <summary>
     /// Sample objects contain the ID and shard of a match.
     /// </summary>
+    /// <remarks>
+    /// Flattened representation of the JSON provided by the API.
+    /// </remarks>
     public class Sample
     {
         /// <summary>

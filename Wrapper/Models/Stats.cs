@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
+    /// <summary>
+    /// Object representation of a players stats.
+    /// </summary>
+    /// <remarks>
+    /// Flattened representation of the JSON provided by the API.
+    /// </remarks>
     public class Stats
     {
         /// <summary>
@@ -136,7 +142,7 @@ namespace PUBGAPIWrapper.Models
     }
 
     /// <summary>
-    /// Game Mode stats objects contain a player's aggregated stats
+    /// Contain a player's aggregated stats
     /// for a game mode in the context of a season.
     /// </summary>
     public class GameModeStats

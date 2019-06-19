@@ -8,7 +8,7 @@ namespace PUBGAPIWrapper.Models
     /// Object representation of a PUBG Player.
     /// </summary>
     /// <remarks>
-    /// Flattened representation of the DTO.
+    /// Flattened representation of the JSON provided by the API.
     /// </remarks>
     public class Player
     {

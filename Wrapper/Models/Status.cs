@@ -6,20 +6,12 @@ namespace PUBGAPIWrapper.Models
     /// Object representation of the status of the PUBG Servers.
     /// </summary>
     /// <remarks>
-    /// Flattened representation of the DTO.
+    /// Flattened representation of the JSON provided by the API.
     /// </remarks>
     public class Status
     {
         public string Id { get; set; }
         public string Type { get; set; }
-
-        public override string ToString()
-        {
-            string statusString = "Id: " + Id + "\n";
-            statusString += "Type: " + Type + "\n";
-
-            return statusString;
-        }
 
         public static Status Deserialize(string statusJson)
         {
@@ -30,6 +22,14 @@ namespace PUBGAPIWrapper.Models
                 Type = dto.Data.Type
             };
             return s;
+        }
+
+        public override string ToString()
+        {
+            string statusString = "Id: " + Id + "\n";
+            statusString += "Type: " + Type + "\n";
+
+            return statusString;
         }
     }
 

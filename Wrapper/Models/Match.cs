@@ -7,10 +7,10 @@ using System.Linq;
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
-    /// Represents a PUBG match
+    /// Represents a PUBG match.
     /// </summary>
     /// <remarks>
-    /// Flattened representation of the DTO.
+    /// Flattened representation of the JSON provided by the API.
     /// </remarks>
     public class Match
     {
