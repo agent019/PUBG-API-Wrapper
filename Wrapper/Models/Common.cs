@@ -25,6 +25,9 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     public class Reference
     {
+        /// <summary>
+        /// Identifier for this object type.
+        /// </summary>
         public string Type { get; set; }
         public string Id { get; set; }
     }
