@@ -59,55 +59,55 @@ namespace PUBGAPIWrapper.Models
 
         /// <summary>
         /// List of match Ids from solo third-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> SoloTPPMatchIds { get; set; }
 
         /// <summary>
         /// List of match Ids from duo third-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> DuoTPPMatchIds { get; set; }
 
         /// <summary>
         /// List of match Ids from squad third-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> SquadTPPMatchIds { get; set; }
 
         /// <summary>
         /// List of match Ids from solo first-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> SoloFPPMatchIds { get; set; }
 
         /// <summary>
         /// List of match Ids from duo first-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> DuoFPPMatchIds { get; set; }
 
         /// <summary>
         /// List of match Ids from squad first-person perspective matches
-        /// participated in in the current season
+        /// participated in in the current season.
         /// </summary>
         /// <remarks>
-        /// Used to lookup the full match object on the /matches endpoint
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </remarks>
         public List<string> SquadFPPMatchIds { get; set; }
 
