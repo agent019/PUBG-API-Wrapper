@@ -10,7 +10,7 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
         public DateTime Created { get; set; }
 
-        public List<Tournament> Deserialize(string serialized)
+        public static List<Tournament> Deserialize(string serialized)
         {
             TournamentsDTO dto = JsonConvert.DeserializeObject<TournamentsDTO>(serialized);
             return dto.Data.Select(x => new Tournament()
@@ -26,7 +26,7 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
         public List<MatchReference> Matches { get; set; }
 
-        public TournamentMatches Deserialize(string serialized)
+        public static TournamentMatches Deserialize(string serialized)
         {
             TournamentDTO dto = JsonConvert.DeserializeObject<TournamentDTO>(serialized);
             return new TournamentMatches()

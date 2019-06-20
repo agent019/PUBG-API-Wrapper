@@ -154,7 +154,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Highest number of rank points the player was awarded during the season across all game modes.
         /// </summary>
-        public float BestRankPoint { get; set; }
+        public double BestRankPoint { get; set; }
 
         /// <summary>
         /// Number of boost items used.
@@ -175,7 +175,7 @@ namespace PUBGAPIWrapper.Models
         /// Total damage dealt. 
         /// Note: Self inflicted damage is subtracted.
         /// </summary>
-        public float DamageDealt { get; set; }
+        public double DamageDealt { get; set; }
 
         public int Days { get; set; }
 
@@ -199,12 +199,12 @@ namespace PUBGAPIWrapper.Models
         /// </summary>
         public int Kills { get; set; }
 
-        public float LongestKill { get; set; }
+        public double LongestKill { get; set; }
 
         /// <summary>
         /// Longest time survived in a match.
         /// </summary>
-        public float LongestTimeSurvived { get; set; }
+        public double LongestTimeSurvived { get; set; }
 
         /// <summary>
         /// Number of matches lost
@@ -216,7 +216,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Longest time survived in a match.
         /// </summary>
-        public float MostSurvivalTime { get; set; }
+        public double MostSurvivalTime { get; set; }
 
         /// <summary>
         /// Number of rank points the player was awarded.
@@ -224,7 +224,7 @@ namespace PUBGAPIWrapper.Models
         /// <remarks>
         /// This value will be 0 when roundsPlayed < 10.
         /// </remarks>
-        public float RankPoints { get; set; }
+        public double RankPoints { get; set; }
 
         /// <summary>
         /// Rank title in the form title-level
@@ -239,7 +239,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Total distance traveled in vehicles measured in meters.
         /// </summary>
-        public float RideDistance { get; set; }
+        public double RideDistance { get; set; }
 
         /// <summary>
         /// Number of kills while in a vehicle.
@@ -264,7 +264,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Total distance traveled while swimming measured in meters.
         /// </summary>
-        public float SwimDistance { get; set; }
+        public double SwimDistance { get; set; }
 
         /// <summary>
         /// Number of times this player killed a teammate.
@@ -274,7 +274,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Total time survived.
         /// </summary>
-        public float TimeSurvived { get; set; }
+        public double TimeSurvived { get; set; }
 
         /// <summary>
         /// Number of times this player made it to the top 10 in a match.
@@ -289,7 +289,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Total distance traveled on foot measured in meters.
         /// </summary>
-        public float WalkDistance { get; set; }
+        public double WalkDistance { get; set; }
 
         /// <summary>
         /// Number of weapons picked up.

@@ -1,33 +1,29 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using PUBGAPIWrapper.Models;
-using System;
 
 namespace WrapperTests.Serialization
 {
     [TestClass]
     public class StatusTests
     {
-        public static string Time = new DateTime(2000, 1, 1).ToString();
+        #region Test Data
 
-        public static StatusDTO SampleStatus = new StatusDTO()
-        {
-            Data = new StatusData()
-            {
-                Id = "123-ABC",
-                Type = "Type"
-            }
-        };
+        public readonly string SampleStatusJson = @"{
+    ""data"": {
+        ""type"": ""status"",
+        ""id"": ""pubg-api""
+    }
+}";
+
+        #endregion
 
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            string serialized = JsonConvert.SerializeObject(SampleStatus);
-
-            Status result = Status.Deserialize(serialized);
+            Status result = Status.Deserialize(SampleStatusJson);
             
-            Assert.AreEqual("123-ABC", result.Id);
-            Assert.AreEqual("Type", result.Type);
+            Assert.AreEqual("pubg-api", result.Id);
+            Assert.AreEqual("status", result.Type);
         }
     }
 }

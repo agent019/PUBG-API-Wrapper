@@ -10,8 +10,47 @@ namespace WrapperTests.Serialization
     public class PlayerTests
     {
         #region Test Data
+        
+        public string SamplePlayerJson = @"{
+    ""data"": {
+        ""type"": ""player"",
+        ""id"": ""account.123-abc"",
+        ""attributes"": {
+            ""name"": ""PlayerName"",
+            ""stats"": null,
+            ""titleId"": ""bluehole-pubg"",
+            ""shardId"": ""steam"",
+            ""patchVersion"": """"
+        },
+        ""relationships"": {
+            ""assets"": {
+                ""data"": []
+            },
+            ""matches"": {
+                ""data"": [
+                    {
+                        ""type"": ""match"",
+                        ""id"": ""456-def""
+                    },
+                    {
+                        ""type"": ""match"",
+                        ""id"": ""789-ghi""
+                    }
+                ]
+            }
+        },
+        ""links"": {
+            ""self"": ""https://api.playbattlegrounds.com/shards/steam/players/account.123-abc"",
+            ""schema"": """"
+        }
+    },
+    ""links"": {
+        ""self"": ""https://api.pubg.com/shards/steam/players/account.123-abc""
+    },
+    ""meta"": {}
+}";
 
-        public string SamplePlayerList = @"{
+        public string SamplePlayerListJson = @"{
     ""data"": [
         {
             ""type"": ""player"",
@@ -60,7 +99,16 @@ namespace WrapperTests.Serialization
                     ""data"": []
                 },
                 ""matches"": {
-                    ""data"": []
+                    ""data"": [
+                        {
+                            ""type"": ""match"",
+                            ""id"": ""def-456""
+                        },
+                        {
+                            ""type"": ""match"",
+                            ""id"": ""ghi-789""
+                        }
+                    ]
                 }
             },
             ""links"": {
@@ -75,56 +123,18 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
-        public string SamplePlayer = @"{
-    ""data"": {
-        ""type"": ""player"",
-        ""id"": ""account.123-abc"",
-        ""attributes"": {
-            ""name"": ""PlayerName"",
-            ""stats"": null,
-            ""titleId"": ""bluehole-pubg"",
-            ""shardId"": ""steam"",
-            ""patchVersion"": """"
-        },
-        ""relationships"": {
-            ""assets"": {
-                ""data"": []
-            },
-            ""matches"": {
-                ""data"": [
-                    {
-                        ""type"": ""match"",
-                        ""id"": ""456-def""
-                    },
-                    {
-                        ""type"": ""match"",
-                        ""id"": ""789-ghi""
-                    }
-                ]
-            }
-        },
-        ""links"": {
-            ""self"": ""https://api.playbattlegrounds.com/shards/steam/players/account.123-abc"",
-            ""schema"": """"
-        }
-    },
-    ""links"": {
-        ""self"": ""https://api.pubg.com/shards/steam/players/account.123-abc""
-    },
-    ""meta"": {}
-}";
-
         #endregion
 
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerCorrectly()
         {
-            Player result = Player.Deserialize(SamplePlayer);
+            Player result = Player.Deserialize(SamplePlayerJson);
 
             Assert.AreEqual("account.123-abc", result.Id);
             Assert.AreEqual("steam", result.Shard);
             Assert.AreEqual("bluehole-pubg", result.Title);
             Assert.AreEqual("", result.Version);
+
             Assert.AreEqual(2, result.MatchIds.Count);
             Assert.IsTrue(result.MatchIds.Contains("456-def"));
             Assert.IsTrue(result.MatchIds.Contains("789-ghi"));
@@ -133,7 +143,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerListsCorrectly()
         {
-            string serialized = JsonConvert.SerializeObject(SamplePlayerList);
+            string serialized = JsonConvert.SerializeObject(SamplePlayerListJson);
 
             List<Player> results = Player.DeserializePlayerList(serialized);
 
