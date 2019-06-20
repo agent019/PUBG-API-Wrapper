@@ -143,9 +143,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerListsCorrectly()
         {
-            string serialized = JsonConvert.SerializeObject(SamplePlayerListJson);
-
-            List<Player> results = Player.DeserializePlayerList(serialized);
+            List<Player> results = Player.DeserializePlayerList(SamplePlayerListJson);
 
             Assert.AreEqual(2, results.Count);
             Assert.IsTrue(results.Any(x => x.Id == "account.123-abc"));
