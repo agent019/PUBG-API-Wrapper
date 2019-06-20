@@ -1,5 +1,4 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -7,12 +6,22 @@ namespace PUBGAPIWrapper.Models
     /// Object representation of the status of the PUBG Servers.
     /// </summary>
     /// <remarks>
-    /// Flattened representation of the DTO.
+    /// Flattened representation of the JSON provided by the API.
     /// </remarks>
     public class Status
     {
         public string Id { get; set; }
         public string Type { get; set; }
+
+        public static Status Deserialize(string statusJson)
+        {
+            StatusDTO dto = JsonConvert.DeserializeObject<StatusDTO>(statusJson);
+            return new Status()
+            {
+                Id = dto.Data.Id,
+                Type = dto.Data.Type
+            };
+        }
 
         public override string ToString()
         {
@@ -21,34 +30,13 @@ namespace PUBGAPIWrapper.Models
 
             return statusString;
         }
-
-        public static Status Deserialize(string statusJson)
-        {
-            StatusDTO dto = JsonConvert.DeserializeObject<StatusDTO>(statusJson);
-            Status s = new Status()
-            {
-                Id = dto.Data.Id,
-                Type = dto.Data.Type
-            };
-            return s;
-        }
     }
-
+    
     #region DTO
 
     public class StatusDTO
     {
-        [JsonProperty("data")]
-        public StatusData Data { get; set; }
-    }
-
-    public class StatusData
-    {
-        [JsonProperty("type")]
-        public string Type { get; set; }
-
-        [JsonProperty("id")]
-        public string Id { get; set; }
+        public Reference Data { get; set; }
     }
 
     #endregion

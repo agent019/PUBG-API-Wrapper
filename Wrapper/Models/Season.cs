@@ -1,45 +1,51 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of a PUBG Season.
+    /// Season objects each contain the ID of a season, 
+    /// which can be used to lookup season information for a player.
     /// </summary>
     /// <remarks>
-    /// Flattened representation of the DTO.
+    /// Flattened representation of the JSON provided by the API.
     /// </remarks>
     public class Season
     {
-        public string Type { get; set; }
+        /// <summary>
+        /// Season ID.
+        /// </summary>
+        /// <remarks>
+        /// Used to lookup a player's stats for this season on the /players endpoint.
+        /// </remarks>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Indicates if the season is active.
+        /// </summary>
         public bool IsCurrentSeason { get; set; }
+
+        /// <summary>
+        /// Indicates if the season is not active.
+        /// </summary>
         public bool IsOffSeason { get; set; }
 
         public static List<Season> Deserialize(string seasonJson)
         {
             SeasonDTO dto = JsonConvert.DeserializeObject<SeasonDTO>(seasonJson);
-            List<Season> seasons = new List<Season>();
-
-            foreach (SeasonData ssn in dto.Data)
+            return dto.Data.Select(x => new Season()
             {
-                Season season = new Season()
-                {
-                    Id = ssn.Id,
-                    Type = ssn.Type,
-                    IsCurrentSeason = ssn.Attributes.IsCurrentSeason,
-                    IsOffSeason = ssn.Attributes.IsOffSeason
-                };
-                seasons.Add(season);
-            }
-
-            return seasons;
+                Id = x.Id,
+                IsCurrentSeason = x.Attributes.IsCurrentSeason,
+                IsOffSeason = x.Attributes.IsOffSeason
+            }).ToList();
         }
 
         public override string ToString()
         {
             string toString = "Season:\n"
-                + "Type: " + this.Type + "\n"
                 + "Id: " + this.Id + "\n"
                 + "IsCurrentSeason: " + this.IsCurrentSeason + "\n"
                 + "IsOffSeason: " + this.IsOffSeason + "\n";
@@ -49,42 +55,37 @@ namespace PUBGAPIWrapper.Models
 
     #region DTO
 
+    /// <summary>
+    /// Season objects each contain the ID of a season, 
+    /// which can be used to lookup season information for a player.
+    /// </summary>
     public class SeasonDTO
     {
-        [JsonProperty("data")]
         public List<SeasonData> Data { get; set; }
-
-        [JsonProperty("links")]
-        public SeasonLinks Links { get; set; }
-
-        [JsonProperty("meta")]
+        public Links Links { get; set; }
         public Meta Meta { get; set; }
     }
 
     public class SeasonData
     {
-        [JsonProperty("type")]
+        /// <summary>
+        /// Identifier for this object type ("season")
+        /// </summary>
         public string Type { get; set; }
 
-        [JsonProperty("id")]
+        /// <summary>
+        /// Season ID.
+        /// </summary>
+        /// <remarks>
+        /// Used to lookup a player's stats for this season on the /players endpoint.
+        /// </remarks>
         public string Id { get; set; }
-
-        [JsonProperty("attributes")]
         public SeasonAttributes Attributes { get; set; }
-    }
-
-    public class SeasonLinks
-    {
-        [JsonProperty("self")]
-        public string Self { get; set; }
     }
     
     public class SeasonAttributes
     {
-        [JsonProperty("isCurrentSeason")]
         public bool IsCurrentSeason { get; set; }
-
-        [JsonProperty("isOffSeason")]
         public bool IsOffSeason { get; set; }
     }
 

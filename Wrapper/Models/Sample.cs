@@ -1,11 +1,16 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Sample objects contain the ID and shard of a match.
     /// </summary>
+    /// <remarks>
+    /// Flattened representation of the JSON provided by the API.
+    /// </remarks>
     public class Sample
     {
         /// <summary>
@@ -21,12 +26,10 @@ namespace PUBGAPIWrapper.Models
         public static Sample Deserialize(string json)
         {
             SampleDTO dto = JsonConvert.DeserializeObject<SampleDTO>(json);
-            Sample sample = new Sample();
-            foreach (Reference match in dto.Data.Relationships.Matches.Data)
+            return new Sample()
             {
-                sample.Ids.Add(match.Id);
-            }
-            return sample;
+                Ids = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
+            };
         }
 
         public override string ToString()
@@ -44,29 +47,21 @@ namespace PUBGAPIWrapper.Models
 
     public class SampleDTO
     {
-        [JsonProperty("data")]
         public SampleData Data { get; set; }
     }
 
     public class SampleData
     {
-        [JsonProperty("type")]
         public string Type { get; set; }
-
-        [JsonProperty("id")]
         public string Id { get; set; }
-
-        [JsonProperty("attributes")]
         public SampleAttributes Attributes { get; set; }
-
-        [JsonProperty("relationships")]
         public SampleRelationships Relationships { get; set; }
     }
 
     public class SampleAttributes
     {
         [JsonProperty("createdAt")]
-        public string Created { get; set; }
+        public DateTime Created { get; set; }
 
         [JsonProperty("titleId")]
         public string Title { get; set; }
@@ -77,7 +72,6 @@ namespace PUBGAPIWrapper.Models
 
     public class SampleRelationships
     {
-        [JsonProperty("matches")]
         public MultiRelationship Matches { get; set; }
     }
 

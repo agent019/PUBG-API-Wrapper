@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
 using PUBGAPIWrapper.Models;
-using PUBGAPIWrapper.Service;
 using RestSharp;
 using System;
 using System.Collections.Generic;
