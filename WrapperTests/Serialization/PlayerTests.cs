@@ -1,5 +1,4 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Newtonsoft.Json;
 using PUBGAPIWrapper.Models;
 using System.Collections.Generic;
 using System.Linq;
