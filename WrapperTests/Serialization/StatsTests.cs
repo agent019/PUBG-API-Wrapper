@@ -679,19 +679,19 @@ namespace WrapperTests.Serialization
             Assert.AreEqual("matchid-solo-1", seasonStats.SoloTPPMatchIds[0]);
             Assert.AreEqual("matchid-solo-2", seasonStats.SoloTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-soloFPP-2", seasonStats.SoloFPPMatchIds[0]);
+            Assert.AreEqual("matchid-soloFPP-1", seasonStats.SoloFPPMatchIds[0]);
             Assert.AreEqual("matchid-soloFPP-2", seasonStats.SoloFPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-duo-2", seasonStats.DuoTPPMatchIds[0]);
+            Assert.AreEqual("matchid-duo-1", seasonStats.DuoTPPMatchIds[0]);
             Assert.AreEqual("matchid-duo-2", seasonStats.DuoTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-duoFPP-2", seasonStats.DuoFPPMatchIds[0]);
+            Assert.AreEqual("matchid-duoFPP-1", seasonStats.DuoFPPMatchIds[0]);
             Assert.AreEqual("matchid-duoFPP-2", seasonStats.DuoFPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-squad-2", seasonStats.SquadTPPMatchIds[0]);
+            Assert.AreEqual("matchid-squad-1", seasonStats.SquadTPPMatchIds[0]);
             Assert.AreEqual("matchid-squad-2", seasonStats.SquadTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-squadFPP-2", seasonStats.SquadFPPMatchIds[0]);
+            Assert.AreEqual("matchid-squadFPP-1", seasonStats.SquadFPPMatchIds[0]);
             Assert.AreEqual("matchid-squadFPP-2", seasonStats.SquadFPPMatchIds[1]);
 
             Assert.AreEqual(10, seasonStats.SoloTPP.Assists);
@@ -933,24 +933,24 @@ namespace WrapperTests.Serialization
             #region Assertions
 
             Assert.AreEqual("account.id", lifetimeStats.AccountId);
-            Assert.AreEqual("division.bro.official.pc-2018-03", lifetimeStats.SeasonId);
+            Assert.AreEqual("lifetime", lifetimeStats.SeasonId);
 
             Assert.AreEqual("matchid-solo-1", lifetimeStats.SoloTPPMatchIds[0]);
             Assert.AreEqual("matchid-solo-2", lifetimeStats.SoloTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-soloFPP-2", lifetimeStats.SoloFPPMatchIds[0]);
+            Assert.AreEqual("matchid-soloFPP-1", lifetimeStats.SoloFPPMatchIds[0]);
             Assert.AreEqual("matchid-soloFPP-2", lifetimeStats.SoloFPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-duo-2", lifetimeStats.DuoTPPMatchIds[0]);
+            Assert.AreEqual("matchid-duo-1", lifetimeStats.DuoTPPMatchIds[0]);
             Assert.AreEqual("matchid-duo-2", lifetimeStats.DuoTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-duoFPP-2", lifetimeStats.DuoFPPMatchIds[0]);
+            Assert.AreEqual("matchid-duoFPP-1", lifetimeStats.DuoFPPMatchIds[0]);
             Assert.AreEqual("matchid-duoFPP-2", lifetimeStats.DuoFPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-squad-2", lifetimeStats.SquadTPPMatchIds[0]);
+            Assert.AreEqual("matchid-squad-1", lifetimeStats.SquadTPPMatchIds[0]);
             Assert.AreEqual("matchid-squad-2", lifetimeStats.SquadTPPMatchIds[1]);
 
-            Assert.AreEqual("matchid-squadFPP-2", lifetimeStats.SquadFPPMatchIds[0]);
+            Assert.AreEqual("matchid-squadFPP-1", lifetimeStats.SquadFPPMatchIds[0]);
             Assert.AreEqual("matchid-squadFPP-2", lifetimeStats.SquadFPPMatchIds[1]);
 
             Assert.AreEqual(10, lifetimeStats.SoloTPP.Assists);
