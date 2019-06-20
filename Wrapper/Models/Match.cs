@@ -232,7 +232,9 @@ namespace PUBGAPIWrapper.Models
         public string SeasonState { get; set; }
         [JsonProperty("shardId")]
         public string Shard { get; set; }
+        // Dynamic because api returns null in all cases, for now
         public dynamic Stats { get; set; }
+        // Dynamic because api returns null in all cases, for now
         public dynamic Tags { get; set; }
         [JsonProperty("titleId")]
         public string Title { get; set; }

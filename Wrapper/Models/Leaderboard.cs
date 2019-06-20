@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -7,12 +8,46 @@ namespace PUBGAPIWrapper.Models
     {
         public string Shard { get; set; }
         public string GameMode { get; set; }
-        public SortedList<LeaderboardStats> PlayerStats { get; set; }
+        public List<LeaderboardStats> PlayerStats { get; set; }
+
+        public Leaderboard Deserialize(string serialized)
+        {
+            LeaderboardDTO dto = JsonConvert.DeserializeObject<LeaderboardDTO>(serialized);
+            return new Leaderboard()
+            {
+                Shard = dto.Data.Attributes.Shard,
+                GameMode = dto.Data.Attributes.GameMode,
+                PlayerStats = dto.Included.Select(x => new LeaderboardStats()
+                {
+                    Name = x.Attributes.Name,
+                    Id = x.Id,
+                    Rank = x.Attributes.Rank,
+                    RankPoints = x.Attributes.Stats.RankPoints,
+                    Wins = x.Attributes.Stats.Wins,
+                    Games = x.Attributes.Stats.Games,
+                    WinRatio = x.Attributes.Stats.WinRatio,
+                    AverageDamage = x.Attributes.Stats.AverageDamage,
+                    Kills = x.Attributes.Stats.Kills,
+                    KillDeathRatio = x.Attributes.Stats.KillDeathRatio,
+                    AverageRank = x.Attributes.Stats.AverageRank
+                }).OrderBy(x => x.Rank).ToList()
+            };
+        }
     }
 
     public class LeaderboardStats
     {
-
+        public string Name { get; set; }
+        public string Id { get; set; }
+        public int Rank { get; set; }
+        public int RankPoints { get; set; }
+        public int Wins { get; set; }
+        public int Games { get; set; }
+        public float WinRatio { get; set; }
+        public int AverageDamage { get; set; }
+        public int Kills { get; set; }
+        public float KillDeathRatio { get; set; }
+        public float AverageRank { get; set; }
     }
 
     #region DTO
@@ -64,11 +99,11 @@ namespace PUBGAPIWrapper.Models
         public int RankPoints { get; set; }
         public int Wins { get; set; }
         public int Games { get; set; }
-        public decimal WinRatio { get; set; }
+        public float WinRatio { get; set; }
         public int AverageDamage { get; set; }
         public int Kills { get; set; }
-        public decimal KillDeathRatio { get; set; }
-        public decimal AverageRank { get; set; }
+        public float KillDeathRatio { get; set; }
+        public float AverageRank { get; set; }
     }
 
     #endregion

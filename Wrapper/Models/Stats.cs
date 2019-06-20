@@ -114,7 +114,7 @@ namespace PUBGAPIWrapper.Models
         public static Stats Deserialize(string serialized)
         {
             StatsDTO dto = JsonConvert.DeserializeObject<StatsDTO>(serialized);
-            Stats stats = new Stats()
+            return new Stats()
             {
                 AccountId = dto.Data.Relationships.Player.Data.Id,
                 SeasonId = dto.Data.Relationships.Season.Data.Id,
@@ -137,7 +137,6 @@ namespace PUBGAPIWrapper.Models
                 SquadFPPMatchIds = dto.Data.Relationships.MatchesSquadFPP.Data
                                         .Select(x => x.Id).ToList()
             };
-            return stats;
         }
     }
 

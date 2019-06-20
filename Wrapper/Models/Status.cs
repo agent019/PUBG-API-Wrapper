@@ -16,12 +16,11 @@ namespace PUBGAPIWrapper.Models
         public static Status Deserialize(string statusJson)
         {
             StatusDTO dto = JsonConvert.DeserializeObject<StatusDTO>(statusJson);
-            Status s = new Status()
+            return new Status()
             {
                 Id = dto.Data.Id,
                 Type = dto.Data.Type
             };
-            return s;
         }
 
         public override string ToString()

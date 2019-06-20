@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -25,12 +26,10 @@ namespace PUBGAPIWrapper.Models
         public static Sample Deserialize(string json)
         {
             SampleDTO dto = JsonConvert.DeserializeObject<SampleDTO>(json);
-            Sample sample = new Sample();
-            foreach (Reference match in dto.Data.Relationships.Matches.Data)
+            return new Sample()
             {
-                sample.Ids.Add(match.Id);
-            }
-            return sample;
+                Ids = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
+            };
         }
 
         public override string ToString()

@@ -133,6 +133,8 @@ namespace PUBGAPIWrapper.Models
 
         [JsonProperty("titleId")]
         public string Title { get; set; }
+        
+        // Dynamic because api returns null in all cases, for now
         public dynamic Stats { get; set; }
     }
 

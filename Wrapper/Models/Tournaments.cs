@@ -1,11 +1,50 @@
 ﻿using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
-    public class Tournaments
+    public class Tournament
     {
+        public string Id { get; set; }
+        public DateTime Created { get; set; }
+
+        public List<Tournament> Deserialize(string serialized)
+        {
+            TournamentsDTO dto = JsonConvert.DeserializeObject<TournamentsDTO>(serialized);
+            return dto.Data.Select(x => new Tournament()
+            {
+                Id = x.Id,
+                Created = x.Attributes.Created
+            }).ToList();
+        }
+    }
+
+    public class TournamentMatches
+    {
+        public string Id { get; set; }
+        public List<MatchReference> Matches { get; set; }
+
+        public TournamentMatches Deserialize(string serialized)
+        {
+            TournamentDTO dto = JsonConvert.DeserializeObject<TournamentDTO>(serialized);
+            return new TournamentMatches()
+            {
+                Id = dto.Data.Id,
+                Matches = dto.Included.Select(x => new MatchReference()
+                {
+                    Id = x.Id,
+                    Created = x.Attributes.Created
+                }).ToList()
+            };
+        }
+    }
+
+    public class MatchReference
+    {
+        public string Id { get; set; }
+        public DateTime Created { get; set; }
     }
 
     #region DTO

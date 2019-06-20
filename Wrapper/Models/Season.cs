@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -34,20 +35,12 @@ namespace PUBGAPIWrapper.Models
         public static List<Season> Deserialize(string seasonJson)
         {
             SeasonDTO dto = JsonConvert.DeserializeObject<SeasonDTO>(seasonJson);
-            List<Season> seasons = new List<Season>();
-
-            foreach (SeasonData ssn in dto.Data)
+            return dto.Data.Select(x => new Season()
             {
-                Season season = new Season()
-                {
-                    Id = ssn.Id,
-                    IsCurrentSeason = ssn.Attributes.IsCurrentSeason,
-                    IsOffSeason = ssn.Attributes.IsOffSeason
-                };
-                seasons.Add(season);
-            }
-
-            return seasons;
+                Id = x.Id,
+                IsCurrentSeason = x.Attributes.IsCurrentSeason,
+                IsOffSeason = x.Attributes.IsOffSeason
+            }).ToList();
         }
 
         public override string ToString()
