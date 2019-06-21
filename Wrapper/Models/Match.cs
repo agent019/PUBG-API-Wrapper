@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: Verify the Match objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -13,6 +12,7 @@ namespace PUBGAPIWrapper.Models
     /// </summary>
     /// <remarks>
     /// Flattened representation of the JSON provided by the API.
+    /// TODO: Comments on sub-properties
     /// </remarks>
     public class Match
     {
