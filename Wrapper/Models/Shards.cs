@@ -31,19 +31,10 @@ namespace PUBGAPIWrapper.Models
         /// <remarks>
         /// Alternative platform to Steam (https://www.kakaogames.com/)
         /// </remarks>
-        [JsonProperty("kakao")]
         Kakao = 0,
-
-        [JsonProperty("psn")]
         PSN = 1,
-
-        [JsonProperty("steam")]
         Steam = 2,
-
-        [JsonProperty("tournament")]
         Tournament = 3,
-
-        [JsonProperty("xbox")]
         Xbox = 4
     }
 

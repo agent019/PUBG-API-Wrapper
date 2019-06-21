@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using PUBGAPIWrapper.Models;
+﻿using PUBGAPIWrapper.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -15,7 +14,10 @@ namespace PUBGAPIWrapper
     /// Wraps all provided endpoints.
     /// </summary>
     /// <remarks>
-    /// TODO: Tournaments resource
+    /// TODO: 
+    /// - Deserialize multiple stats
+    /// - Update, verify, and test the matches and telemetry deserialization
+    /// - Finish and test these methods
     /// </remarks>
     public class RequestService
     {
@@ -103,7 +105,7 @@ namespace PUBGAPIWrapper
         /// </remarks>
         private string BuildShardUri(PlatformShard shard)
         {
-            return "/shards/" + shard.ToString() + "/";
+            return "/shards/" + shard.ToString().ToLower() + "/";
         }
 
         /// <summary>
@@ -126,7 +128,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
             IRestResponse response = MakeRequest(playerUri);
-            return Player.Deserialize(response.Content).Id;
+            return Player.DeserializePlayerList(response.Content)[0].Id;
         }
 
         /// <summary>
@@ -161,12 +163,12 @@ namespace PUBGAPIWrapper
             if (ids != null && ids.Any())
             {
                 string concatenatedIds = string.Join(",", ids);
-                playerUri = playerUri + "filters[playerIds]" + concatenatedIds;
+                playerUri = playerUri + "?filter[playerIds]=" + concatenatedIds;
             }
             else if (names != null && names.Any())
             {
                 string concatenatedNames = string.Join(",", names);
-                playerUri = playerUri + "filters[playerIds]" + concatenatedNames;
+                playerUri = playerUri + "?filter[playerNames]=" + concatenatedNames;
             }
 
             IRestResponse response = MakeRequest(playerUri);
@@ -204,8 +206,8 @@ namespace PUBGAPIWrapper
         /// <param name="seasonId">The season ID to search for.</param>
         public Stats GetSeasonStatsForPlayer(PlatformShard shard, string accountId, string seasonId)
         {
-            string statsUri = "/shards/" + shard + "/players/"
-                + accountId + "/seasons/" + seasonId;
+            string shardUri = BuildShardUri(shard);
+            string statsUri = shardUri + "players/" + accountId + "/seasons/" + seasonId;
             IRestResponse response = MakeRequest(statsUri);
             return Stats.Deserialize(response.Content);
         }
@@ -218,8 +220,9 @@ namespace PUBGAPIWrapper
         /// <param name="playerIds">Filters by player IDs.</param>
         public List<Stats> GetSeasonStatsForMultiplePlayers(PlatformShard shard, string seasonId, string gameMode, List<string> playerIds)
         {
-            string statsUri = "/shards/" + shard + "/seasons/" + seasonId
-                + "/gamemode" + gameMode + "?filter[playerIds]=" + String.Join(",", playerIds);
+            string shardUri = BuildShardUri(shard);
+            string statsUri = shardUri + "seasons/" + seasonId + "/gamemode" + gameMode
+                + "/players?filter[playerIds]=" + String.Join(",", playerIds);
             IRestResponse response = MakeRequest(statsUri);
             throw new NotImplementedException();
             
@@ -286,7 +289,8 @@ namespace PUBGAPIWrapper
         /// <param name="page">The leaderboard page to search for.</param>
         public Leaderboard GetLeaderboard(PlatformShard shard, string gameMode, int page)
         {
-            string leaderboardUri = "/shards/" + shard + "/leaderboards/"
+            string shardUri = BuildShardUri(shard);
+            string leaderboardUri = shardUri + "leaderboards/"
                 + gameMode + "?page[number]=" + page;
             IRestResponse response = MakeRequest(leaderboardUri);
             return Leaderboard.Deserialize(response.Content);

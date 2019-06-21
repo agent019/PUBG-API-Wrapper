@@ -21,11 +21,6 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Identifier for this object type ("player").
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
         /// PUBG IGN.
         /// </summary>
         public string Name { get; set; }

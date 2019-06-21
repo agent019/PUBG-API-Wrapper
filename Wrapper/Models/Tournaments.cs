@@ -5,8 +5,14 @@ using System.Linq;
 
 namespace PUBGAPIWrapper.Models
 {
+    /// <summary>
+    /// Tournament objects contain information about a tournament, mainly the IDs of its matches.
+    /// </summary>
     public class Tournament
     {
+        /// <summary>
+        /// Tournament ID.
+        /// </summary>
         public string Id { get; set; }
         public DateTime Created { get; set; }
 
@@ -23,7 +29,15 @@ namespace PUBGAPIWrapper.Models
 
     public class TournamentMatches
     {
+        /// <summary>
+        /// Tournament ID.
+        /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// A list of match IDs.
+        /// Used to lookup the full match object on the /matches endpoint.
+        /// </summary>
         public List<MatchReference> Matches { get; set; }
 
         public static TournamentMatches Deserialize(string serialized)
