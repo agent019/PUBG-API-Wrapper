@@ -38,45 +38,7 @@ namespace PUBGAPIWrapper
         #endregion
 
         #region Helpers
-
-        private IRestResponse MakeRequest(string queryString/*, bool compressResponse = false*/)
-        {
-            IRestRequest request = new RestRequest(queryString);
-
-            request.AddHeader("Authorization", "Bearer " + ApiKey);
-
-            /*if (compressResponse)
-                request.AddHeader("Accept-Encoding", "gzip");
-            else*/
-            request.AddHeader("Accept", "application/vnd.api+json");
-
-            IRestResponse response = Client.Execute(request);
-
-            return response;
-        }
-
-        /// <summary>
-        /// Given a Shard enum, builds the shard portion of the Uri string for a request.
-        /// </summary>
-        /// <remarks>
-        /// We must do this because C# doesn't allow enums with the '-' character,
-        /// so we have to pull the uri-friendly string out of the description of the Shard value.s
-        /// </remarks>
-        private string BuildShardUri(PlatformRegionShard shard)
-        {
-            return "/shards/" + shard.GetDescription() + "/";
-        }
-
-        /// <summary>
-        /// Writes the given string to the given filename in the Data folder.
-        /// </summary>
-        public void WriteResponse(string filename, string body)
-        {
-            File.WriteAllText("../../../Data/" + filename, body);
-        }
-
-
-
+        
         /// <summary>
         /// Executes rest request with the given request.
         /// </summary> 
@@ -84,9 +46,8 @@ namespace PUBGAPIWrapper
         /// Using the rate limit information from the response headers,
         /// sleeps until the rate limit reset when out of requests.
         /// TODO: Async this to not stop the main thread?
-        /// TODO: Move this somewhere useful.
         /// </remarks>
-        public IRestResponse Execute(IRestRequest request)
+        public IRestResponse ExecuteRequest(IRestRequest request)
         {
             var response = Client.Execute(request);
             if (response.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
@@ -117,6 +78,42 @@ namespace PUBGAPIWrapper
             return response;
         }
 
+        private IRestResponse MakeRequest(string queryString/*, bool compressResponse = false*/)
+        {
+            IRestRequest request = new RestRequest(queryString);
+
+            request.AddHeader("Authorization", "Bearer " + ApiKey);
+
+            /*if (compressResponse)
+                request.AddHeader("Accept-Encoding", "gzip");
+            else*/
+            request.AddHeader("Accept", "application/vnd.api+json");
+
+            IRestResponse response = ExecuteRequest(request);
+
+            return response;
+        }
+
+        /// <summary>
+        /// Given a Shard enum, builds the shard portion of the Uri string for a request.
+        /// </summary>
+        /// <remarks>
+        /// We must do this because C# doesn't allow enums with the '-' character,
+        /// so we have to pull the uri-friendly string out of the description of the Shard value.s
+        /// </remarks>
+        private string BuildShardUri(PlatformRegionShard shard)
+        {
+            return "/shards/" + shard.GetDescription() + "/";
+        }
+
+        /// <summary>
+        /// Writes the given string to the given filename in the Data folder.
+        /// </summary>
+        public void WriteResponse(string filename, string body)
+        {
+            File.WriteAllText("../../../Data/" + filename, body);
+        }
+
         #endregion
 
         #region Status
@@ -128,9 +125,7 @@ namespace PUBGAPIWrapper
         {
             string statusUri = "/status";
             IRestResponse response = MakeRequest(statusUri);
-
-            Status status = Status.Deserialize(response.Content);
-            return status;
+            return Status.Deserialize(response.Content);
         }
 
         #endregion
@@ -145,9 +140,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string matchUri = shardUri + "matches/" + matchId;
             IRestResponse response = MakeRequest(matchUri);
-
-            Match match = Match.Deserialize(response.Content);
-            return match;
+            return Match.Deserialize(response.Content);
         }
 
         /// <summary>
@@ -161,9 +154,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string sampleUri = shardUri + "samples";
             IRestResponse response = MakeRequest(sampleUri);
-
-            Sample sample = Sample.Deserialize(response.Content);
-            return sample;
+            return Sample.Deserialize(response.Content);
         }
 
         #endregion
@@ -178,9 +169,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
             IRestResponse response = MakeRequest(playerUri);
-
-            JObject obj = JObject.Parse(response.Content);
-            return (string)obj["data"][0]["id"];
+            return Player.Deserialize(response.Content).Id;
         }
 
         /// <summary>
@@ -192,8 +181,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players/" + id;
             IRestResponse response = MakeRequest(playerUri);
-            Player player = Player.Deserialize(response.Content);
-            return player;
+            return Player.Deserialize(response.Content);
         }
 
         /// <summary>
@@ -222,9 +210,7 @@ namespace PUBGAPIWrapper
             }
 
             IRestResponse response = MakeRequest(playerUri);
-
-            List<Player> players = Player.DeserializePlayerList(response.Content);
-            return players;
+            return Player.DeserializePlayerList(response.Content);
         }
 
         public dynamic GetPlayerSeason(string id, string seasonId)
@@ -244,8 +230,7 @@ namespace PUBGAPIWrapper
             string shardUri = BuildShardUri(shard);
             string seasonUri = shardUri + "seasons";
             IRestResponse response = MakeRequest(seasonUri);
-            List<Season> seasons = Season.Deserialize(response.Content);
-            return seasons;
+            return Season.Deserialize(response.Content);
         }
 
         #endregion
@@ -259,8 +244,7 @@ namespace PUBGAPIWrapper
         public Telemetry GetTelemetry(string url)
         {
             IRestResponse response = MakeRequest(url);
-            Telemetry telemetry = Telemetry.Deserialize(response.Content);
-            return telemetry;
+            return Telemetry.Deserialize(response.Content);
         }
 
         #endregion
