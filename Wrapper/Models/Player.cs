@@ -21,20 +21,28 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
 
         /// <summary>
-        /// Identifier for this object type ("player")
-        /// </summary>
-        public string Type { get; set; }
-
-        /// <summary>
-        /// Username of the player.
+        /// PUBG IGN.
         /// </summary>
         public string Name { get; set; }
-        public string Version { get; set; }
+
+        /// <summary>
+        /// Platform shard.
+        /// </summary>
         public string Shard { get; set; }
+
+        /// <summary>
+        /// Version of the game.
+        /// </summary>
+        public string Version { get; set; }
+
+        /// <summary>
+        /// Identifies the studio and game.
+        /// </summary>
         public string Title { get; set; }
 
         /// <summary>
-        /// Unique GUIDs of the five most recent matches played.
+        /// A list of match ids.
+        /// Used to lookup the full match object on the /matches endpoint.
         /// </summary>
         public List<string> MatchIds { get; set; }
 

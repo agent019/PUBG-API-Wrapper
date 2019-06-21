@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
-using PUBGAPIWrapper.Models;
+﻿using PUBGAPIWrapper.Models;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -15,11 +14,14 @@ namespace PUBGAPIWrapper
     /// Wraps all provided endpoints.
     /// </summary>
     /// <remarks>
-    /// TODO: Tournaments resource
+    /// TODO: 
+    /// - Deserialize multiple stats
+    /// - Update, verify, and test the matches and telemetry deserialization
+    /// - Finish and test these methods
     /// </remarks>
     public class RequestService
     {
-        private const string BaseUri = "https://api.playbattlegrounds.com/";
+        private const string BaseUri = "https://api.pubg.com/";
 
         private string ApiKey { get; set; }
         public IRestClient Client { get; set; }
@@ -38,45 +40,7 @@ namespace PUBGAPIWrapper
         #endregion
 
         #region Helpers
-
-        private IRestResponse MakeRequest(string queryString/*, bool compressResponse = false*/)
-        {
-            IRestRequest request = new RestRequest(queryString);
-
-            request.AddHeader("Authorization", "Bearer " + ApiKey);
-
-            /*if (compressResponse)
-                request.AddHeader("Accept-Encoding", "gzip");
-            else*/
-            request.AddHeader("Accept", "application/vnd.api+json");
-
-            IRestResponse response = Client.Execute(request);
-
-            return response;
-        }
-
-        /// <summary>
-        /// Given a Shard enum, builds the shard portion of the Uri string for a request.
-        /// </summary>
-        /// <remarks>
-        /// We must do this because C# doesn't allow enums with the '-' character,
-        /// so we have to pull the uri-friendly string out of the description of the Shard value.s
-        /// </remarks>
-        private string BuildShardUri(PlatformRegionShard shard)
-        {
-            return "/shards/" + shard.GetDescription() + "/";
-        }
-
-        /// <summary>
-        /// Writes the given string to the given filename in the Data folder.
-        /// </summary>
-        public void WriteResponse(string filename, string body)
-        {
-            File.WriteAllText("../../../Data/" + filename, body);
-        }
-
-
-
+        
         /// <summary>
         /// Executes rest request with the given request.
         /// </summary> 
@@ -84,9 +48,8 @@ namespace PUBGAPIWrapper
         /// Using the rate limit information from the response headers,
         /// sleeps until the rate limit reset when out of requests.
         /// TODO: Async this to not stop the main thread?
-        /// TODO: Move this somewhere useful.
         /// </remarks>
-        public IRestResponse Execute(IRestRequest request)
+        public IRestResponse ExecuteRequest(IRestRequest request)
         {
             var response = Client.Execute(request);
             if (response.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
@@ -117,53 +80,40 @@ namespace PUBGAPIWrapper
             return response;
         }
 
-        #endregion
-
-        #region Status
-
-        /// <summary>
-        /// Gets the status of the PUBG Api.
-        /// </summary>
-        public Status GetStatus()
+        private IRestResponse MakeRequest(string queryString/*, bool compressResponse = false*/)
         {
-            string statusUri = "/status";
-            IRestResponse response = MakeRequest(statusUri);
+            IRestRequest request = new RestRequest(queryString);
 
-            Status status = Status.Deserialize(response.Content);
-            return status;
-        }
+            request.AddHeader("Authorization", "Bearer " + ApiKey);
 
-        #endregion
+            /*if (compressResponse)
+                request.AddHeader("Accept-Encoding", "gzip");
+            else*/
+            request.AddHeader("Accept", "application/vnd.api+json");
 
-        #region Matches
+            IRestResponse response = ExecuteRequest(request);
 
-        /// <summary>
-        /// Gets a PUBG match by ID.
-        /// </summary>
-        public Match GetMatch(PlatformRegionShard shard, string matchId)
-        {
-            string shardUri = BuildShardUri(shard);
-            string matchUri = shardUri + "matches/" + matchId;
-            IRestResponse response = MakeRequest(matchUri);
-
-            Match match = Match.Deserialize(response.Content);
-            return match;
+            return response;
         }
 
         /// <summary>
-        /// Gets a set of sample matches
+        /// Given a Shard enum, builds the shard portion of the Uri string for a request.
         /// </summary>
         /// <remarks>
-        /// TODO: Implement createdAt filter
+        /// We must do this because C# doesn't allow enums with the '-' character,
+        /// so we have to pull the uri-friendly string out of the description of the Shard value.s
         /// </remarks>
-        public Sample GetSampleMatches(PlatformRegionShard shard, DateTime? createdAtFilter = null)
+        private string BuildShardUri(PlatformShard shard)
         {
-            string shardUri = BuildShardUri(shard);
-            string sampleUri = shardUri + "samples";
-            IRestResponse response = MakeRequest(sampleUri);
+            return "/shards/" + shard.ToString().ToLower() + "/";
+        }
 
-            Sample sample = Sample.Deserialize(response.Content);
-            return sample;
+        /// <summary>
+        /// Writes the given string to the given filename in the Data folder.
+        /// </summary>
+        public void WriteResponse(string filename, string body)
+        {
+            File.WriteAllText("../../../Data/" + filename, body);
         }
 
         #endregion
@@ -173,37 +123,37 @@ namespace PUBGAPIWrapper
         /// <summary>
         /// Given a players username, gets the Id associated for that account.
         /// </summary>
-        public string GetPlayerId(PlatformRegionShard shard, string playerName)
+        public string GetPlayerId(PlatformShard shard, string playerName)
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players?filter[playerNames]=" + playerName;
             IRestResponse response = MakeRequest(playerUri);
-
-            JObject obj = JObject.Parse(response.Content);
-            return (string)obj["data"][0]["id"];
+            return Player.DeserializePlayerList(response.Content)[0].Id;
         }
 
         /// <summary>
-        /// Makes a request to the PUBG API for information about a player, by player id.
         /// Get a single player.
+        /// Makes a request to the PUBG API for information about a player, by player id.
         /// </summary>
-        public Player GetPlayer(PlatformRegionShard shard, string id)
+        /// <param name="id">The account ID to search for</param>
+        public Player GetPlayer(PlatformShard shard, string id)
         {
             string shardUri = BuildShardUri(shard);
             string playerUri = shardUri + "players/" + id;
             IRestResponse response = MakeRequest(playerUri);
-            Player player = Player.Deserialize(response.Content);
-            return player;
+            return Player.Deserialize(response.Content);
         }
 
         /// <summary>
-        /// Given a list of player ids or player names, queries for those players
         /// Get a collection of up to 10 players.
+        /// Given a list of player ids or player names, queries for those players.
         /// </summary>
         /// <remarks>
         /// Cannot query by both names and ids. Prefers ids when provided.
         /// </remarks>
-        public List<Player> GetPlayers(PlatformRegionShard shard, List<string> ids, List<string> names)
+        /// <param name="ids">Filters by player IDs</param>
+        /// <param name="names">Filters by player names</param>
+        public List<Player> GetPlayers(PlatformShard shard, List<string> ids, List<string> names)
         {
             if ((ids == null || !ids.Any()) && (names == null || !names.Any()))
                 return new List<Player>();
@@ -213,23 +163,16 @@ namespace PUBGAPIWrapper
             if (ids != null && ids.Any())
             {
                 string concatenatedIds = string.Join(",", ids);
-                playerUri = playerUri + "filters[playerIds]" + concatenatedIds;
+                playerUri = playerUri + "?filter[playerIds]=" + concatenatedIds;
             }
             else if (names != null && names.Any())
             {
                 string concatenatedNames = string.Join(",", names);
-                playerUri = playerUri + "filters[playerIds]" + concatenatedNames;
+                playerUri = playerUri + "?filter[playerNames]=" + concatenatedNames;
             }
 
             IRestResponse response = MakeRequest(playerUri);
-
-            List<Player> players = Player.DeserializePlayerList(response.Content);
-            return players;
-        }
-
-        public dynamic GetPlayerSeason(string id, string seasonId)
-        {
-            throw new NotImplementedException();
+            return Player.DeserializePlayerList(response.Content);
         }
 
         #endregion
@@ -237,15 +180,159 @@ namespace PUBGAPIWrapper
         #region Seasons
 
         /// <summary>
-        /// Makes a request to the PUBG Api for all of the seasons.
+        /// Get the list of available seasons.
         /// </summary>
-        public List<Season> GetSeasons(PlatformRegionShard shard)
+        /// <remarks>
+        /// Note: The list of seasons will only be changing about once every 
+        /// two months when a new season is added. Applications should not be
+        /// querying for the list of seasons more than once per month.
+        /// </remarks>
+        public List<Season> GetSeasons(PlatformShard shard)
         {
             string shardUri = BuildShardUri(shard);
             string seasonUri = shardUri + "seasons";
             IRestResponse response = MakeRequest(seasonUri);
-            List<Season> seasons = Season.Deserialize(response.Content);
-            return seasons;
+            return Season.Deserialize(response.Content);
+        }
+
+        #endregion
+
+        #region Stats
+
+        /// <summary>
+        /// Get season information for a single player.
+        /// </summary>
+        /// <param name="accountId">The account ID to search for.</param>
+        /// <param name="seasonId">The season ID to search for.</param>
+        public Stats GetSeasonStatsForPlayer(PlatformShard shard, string accountId, string seasonId)
+        {
+            string shardUri = BuildShardUri(shard);
+            string statsUri = shardUri + "players/" + accountId + "/seasons/" + seasonId;
+            IRestResponse response = MakeRequest(statsUri);
+            return Stats.Deserialize(response.Content);
+        }
+
+        /// <summary>
+        /// Get season information for up to 10 players.
+        /// </summary>
+        /// <param name="seasonId">The season ID to search for.</param>
+        /// <param name="gameMode">The game mode to search for.</param>
+        /// <param name="playerIds">Filters by player IDs.</param>
+        public List<Stats> GetSeasonStatsForMultiplePlayers(PlatformShard shard, string seasonId, string gameMode, List<string> playerIds)
+        {
+            string shardUri = BuildShardUri(shard);
+            string statsUri = shardUri + "seasons/" + seasonId + "/gamemode" + gameMode
+                + "/players?filter[playerIds]=" + String.Join(",", playerIds);
+            IRestResponse response = MakeRequest(statsUri);
+            throw new NotImplementedException();
+            
+            // TODO: deserialize multiple stats
+            // return Stats.Deserialize(response.Content);
+        }
+
+        /// <summary>
+        /// Get lifetime stats for a single player.
+        /// </summary>
+        /// <param name="accountId">The account ID to search for.</param>
+        public Stats GetLifetimeStatsForPlayer(PlatformShard shard, string accountId)
+        {
+            return GetSeasonStatsForPlayer(shard, accountId, "lifetime");
+        }
+
+        /// <summary>
+        /// Get lifetime stats for up to 10 players.
+        /// </summary>
+        /// <param name="gameMode">The game mode to search for.</param>
+        /// <param name="playerIds">Filters by player IDs.</param>
+        public List<Stats> GetLifetimeStatsForMultiplePlayers(PlatformShard shard, string gameMode, List<string> playerIds)
+        {
+            return GetSeasonStatsForMultiplePlayers(shard, "lifetime", gameMode, playerIds);
+        }
+
+        #endregion
+
+        #region Matches
+
+        /// <summary>
+        /// Gets a PUBG match by ID.
+        /// </summary>
+        public Match GetMatch(PlatformShard shard, string matchId)
+        {
+            string shardUri = BuildShardUri(shard);
+            string matchUri = shardUri + "matches/" + matchId;
+            IRestResponse response = MakeRequest(matchUri);
+            return Match.Deserialize(response.Content);
+        }
+
+        /// <summary>
+        /// Gets a set of sample matches
+        /// </summary>
+        /// <remarks>
+        /// The number of matches per shard may vary. Requests for samples 
+        /// need to be at least 24hrs in the past UTC time using the 
+        /// filter[createdAt-start] query parameter. The default if not 
+        /// specified is the latest sample.
+        /// </remarks>
+        /// <param name="createdAtFilter">The starting search date in UTC. Null by default.</param>
+        public Sample GetSampleMatches(PlatformShard shard, DateTime? createdAtFilter = null)
+        {
+            string shardUri = BuildShardUri(shard);
+            string sampleUri = shardUri + "samples";
+
+            if (createdAtFilter != null)
+            {
+                sampleUri += "?filter[createdAt-start]=" + createdAtFilter.Value.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            }
+
+            IRestResponse response = MakeRequest(sampleUri);
+            return Sample.Deserialize(response.Content);
+        }
+
+        #endregion
+
+        #region Leaderboards
+
+        /// <summary>
+        /// Get the leaderboard for a game mode.
+        /// </summary>
+        /// <param name="gameMode">The game mode to search for.</param>
+        /// <param name="page">The leaderboard page to search for.</param>
+        public Leaderboard GetLeaderboard(PlatformShard shard, string gameMode, int page)
+        {
+            string shardUri = BuildShardUri(shard);
+            string leaderboardUri = shardUri + "leaderboards/"
+                + gameMode + "?page[number]=" + page;
+            IRestResponse response = MakeRequest(leaderboardUri);
+            return Leaderboard.Deserialize(response.Content);
+        }
+
+        #endregion
+
+        #region Tournaments
+
+        /// <summary>
+        /// Get the list of available tournaments.
+        /// </summary>
+        public List<Tournament> GetTournamentsList()
+        {
+            string tournamentUri = "/tournaments";
+            IRestResponse response = MakeRequest(tournamentUri);
+            return Tournament.Deserialize(response.Content);
+        }
+
+        /// <summary>
+        /// Get information for a single tournament.
+        /// </summary>
+        /// <remarks>
+        /// Tournament matches can be retreived from the /matches endpoint
+        /// using the pc-tournament shard
+        /// </remarks>
+        /// <param name="id">The ID to search for.</param>
+        public TournamentMatches GetTournament(string id)
+        {
+            string tournamentMatchesUri = "/tournaments/" + id;
+            IRestResponse response = MakeRequest(tournamentMatchesUri);
+            return TournamentMatches.Deserialize(response.Content);
         }
 
         #endregion
@@ -259,8 +346,24 @@ namespace PUBGAPIWrapper
         public Telemetry GetTelemetry(string url)
         {
             IRestResponse response = MakeRequest(url);
-            Telemetry telemetry = Telemetry.Deserialize(response.Content);
-            return telemetry;
+            return Telemetry.Deserialize(response.Content);
+        }
+
+        #endregion
+
+        #region Status
+
+        /// <summary>
+        /// Check the status of the API.
+        /// </summary>
+        /// <remarks>
+        /// The status endpoint can be called to verify that the API is up and running. 
+        /// </remarks>
+        public Status GetStatus()
+        {
+            string statusUri = "/status";
+            IRestResponse response = MakeRequest(statusUri);
+            return Status.Deserialize(response.Content);
         }
 
         #endregion
