@@ -16,7 +16,7 @@ namespace PUBGAPIWrapper
     /// <remarks>
     /// TODO: 
     /// - Deserialize multiple stats
-    /// - Update, verify, and test the matches and telemetry deserialization
+    /// - Update, verify, and test the telemetry deserialization
     /// - Finish and test these methods
     /// </remarks>
     public class RequestService

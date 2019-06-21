@@ -12,8 +12,7 @@ namespace PUBGAPIWrapper.Models
     /// Contains lists for each of the type of possible events.
     /// </summary>
     /// <remarks>
-    /// TODO: Added some new objects/properties that need deserialization.
-    /// Also finish the old ones yeah?
+    /// TODO: Deserialize objects tagged with "// new"
     /// </remarks>
     public class Telemetry
     {
@@ -525,26 +524,30 @@ namespace PUBGAPIWrapper.Models
         }
     }
 
+    public class BlueZoneCustomOptions
+    {
+        public int PhaseNum { get; set; }
+        public int StartDelay { get; set; }
+        public int WarningDuration { get; set; }
+        public int ReleaseDuration { get; set; }
+        public double PoisonGasDamagePerSecond { get; set; }
+        public double RadiusRate { get; set; }
+        public double SpreadRatio { get; set; }
+        public double LandRatio { get; set; }
+        public int CircleAlgorithm { get; set; }
+    }
+
     public class Character
     {
         public string Name { get; set; }
         public int TeamId { get; set; }
-        public float Health { get; set; }
+        public double Health { get; set; }
         public Location Location { get; set; }
         public int Ranking { get; set; }
         public string AccountId { get; set; }
-
-        public override string ToString()
-        {
-            string toString = "Name: " + this.Name + "\n"
-                + "TeamId: " + this.TeamId + "\n"
-                + "Health: " + this.Health + "\n"
-                + Location.ToString()
-                + "Ranking: " + this.Ranking + "\n"
-                + "AccountId: " + this.AccountId + "\n";
-
-            return toString;
-        }
+        public bool IsInBlueZone { get; set; } // new
+        public bool IsInRedZone { get; set; } // new
+        public RegionId Zone { get; set; } // new
     }
 
     public class Common
@@ -560,7 +563,17 @@ namespace PUBGAPIWrapper.Models
         /// isGame = 2.5->Second bluezone shrinks
         /// ...
         /// </remarks>
-        public float IsGame { get; set; }
+        public double IsGame { get; set; }
+    }
+
+    public class GameResult // new
+    {
+        public int Rank { get; set; }
+        [JsonProperty("gameResult")]
+        public string Result { get; set; }
+        public int TeamId { get; set; }
+        public GameStats Stats { get; set; }
+        public string AccountId { get; set; }
     }
 
     public class GameState
@@ -571,11 +584,11 @@ namespace PUBGAPIWrapper.Models
         public int NumStartPlayers { get; set; }
         public int NumAlivePlayers { get; set; }
         public Location SafetyZonePosition { get; set; }
-        public float SafetyZoneRadius { get; set; }
+        public double SafetyZoneRadius { get; set; }
         public Location PoisonGasWarningPosition { get; set; }
-        public float PoisonGasWarningRadius { get; set; }
+        public double PoisonGasWarningRadius { get; set; }
         public Location RedZonePosition { get; set; }
-        public float RedZoneRadius { get; set; }
+        public double RedZoneRadius { get; set; }
     }
 
     public class Item
@@ -600,35 +613,27 @@ namespace PUBGAPIWrapper.Models
     /// </remarks>
     public class Location
     {
-        public float X { get; set; }
-        public float Y { get; set; }
-        public float Z { get; set; }
+        public double X { get; set; }
+        public double Y { get; set; }
+        public double Z { get; set; }
+    }
 
-        public override string ToString()
-        {
-            string toString = "X: " + this.X + "\n"
-                + "Y: " + this.Y + "\n"
-                + "Z: " + this.Z + "\n";
-                
-            return toString;
-        }
+    public class GameStats // new 
+    {
+        public int KillCount { get; set; }
+        public double DistanceOnFoot { get; set; }
+        public double DistanceOnSwim { get; set; }
+        public double DistanceOnVehicle { get; set; }
+        public double DistanceOnParachute { get; set; }
+        public double DistanceOnFreefall { get; set; }
     }
 
     public class Vehicle
     {
         public VehicleType? VehicleType { get; set; }
         public string VehicleId { get; set; }
-        public float? HealthPercent { get; set; }
-        public float? FuelPercent { get; set; }
-    }
-
-    public class Asset
-    {
-        [JsonProperty("createdAt")]
-        public DateTime Created { get; set; }
-        public string Url { get; set; }
-        public string Description { get; set; }
-        public string Name { get; set; }
+        public double? HealthPercent { get; set; }
+        public double? FuelPercent { get; set; }
     }
 
     public enum Category
@@ -686,5 +691,143 @@ namespace PUBGAPIWrapper.Models
         NonSpecific,
         PelvisShot,
         TorsoShot
+    }
+
+    public enum RegionId // new
+    {
+        #region Desert_Main
+
+        alcantara,
+        ruins,
+        lacobreria,
+        trailerpark,
+        craterfields,
+        elpozo,
+        watertreatment,
+        sanmartin,
+        heciendadelpatron,
+        powergrid,
+        cruzdelvalle,
+        torreahumada,
+        campomilitar,
+        tierrabronca,
+        elazahar,
+        junkyard,
+        minasgenerales,
+        graveyard,
+        montenuevo,
+        ladrillera,
+        chumacera,
+        pecado,
+        labendita,
+        lmpala,
+        losleones,
+        puertoparaiso,
+        loshigos,
+        prison,
+        minasdelsur,
+        valledelmar,
+
+        #endregion
+
+        #region DihorOtok_Main
+
+        port,
+        cosmodrome,
+        trevno,
+        peshkova,
+        mountkreznic,
+        goroka,
+        dobromesto,
+        vihar,
+        movatra,
+        dinopark,
+        tovar,
+        castle,
+        podvosto,
+        cementfactory,
+        cantra,
+        hotspring,
+        volnova,
+        abbey,
+        winery,
+        milnar,
+        zabava,
+        krichas,
+        coalmine,
+        lumberyard,
+        pilnec,
+        sawmill,
+
+        #endregion
+
+        #region Erangel_Main
+        
+        zharki,
+        shootingrange,
+        severny,
+        stalber,
+        kameshki,
+        yasnayapolyana,
+        lipovka,
+        mansion,
+        shelter,
+        //prison,
+        myltapower,
+        mylta,
+        farm,
+        rozhok,
+        school,
+        georgopol,
+        hospital,
+        gatka,
+        quarry,
+        primorsk,
+        ferrypier,
+        sosnovkamilitarybase,
+        novorepnoye,
+        //ruins,
+        pochinki,
+
+        #endregion
+
+        #region Savage_Main
+        
+        kampong,
+        dock,
+        lawaki,
+        campbravo,
+        mongnai,
+        khao,
+        tatmok,
+        paradiseresort,
+        bootcamp,
+        //quarry,
+        cave,
+        bahn,
+        campalpha,
+        campcharlie,
+        bantai,
+        painan,
+        sahmee,
+        nakham,
+        tambang,
+        //ruins,
+        hatinh,
+
+        #endregion
+    }
+
+    public enum WeatherId // new
+    {
+        Clear,
+        Clear_02,
+        Dark,
+        Night,
+        Overcast,
+        Snow,
+        Sunrise,
+        Sunset,
+        Weather_Range_Sunset
     }
 }

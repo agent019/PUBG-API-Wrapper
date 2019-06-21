@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: Verify the Match objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -172,52 +171,207 @@ namespace PUBGAPIWrapper.Models
         }
     }
 
+    /// <summary>
+    /// Rosters track the scores of each opposing group of participants. 
+    /// Rosters can have one or many participants depending on the game mode.
+    /// </summary>
+    /// <remarks>
+    /// Roster objects are only meaningful within the context of a match
+    /// and are not exposed as a standalone resource.
+    /// </remarks>
     public class Roster
     {
+        /// <summary>
+        /// A randomly generated ID assigned to this resource.
+        /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Indicates if this roster won the match.
+        /// </summary>
         public bool Won { get; set; }
+
+        /// <summary>
+        /// Platform shard.
+        /// </summary>
         public string Shard { get; set; }
+
+        /// <summary>
+        /// This roster's placement in the match.
+        /// </summary>
         public int Rank { get; set; }
+
+        /// <summary>
+        /// An arbitrary ID assigned to this roster.
+        /// </summary>
         public int TeamId { get; set; }
+
+        /// <summary>
+        /// A list of Participant IDs.
+        /// </summary>
         public List<string> ParticipantIds { get; set; }
     }
 
     public class TelemetryAsset
     {
+        /// <summary>
+        /// A randomly generated ID assigned to this resource.
+        /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Time of telemetry creation.
+        /// </summary>
         public DateTime Created { get; set; }
+
+        /// <summary>
+        /// Link to the telemetry.json file.
+        /// </summary>
         public string URL { get; set; }
+
+        /// <summary>
+        /// "Telemetry".
+        /// </summary>
         public string Name { get; set; }
+
         public string Description { get; set; }
     }
 
+    /// <summary>
+    /// Participant objects represent a player in the context of a match. 
+    /// </summary>
+    /// <remarks>
+    /// Participant objects are only meaningful within the context of a match
+    /// and are not exposed as a standalone resource.
+    /// </remarks>
     public class Participant
     {
+        /// <summary>
+        /// A randomly generated ID assigned to this resource object.
+        /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// PUBG IGN of the player associated with this participant.
+        /// </summary>
         public string Name { get; set; }
+
+        /// <summary>
+        /// Account ID of the player associated with this participant.
+        /// </summary>
         public string PlayerId { get; set; }
+
+        /// <summary>
+        /// Platform shard.
+        /// </summary>
         public string Shard { get; set; }
+
         public string Actor { get; set; }
+
+        /// <summary>
+        /// Number of enemy players knocked.
+        /// </summary>
         public int DBNOs { get; set; }
+
+        /// <summary>
+        /// Number of enemy players this player damaged that were killed by teammates.
+        /// </summary>
         public int Assists { get; set; }
+
+        /// <summary>
+        /// Number of boost items used.
+        /// </summary>
         public int Boosts { get; set; }
+
+        /// <summary>
+        /// Total damage dealt. 
+        /// Note: Self inflicted damage is subtracted.
+        /// </summary>
         public double DamageDealt { get; set; }
+
+        /// <summary>
+        /// The way by which this player died, or alive if they didn't.
+        /// </summary>
+        /// <remarks>
+        /// TODO: Enum [ alive, byplayer, suicide, logout ]
+        /// </remarks>
         public string DeathType { get; set; }
+
+        /// <summary>
+        /// Number of enemy players killed with headshots.
+        /// </summary>
         public int HeadshotKills { get; set; }
+
+        /// <summary>
+        /// Number of healing items used.
+        /// </summary>
         public int Heals { get; set; }
+
+        /// <summary>
+        /// This player's rank in the match based on kills.
+        /// </summary>
         public int KillPlace { get; set; }
+
+        /// <summary>
+        /// Total number of kill streaks.
+        /// </summary>
         public int KillStreaks { get; set; }
+
+        /// <summary>
+        /// Number of enemy players killed.
+        /// </summary>
         public int Kills { get; set; }
+
         public double LongestKill { get; set; }
+        
+        /// <summary>
+        /// Number of times this player revived teammates.
+        /// </summary>
         public int Revives { get; set; }
+
+        /// <summary>
+        /// Total distance traveled in vehicles measured in meters.
+        /// </summary>
         public double RideDistance { get; set; }
+
+        /// <summary>
+        /// Number of kills while in a vehicle.
+        /// </summary>
         public int RoadKills { get; set; }
+
+        /// <summary>
+        /// Total distance traveled while swimming measured in meters.
+        /// </summary>
         public int SwimDistance { get; set; }
+        
+        /// <summary>
+        /// Number of times this player killed a teammate.
+        /// </summary>
         public int TeamKills { get; set; }
+
+        /// <summary>
+        /// Amount of time survived measured in seconds.
+        /// </summary>
         public double TimeSurvived { get; set; }
+
+        /// <summary>
+        /// Number of vehicles destroyed.
+        /// </summary>
         public int VehicleDestroys { get; set; }
+
+        /// <summary>
+        /// Total distance traveled on foot measured in meters.
+        /// </summary>
         public double WalkDistance { get; set; }
+
+        /// <summary>
+        /// Number of weapons picked up.
+        /// </summary>
         public int WeaponsAcquired { get; set; }
+
+        /// <summary>
+        /// This player's placement in the match.
+        /// </summary>
         public int WinPlace { get; set; }
     }
 
