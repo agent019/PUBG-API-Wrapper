@@ -268,12 +268,22 @@ namespace PUBGAPIWrapper
         /// Gets a set of sample matches
         /// </summary>
         /// <remarks>
-        /// TODO: Implement createdAt filter
+        /// The number of matches per shard may vary. Requests for samples 
+        /// need to be at least 24hrs in the past UTC time using the 
+        /// filter[createdAt-start] query parameter. The default if not 
+        /// specified is the latest sample.
         /// </remarks>
+        /// <param name="createdAtFilter">The starting search date in UTC. Null by default.</param>
         public Sample GetSampleMatches(PlatformShard shard, DateTime? createdAtFilter = null)
         {
             string shardUri = BuildShardUri(shard);
             string sampleUri = shardUri + "samples";
+
+            if (createdAtFilter != null)
+            {
+                sampleUri += "?filter[createdAt-start]=" + createdAtFilter.Value.ToString("yyyy-MM-ddTHH:mm:ssZ");
+            }
+
             IRestResponse response = MakeRequest(sampleUri);
             return Sample.Deserialize(response.Content);
         }
