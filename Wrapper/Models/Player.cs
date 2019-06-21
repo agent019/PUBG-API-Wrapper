@@ -6,6 +6,9 @@ namespace PUBGAPIWrapper.Models
 {
     /// <summary>
     /// Object representation of a PUBG Player.
+    /// Player objects contain information about a player and a 
+    /// list of their recent matches (up to 14 days old). 
+    /// Note: player objects are specific to platform shards.
     /// </summary>
     /// <remarks>
     /// Flattened representation of the JSON provided by the API.
@@ -16,6 +19,11 @@ namespace PUBGAPIWrapper.Models
         /// Unique GUID for a player.
         /// </summary>
         public string Id { get; set; }
+
+        /// <summary>
+        /// Identifier for this object type ("player")
+        /// </summary>
+        public string Type { get; set; }
 
         /// <summary>
         /// Username of the player.
@@ -46,37 +54,34 @@ namespace PUBGAPIWrapper.Models
         public static Player Deserialize(string playerJson)
         {
             PlayerDTO dto = JsonConvert.DeserializeObject<PlayerDTO>(playerJson);
-            Player player = new Player()
-            {
-                Id = dto.Data.Id,
-                Name = dto.Data.Attributes.Name,
-                Version = dto.Data.Attributes.Version,
-                Shard = dto.Data.Attributes.Shard,
-                Title = dto.Data.Attributes.Title,
-                MatchIds = dto.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
-            };
-
-            return player;
+            return BuildPlayerFromDTO(dto.Data);
         }
-
+        
         public static List<Player> DeserializePlayerList(string playerJson)
         {
-            List<PlayerDTO> dto = JsonConvert.DeserializeObject<List<PlayerDTO>>(playerJson);
+            PlayersDTO dto = JsonConvert.DeserializeObject<PlayersDTO>(playerJson);
             List<Player> players = new List<Player>();
-            foreach (PlayerDTO player in dto)
+            foreach (PlayerData data in dto.Data)
             {
-                players.Add(new Player()
-                {
-                    Id = player.Data.Id,
-                    Name = player.Data.Attributes.Name,
-                    Version = player.Data.Attributes.Version,
-                    Shard = player.Data.Attributes.Shard,
-                    Title = player.Data.Attributes.Title,
-                    MatchIds = player.Data.Relationships.Matches.Data.Select(x => x.Id).ToList()
-                });
+                players.Add(BuildPlayerFromDTO(data));
             }
 
             return players;
+        }
+
+        private static Player BuildPlayerFromDTO(PlayerData data)
+        {
+            Player player = new Player()
+            {
+                Id = data?.Id,
+                Name = data?.Attributes?.Name,
+                Version = data?.Attributes?.Version,
+                Shard = data?.Attributes?.Shard, // TODO: use enum?
+                Title = data?.Attributes?.Title,
+                MatchIds = data?.Relationships?.Matches?.Data?.Select(x => x.Id).ToList()
+            };
+
+            return player;
         }
     }
 

@@ -31,7 +31,7 @@ namespace PUBGAPIWrapper.Models
             return statusString;
         }
     }
-
+    
     #region DTO
 
     public class StatusDTO
