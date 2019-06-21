@@ -5,6 +5,8 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Threading;
 
 namespace PUBGAPIWrapper
 {
@@ -21,6 +23,9 @@ namespace PUBGAPIWrapper
 
         private string ApiKey { get; set; }
         public IRestClient Client { get; set; }
+
+        private const string RateLimitRemainingHeaderName = "X-Ratelimit-Remaining";
+        private const string RateLimitResetHeaderName = "X-Ratelimit-Reset";
 
         #region Constructors
 
@@ -68,6 +73,48 @@ namespace PUBGAPIWrapper
         public void WriteResponse(string filename, string body)
         {
             File.WriteAllText("../../../Data/" + filename, body);
+        }
+
+
+
+        /// <summary>
+        /// Executes rest request with the given request.
+        /// </summary> 
+        /// <remarks>
+        /// Using the rate limit information from the response headers,
+        /// sleeps until the rate limit reset when out of requests.
+        /// TODO: Async this to not stop the main thread?
+        /// TODO: Move this somewhere useful.
+        /// </remarks>
+        public IRestResponse Execute(IRestRequest request)
+        {
+            var response = Client.Execute(request);
+            if (response.StatusCode == (HttpStatusCode)429) throw new Exception("Rate limited!");
+
+            int? rateLimitRemaining = 0;
+            int rateLimitReset = 0;
+
+            try
+            {
+                rateLimitRemaining = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitRemainingHeaderName).Select(h => h.Value).Single());
+                rateLimitReset = Convert.ToInt32(response.Headers.Where(h => h.Name == RateLimitResetHeaderName).Select(h => h.Value).Single());
+                Console.WriteLine("Requests remaining: " + rateLimitRemaining + "\nRequest reset time: " + rateLimitReset);
+            }
+            catch (InvalidOperationException)
+            {
+                rateLimitRemaining = null;
+                Console.WriteLine("Rate limit header was missing.");
+            }
+
+            if (rateLimitRemaining.HasValue && rateLimitRemaining == 0)
+            {
+                Console.WriteLine("Rate limited. Sleeping.");
+                int now = (int)(DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1))).TotalSeconds;
+                int secondsUntilReset = rateLimitReset - now;
+                Thread.Sleep(secondsUntilReset); // TODO: not this
+            }
+
+            return response;
         }
 
         #endregion
