@@ -44,6 +44,12 @@ namespace PUBGAPIWrapper.Models
     {
         public GameState GameState { get; set; }
     }
+    public class LogHeal : Event // new 
+    {
+        public Character Character { get; set; }
+        public Item Item { get; set; }
+        public double HealAmount { get; set; }
+    }
 
     public class LogItemAttach : Event
     {
@@ -77,6 +83,18 @@ namespace PUBGAPIWrapper.Models
         public Item Item { get; set; }
     }
 
+    public class LogItemPickupFromCarePackage : Event // new
+    {
+        public Character Character { get; set; }
+        public Item Item { get; set; }
+    }
+
+    public class LogItemPickupFromLootBox : Event // new
+    {
+        public Character Character { get; set; }
+        public Item Item { get; set; }
+    }
+
     public class LogItemUnequip : Event
     {
         public Character Character { get; set; }
@@ -93,6 +111,7 @@ namespace PUBGAPIWrapper.Models
     {
         public string MatchId { get; set; }
         public string PingQuality { get; set; }
+        public string SeasonState { get; set; } // new
     }
 
     public class LogMatchEnd : Event
@@ -109,12 +128,28 @@ namespace PUBGAPIWrapper.Models
         public int TeamSize { get; set; }
         public bool IsCustomGame { get; set; }
         public bool IsEventMode { get; set; }
-        public string BlueZoneCustomOptions { get; set; } //TODO: stringified array of objects
+        //TODO: this is a stringified array of objects
+        public string BlueZoneCustomOptions { get; set; }
+    }
+
+    public class LogObjectDestroy : Event // new
+    {
+        public Character Character { get; set; }
+        public string ObjectType { get; set; }
+        public Location ObjectLocation { get; set; }
+    }
+
+
+    public class LogParachuteLanding : Event // new 
+    {
+        public Character Character { get; set; }
+        public double Distance { get; set; }
     }
 
     public class LogPlayerAttack : Event
     {
         public int AttackId { get; set; }
+        public int FireWeaponStackCount { get; set; } // new
         public Character Attacker { get; set; }
         public AttackType? AttackType { get; set; }
         public Item Weapon { get; set; }
@@ -124,13 +159,6 @@ namespace PUBGAPIWrapper.Models
     public class LogPlayerCreate : Event
     {
         public Character Character { get; set; }
-        
-        public override string ToString()
-        {
-            return "Type: " + this.Type + "\n"
-                + "Timestamp: " + this.Timestamp + "\n"
-                + Character.ToString();
-        }
     }
 
     public class LogPlayerKill : Event
@@ -138,10 +166,14 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Killer { get; set; }
         public Character Victim { get; set; }
+        public Character Assistant { get; set; } // new
+        public int DBNOId { get; set; } // new
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
+        public string DamageCauserAdditionalInfo { get; set; } // new
         public string DamageReason { get; set; }
         public float Distance { get; set; }
+        public GameResult VictimGameResult { get; set; } // new
     }
 
     public class LogPlayerLogin : Event
@@ -159,35 +191,28 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
+        public string DamageReason { get; set; } // new
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
+        public string DamageCauserAdditionalInfo { get; set; } // new
         public float Distance { get; set; }
         public bool IsAttackerInVehicle { get; set; }
-        public int DBNOID { get; set; }
+        public int DBNOId { get; set; }
     }
 
     public class LogPlayerPosition : Event
     {
         public Character Character { get; set; }
+        public Vehicle Vehicle { get; set; } // new
         public float ElapsedTime { get; set; }
         public int NumAlivePlayers { get; set; }
-
-        public override string ToString()
-        {
-            string toString = "ElapsedTime: " + this.ElapsedTime + "\n"
-                + "NumAlivePlayers: " + this.NumAlivePlayers + "\n"
-                + "Type: " + this.Type + "\n"
-                + "Timestamp: " + this.Timestamp + "\n"
-                + Character.ToString();
-
-            return toString;
-        }
     }
 
     public class LogPlayerRevive : Event
     {
         public Character Reviver { get; set; }
         public Character Victim { get; set; }
+        public int DBNOId { get; set; } // new
     }
 
     public class LogPlayerTakeDamage : Event
@@ -196,7 +221,7 @@ namespace PUBGAPIWrapper.Models
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
-        public DamageReason DamageReason { get; set; }
+        public DamageReason DamageReason { get; set; } // string?
         /// <remarks>
         /// 1.0 Damage = 1.0 Health
         /// Net damage after armor; Damage to health
@@ -205,13 +230,24 @@ namespace PUBGAPIWrapper.Models
         public string DamageCauserName { get; set; }
     }
 
+    public class LogRedZoneEnded : Event // new
+    {
+        public List<Character> Drivers { get; set; }
+    }
+
     public class LogSwimEnd : Event
     {
         public Character Character { get; set; }
-        public float SwimDistance { get; set; }
+        public double SwimDistance { get; set; }
+        public double MaxSwimDepthOfWater { get; set; } // new
     }
 
     public class LogSwimStart : Event
+    {
+        public Character Character { get; set; }
+    }
+
+    public class LogVaultStart : Event // new 
     {
         public Character Character { get; set; }
     }
@@ -232,6 +268,7 @@ namespace PUBGAPIWrapper.Models
         public Vehicle Vehicle { get; set; }
         public float RideDistance { get; set; }
         public int SeatIndex { get; set; }
+        public double MaxSpeed { get; set; } // new
     }
 
     public class LogVehicleRide : Event
@@ -239,6 +276,14 @@ namespace PUBGAPIWrapper.Models
         public Character Character { get; set; }
         public Vehicle Vehicle { get; set; }
         public int SeatIndex { get; set; }
+    }
+
+    public class LogWeaponFireCount : Event // new
+    {
+        public Character Character { get; set; }
+        public string WeaponId { get; set; }
+        // increments of 10
+        public int FireCount { get; set; }
     }
 
     public class LogWheelDestroy : Event
