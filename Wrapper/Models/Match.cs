@@ -16,6 +16,12 @@ namespace PUBGAPIWrapper.Models
     /// </remarks>
     public class Match
     {
+        public Match()
+        {
+            Participants = new List<Participant>();
+            Rosters = new List<Roster>();
+        }
+
         /// <summary>
         /// Match ID.
         /// </summary>
@@ -24,7 +30,7 @@ namespace PUBGAPIWrapper.Models
         /// <summary>
         /// Time this match object was stored in the API.
         /// </summary>
-        public DateTime MatchCompletion { get; set; }
+        public DateTime Created { get; set; }
 
         /// <summary>
         /// Length of the match measured in seconds.
@@ -46,8 +52,6 @@ namespace PUBGAPIWrapper.Models
         /// </summary>
         public bool IsCustomMatch { get; set; }
 
-        public string PatchVersion { get; set; }
-
         /// <summary>
         /// The state of the season.
         /// </summary>
@@ -63,17 +67,16 @@ namespace PUBGAPIWrapper.Models
         /// </summary>
         public string Title { get; set; }
 
-        public List<string> RosterIds { get; set; }
-        /*public List<Participant> Participants { get; set; }
+        public List<Participant> Participants { get; set; }
         public List<Roster> Rosters { get; set; }
-        public MatchTelemetry Telemetry { get; set; }*/
+        public TelemetryAsset Telemetry { get; set; }
 
         public override string ToString()
         {
             string matchString = "Id: " + Id + "\n";
             matchString += "Region: " + Shard + "\n";
             matchString += "Duration: " + Duration + "\n";
-            matchString += "Match completion: " + MatchCompletion.ToString() + "\n";
+            matchString += "Created: " + Created.ToString() + "\n";
             matchString += "Map: " + Map + "\n";
             matchString += "Mode: " + GameMode + "\n";
 
@@ -83,16 +86,17 @@ namespace PUBGAPIWrapper.Models
         public static Match Deserialize(string matchJson)
         {
             MatchDTO dto = JsonConvert.DeserializeObject<MatchDTO>(matchJson);
-            Match match = new Match();
-            /*{
+            Match match = new Match()
+            {
                 Id = dto.Data.Id,
-                MatchCompletion = dto.Data.Attributes.Created,
+                Created = dto.Data.Attributes.Created,
                 Duration = dto.Data.Attributes.Duration,
                 GameMode = dto.Data.Attributes.GameMode,
                 Map = dto.Data.Attributes.MapName,
+                IsCustomMatch = dto.Data.Attributes.IsCustomMatch,
+                SeasonState = dto.Data.Attributes.SeasonState,
                 Shard = dto.Data.Attributes.Shard,
                 Title = dto.Data.Attributes.Title,
-                RosterIds = dto.Data.Relationships.Rosters.Data.Select(x => x.Id).ToList()
             };
 
             foreach (dynamic obj in dto.Included)
@@ -100,74 +104,121 @@ namespace PUBGAPIWrapper.Models
                 switch ((string)obj.type)
                 {
                     case "roster":
+                        MatchRoster matchRoster = obj.ToObject<MatchRoster>();
                         Roster r = new Roster()
                         {
-                            Id = obj.id,
-                            Rank = obj.attributes.stats.rank,
-                            TeamId = obj.attributes.stats.teamId,
-                            Won = obj.attributes.won,
-                            //PlayerIds = obj.relationships.participants.data.Select(x => x.id)
+                            Id = matchRoster.Id,
+                            Shard = matchRoster.Attributes.Shard,
+                            Won = matchRoster.Attributes.Won,
+                            Rank = matchRoster.Attributes.Stats.Rank,
+                            TeamId = matchRoster.Attributes.Stats.TeamId,
+                            ParticipantIds = matchRoster.Relationships.Participants.Data.Select(x => x.Id).ToList()
                         };
                         match.Rosters.Add(r);
                         break;
                     case "participant":
+                        MatchParticipant participant = obj.ToObject<MatchParticipant>();
                         Participant p = new Participant()
                         {
-                            Id = obj.id,
-                            Stats = new PlayerStats()
-                            {
-                                DBNOs = obj.attributes.stats.DBNOs,
-                                Assists = obj.attributes.stats.assists,
-                                Boosts = obj.attributes.stats.boosts,
-                                DamageDealt = obj.attributes.stats.damageDealt,
-                                DeathType = obj.attributes.stats.deathType,
-                                HeadshotKills = obj.attributes.stats.headshotKills,
-                                Heals = obj.attributes.stats.heals,
-                                KillPlace = obj.attributes.stats.killPlace,
-                                KillPoints = obj.attributes.stats.killPoints,
-                                KillPointsDelta = obj.attributes.stats.killPointsDelta,
-                                Kills = obj.attributes.stats.killStreaks,
-                                KillStreaks = obj.attributes.stats.kills,
-                                LastKillPoints = obj.attributes.stats.lastKillPoints,
-                                LastWinPoints = obj.attributes.stats.lastWinPoints,
-                                LongestKill = obj.attributes.stats.longestKill,
-                                MostDamage = obj.attributes.stats.mostDamage,
-                                Name = obj.attributes.stats.name,
-                                PlayerId = obj.attributes.stats.playerId,
-                                Revives = obj.attributes.stats.revives,
-                                RideDistance = obj.attributes.stats.rideDistance,
-                                RoadKills = obj.attributes.stats.roadKills,
-                                TeamKills = obj.attributes.stats.teamKills,
-                                TimeSurvived = obj.attributes.stats.timeSurvived,
-                                VehicleDestroys = obj.attributes.stats.vehicleDestroys,
-                                WalkDistance = obj.attributes.stats.walkDistance,
-                                WeaponsAcquired = obj.attributes.stats.weaponsAcquired,
-                                WinPlace = obj.attributes.stats.winPlace,
-                                WinPoints = obj.attributes.stats.winPoints,
-                                WinPointsDelta = obj.attributes.stats.winPointsDelta,
-
-                            }
+                            Id = participant.Id,
+                            Shard = participant.Attributes.Shard,
+                            Actor = participant.Attributes.Actor,
+                            DBNOs = participant.Attributes.Stats.DBNOs,
+                            Assists = participant.Attributes.Stats.Assists,
+                            Boosts = participant.Attributes.Stats.Boosts,
+                            DamageDealt = participant.Attributes.Stats.DamageDealt,
+                            DeathType = participant.Attributes.Stats.DeathType,
+                            HeadshotKills = participant.Attributes.Stats.HeadshotKills,
+                            Heals = participant.Attributes.Stats.Heals,
+                            KillPlace = participant.Attributes.Stats.KillPlace,
+                            Kills = participant.Attributes.Stats.KillStreaks,
+                            KillStreaks = participant.Attributes.Stats.Kills,
+                            LongestKill = participant.Attributes.Stats.LongestKill,
+                            Name = participant.Attributes.Stats.Name,
+                            PlayerId = participant.Attributes.Stats.PlayerId,
+                            Revives = participant.Attributes.Stats.Revives,
+                            RideDistance = participant.Attributes.Stats.RideDistance,
+                            RoadKills = participant.Attributes.Stats.RoadKills,
+                            SwimDistance = participant.Attributes.Stats.SwimDistance,
+                            TeamKills = participant.Attributes.Stats.TeamKills,
+                            TimeSurvived = participant.Attributes.Stats.TimeSurvived,
+                            VehicleDestroys = participant.Attributes.Stats.VehicleDestroys,
+                            WalkDistance = participant.Attributes.Stats.WalkDistance,
+                            WeaponsAcquired = participant.Attributes.Stats.WeaponsAcquired,
+                            WinPlace = participant.Attributes.Stats.WinPlace
                         };
                         match.Participants.Add(p);
                         break;
                     case "asset":
-                        MatchAsset t = new MatchAsset()
+                        MatchAsset matchAsset = obj.ToObject<MatchAsset>();
+                        TelemetryAsset t = new TelemetryAsset()
                         {
-                            Id = obj.id,
-                            URL = obj.attributes.URL,
-                            Description = obj.attributes.description,
-                            Created = DateTime.Parse((string)obj.attributes.createdAt),
-                            Name = obj.attributes.name
+                            Id = matchAsset.Id,
+                            Created = matchAsset.Attributes.Created,
+                            URL = matchAsset.Attributes.URL,
+                            Name = matchAsset.Attributes.Name,
+                            Description = matchAsset.Attributes.Description
                         };
                         match.Telemetry = t;
                         break;
                     default:
                         throw new NotImplementedException("match.included contained object of type " + obj.type);
                 }
-            }*/
+            }
+
+            match.Rosters.OrderBy(x => x.Rank);
 
             return match;
         }
+    }
+
+    public class Roster
+    {
+        public string Id { get; set; }
+        public bool Won { get; set; }
+        public string Shard { get; set; }
+        public int Rank { get; set; }
+        public int TeamId { get; set; }
+        public List<string> ParticipantIds { get; set; }
+    }
+
+    public class TelemetryAsset
+    {
+        public string Id { get; set; }
+        public DateTime Created { get; set; }
+        public string URL { get; set; }
+        public string Name { get; set; }
+        public string Description { get; set; }
+    }
+
+    public class Participant
+    {
+        public string Id { get; set; }
+        public string Name { get; set; }
+        public string PlayerId { get; set; }
+        public string Shard { get; set; }
+        public string Actor { get; set; }
+        public int DBNOs { get; set; }
+        public int Assists { get; set; }
+        public int Boosts { get; set; }
+        public double DamageDealt { get; set; }
+        public string DeathType { get; set; }
+        public int HeadshotKills { get; set; }
+        public int Heals { get; set; }
+        public int KillPlace { get; set; }
+        public int KillStreaks { get; set; }
+        public int Kills { get; set; }
+        public double LongestKill { get; set; }
+        public int Revives { get; set; }
+        public double RideDistance { get; set; }
+        public int RoadKills { get; set; }
+        public int SwimDistance { get; set; }
+        public int TeamKills { get; set; }
+        public double TimeSurvived { get; set; }
+        public int VehicleDestroys { get; set; }
+        public double WalkDistance { get; set; }
+        public int WeaponsAcquired { get; set; }
+        public int WinPlace { get; set; }
     }
 
     #region DTO
@@ -236,24 +287,24 @@ namespace PUBGAPIWrapper.Models
         public int DBNOs { get; set; }
         public int Assists { get; set; }
         public int Boosts { get; set; }
-        public decimal DamageDealt { get; set; }
+        public double DamageDealt { get; set; }
         public string DeathType { get; set; }
         public int HeadshotKills { get; set; }
         public int Heals { get; set; }
         public int KillPlace { get; set; }
         public int KillStreaks { get; set; }
         public int Kills { get; set; }
-        public long LongestKill { get; set; }
+        public double LongestKill { get; set; }
         public string Name { get; set; }
         public string PlayerId { get; set; }
         public int Revives { get; set; }
-        public decimal RideDistance { get; set; }
+        public double RideDistance { get; set; }
         public int RoadKills { get; set; }
         public int SwimDistance { get; set; }
         public int TeamKills { get; set; }
-        public long TimeSurvived { get; set; }
+        public double TimeSurvived { get; set; }
         public int VehicleDestroys { get; set; }
-        public decimal WalkDistance { get; set; }
+        public double WalkDistance { get; set; }
         public int WeaponsAcquired { get; set; }
         public int WinPlace { get; set; }
     }
@@ -264,10 +315,6 @@ namespace PUBGAPIWrapper.Models
         public string Id { get; set; }
         public RosterAttributes Attributes { get; set; }
         public RosterRelationships Relationships { get; set; }
-
-        public int Rank { get; set; }
-        public int TeamId { get; set; }
-        public List<string> PlayerIds { get; set; }
     }
 
     public class RosterAttributes
