@@ -230,8 +230,7 @@ namespace PUBGAPIWrapper.Models
         public ParticipantStats Stats { get; set; }
     }
 
-    // TODO: some of these are obsolete
-    // also some of these are probably not ints
+    // TODO: some of these are probably not ints
     public class ParticipantStats
     {
         public int DBNOs { get; set; }
@@ -242,17 +241,11 @@ namespace PUBGAPIWrapper.Models
         public int HeadshotKills { get; set; }
         public int Heals { get; set; }
         public int KillPlace { get; set; }
-        public int KillPoints { get; set; }
-        public decimal KillPointsDelta { get; set; }
         public int KillStreaks { get; set; }
         public int Kills { get; set; }
-        public int LastKillPoints { get; set; }
-        public int LastWinPoints { get; set; }
         public long LongestKill { get; set; }
-        public int MostDamage { get; set; }
         public string Name { get; set; }
         public string PlayerId { get; set; }
-        public string RankPoints { get; set; }
         public int Revives { get; set; }
         public decimal RideDistance { get; set; }
         public int RoadKills { get; set; }
@@ -263,8 +256,6 @@ namespace PUBGAPIWrapper.Models
         public decimal WalkDistance { get; set; }
         public int WeaponsAcquired { get; set; }
         public int WinPlace { get; set; }
-        public int WinPoints { get; set; }
-        public decimal WinPointsDelta { get; set; }
     }
 
     public class MatchRoster
