@@ -204,7 +204,10 @@ namespace PUBGAPIWrapper
         /// <param name="seasonId">The season ID to search for.</param>
         public Stats GetSeasonStatsForPlayer(PlatformShard shard, string accountId, string seasonId)
         {
-            throw new NotImplementedException();
+            string statsUri = "/shards/" + shard + "/players/"
+                + accountId + "/seasons/" + seasonId;
+            IRestResponse response = MakeRequest(statsUri);
+            return Stats.Deserialize(response.Content);
         }
 
         /// <summary>
@@ -215,7 +218,13 @@ namespace PUBGAPIWrapper
         /// <param name="playerIds">Filters by player IDs.</param>
         public List<Stats> GetSeasonStatsForMultiplePlayers(PlatformShard shard, string seasonId, string gameMode, List<string> playerIds)
         {
+            string statsUri = "/shards/" + shard + "/seasons/" + seasonId
+                + "/gamemode" + gameMode + "?filter[playerIds]=" + String.Join(",", playerIds);
+            IRestResponse response = MakeRequest(statsUri);
             throw new NotImplementedException();
+            
+            // TODO: deserialize multiple stats
+            // return Stats.Deserialize(response.Content);
         }
 
         /// <summary>
@@ -278,7 +287,7 @@ namespace PUBGAPIWrapper
         public Leaderboard GetLeaderboard(PlatformShard shard, string gameMode, int page)
         {
             string leaderboardUri = "/shards/" + shard + "/leaderboards/"
-                + gameMode + "page[number]=" + page;
+                + gameMode + "?page[number]=" + page;
             IRestResponse response = MakeRequest(leaderboardUri);
             return Leaderboard.Deserialize(response.Content);
         }
