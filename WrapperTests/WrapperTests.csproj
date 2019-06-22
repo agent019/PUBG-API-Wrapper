@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="RequestServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\TelemetryTests.cs" />
     <Compile Include="Serialization\LeaderboardTests.cs" />
     <Compile Include="Serialization\MatchTests.cs" />
     <Compile Include="Serialization\PlayerTests.cs" />
