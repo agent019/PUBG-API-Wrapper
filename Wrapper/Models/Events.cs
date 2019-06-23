@@ -24,7 +24,7 @@ namespace PUBGAPIWrapper.Models
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
-        public DamageReason DamageReason { get; set; }
+        public DamageReason? DamageReason { get; set; }
         public string DamageCauserName { get; set; }
         public Item Item { get; set; }
         public double Distance { get; set; }
@@ -44,7 +44,7 @@ namespace PUBGAPIWrapper.Models
     {
         public GameState GameState { get; set; }
     }
-    public class LogHeal : Event // new 
+    public class LogHeal : Event
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
@@ -111,7 +111,7 @@ namespace PUBGAPIWrapper.Models
     {
         public string MatchId { get; set; }
         public string PingQuality { get; set; }
-        public string SeasonState { get; set; } // new
+        public string SeasonState { get; set; }
     }
 
     public class LogMatchEnd : Event
@@ -132,7 +132,7 @@ namespace PUBGAPIWrapper.Models
         public string BlueZoneCustomOptions { get; set; }
     }
 
-    public class LogObjectDestroy : Event // new
+    public class LogObjectDestroy : Event
     {
         public Character Character { get; set; }
         public string ObjectType { get; set; }
@@ -140,7 +140,7 @@ namespace PUBGAPIWrapper.Models
     }
 
 
-    public class LogParachuteLanding : Event // new 
+    public class LogParachuteLanding : Event
     {
         public Character Character { get; set; }
         public double Distance { get; set; }
@@ -166,14 +166,14 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Killer { get; set; }
         public Character Victim { get; set; }
-        public Character Assistant { get; set; } // new
-        public int DBNOId { get; set; } // new
+        public Character Assistant { get; set; }
+        public int DBNOId { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; } // new
+        public string DamageCauserAdditionalInfo { get; set; }
         public string DamageReason { get; set; }
         public double Distance { get; set; }
-        public GameResult VictimGameResult { get; set; } // new
+        public GameResult VictimGameResult { get; set; }
     }
 
     public class LogPlayerLogin : Event
@@ -191,10 +191,10 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
-        public string DamageReason { get; set; } // new
+        public string DamageReason { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; } // new
+        public string DamageCauserAdditionalInfo { get; set; }
         public double Distance { get; set; }
         public bool IsAttackerInVehicle { get; set; }
         public int DBNOId { get; set; }
@@ -203,7 +203,7 @@ namespace PUBGAPIWrapper.Models
     public class LogPlayerPosition : Event
     {
         public Character Character { get; set; }
-        public Vehicle Vehicle { get; set; } // new
+        public Vehicle Vehicle { get; set; }
         public double ElapsedTime { get; set; }
         public int NumAlivePlayers { get; set; }
     }
@@ -212,7 +212,7 @@ namespace PUBGAPIWrapper.Models
     {
         public Character Reviver { get; set; }
         public Character Victim { get; set; }
-        public int DBNOId { get; set; } // new
+        public int DBNOId { get; set; }
     }
 
     public class LogPlayerTakeDamage : Event
@@ -221,7 +221,7 @@ namespace PUBGAPIWrapper.Models
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
-        public DamageReason DamageReason { get; set; } // string?
+        public DamageReason? DamageReason { get; set; } // string?
         /// <remarks>
         /// 1.0 Damage = 1.0 Health
         /// Net damage after armor; Damage to health
@@ -230,7 +230,7 @@ namespace PUBGAPIWrapper.Models
         public string DamageCauserName { get; set; }
     }
 
-    public class LogRedZoneEnded : Event // new
+    public class LogRedZoneEnded : Event
     {
         public List<Character> Drivers { get; set; }
     }
@@ -239,7 +239,7 @@ namespace PUBGAPIWrapper.Models
     {
         public Character Character { get; set; }
         public double SwimDistance { get; set; }
-        public double MaxSwimDepthOfWater { get; set; } // new
+        public double MaxSwimDepthOfWater { get; set; }
     }
 
     public class LogSwimStart : Event
@@ -247,7 +247,7 @@ namespace PUBGAPIWrapper.Models
         public Character Character { get; set; }
     }
 
-    public class LogVaultStart : Event // new 
+    public class LogVaultStart : Event
     {
         public Character Character { get; set; }
     }
@@ -268,7 +268,7 @@ namespace PUBGAPIWrapper.Models
         public Vehicle Vehicle { get; set; }
         public double RideDistance { get; set; }
         public int SeatIndex { get; set; }
-        public double MaxSpeed { get; set; } // new
+        public double MaxSpeed { get; set; }
     }
 
     public class LogVehicleRide : Event
@@ -278,7 +278,7 @@ namespace PUBGAPIWrapper.Models
         public int SeatIndex { get; set; }
     }
 
-    public class LogWeaponFireCount : Event // new
+    public class LogWeaponFireCount : Event 
     {
         public Character Character { get; set; }
         public string WeaponId { get; set; }
