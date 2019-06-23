@@ -116,14 +116,14 @@ namespace PUBGAPIWrapper.Models
 
     public class LogMatchEnd : Event
     {
-        public IEnumerable<Character> Characters { get; set; }
+        public List<Character> Characters { get; set; }
     }
 
     public class LogMatchStart : Event
     {
         public string MapName { get; set; }
         public string WeatherId { get; set; }
-        public IEnumerable<Character> Characters { get; set; }
+        public List<Character> Characters { get; set; }
         public string CameraViewBehaviour { get; set; }
         public int TeamSize { get; set; }
         public bool IsCustomGame { get; set; }
