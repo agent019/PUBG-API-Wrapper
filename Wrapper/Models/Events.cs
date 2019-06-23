@@ -83,13 +83,13 @@ namespace PUBGAPIWrapper.Models
         public Item Item { get; set; }
     }
 
-    public class LogItemPickupFromCarePackage : Event // new
+    public class LogItemPickupFromCarePackage : Event
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
     }
 
-    public class LogItemPickupFromLootBox : Event // new
+    public class LogItemPickupFromLootBox : Event
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
@@ -149,7 +149,7 @@ namespace PUBGAPIWrapper.Models
     public class LogPlayerAttack : Event
     {
         public int AttackId { get; set; }
-        public int FireWeaponStackCount { get; set; } // new
+        public int FireWeaponStackCount { get; set; }
         public Character Attacker { get; set; }
         public AttackType? AttackType { get; set; }
         public Item Weapon { get; set; }

@@ -22,16 +22,21 @@ namespace PUBGAPIWrapper.Models
         public List<LogCarePackageLand> CarePackageLandEvents { get; set; }
         public List<LogCarePackageSpawn> CarePackageSpawnEvents { get; set; }
         public List<LogGameStatePeriodic> GameStatePeriodicEvents { get; set; }
+        public List<LogHeal> HealEvents { get; set; }
         public List<LogItemAttach> ItemAttachEvents { get; set; }
         public List<LogItemDetach> ItemDetachEvents { get; set; }
         public List<LogItemDrop> ItemDropEvents { get; set; }
         public List<LogItemEquip> ItemEquipEvents { get; set; }
         public List<LogItemPickup> ItemPickupEvents { get; set; }
+        public List<LogItemPickupFromCarePackage> ItemPickupFromCarePackageEvents { get; set; }
+        public List<LogItemPickupFromLootBox> ItemPickupFromLootBoxEvents { get; set; }
         public List<LogItemUnequip> ItemUnequipEvents { get; set; }
         public List<LogItemUse> ItemUseEvents { get; set; }
         public List<LogMatchDefinition> MatchDefinitionEvents { get; set; }
         public List<LogMatchEnd> MatchEndEvents { get; set; }
         public List<LogMatchStart> MatchStartEvents { get; set; }
+        public List<LogObjectDestroy> ObjectDestroyEvents { get; set; }
+        public List<LogParachuteLanding> ParachuteLandingEvents { get; set; }
         public List<LogPlayerAttack> PlayerAttackEvents { get; set; }
         public List<LogPlayerCreate> PlayerCreateEvents { get; set; }
         public List<LogPlayerKill> PlayerKillEvents { get; set; }
@@ -39,10 +44,13 @@ namespace PUBGAPIWrapper.Models
         public List<LogPlayerLogout> PlayerLogoutEvents { get; set; }
         public List<LogPlayerPosition> PlayerPositionEvents { get; set; }
         public List<LogPlayerTakeDamage> PlayerTakeDamageEvents { get; set; }
+        public List<LogRedZoneEnded> RedZoneEndedEvents { get; set; }
         public List<LogSwimEnd> SwimEndEvents { get; set; }
         public List<LogSwimStart> SwimStartEvents { get; set; }
+        public List<LogVaultStart> VaultStartEvents { get; set; }
         public List<LogVehicleDestroy> VehicleDestroyEvents { get; set; }
         public List<LogVehicleLeave> VehicleLeaveEvents { get; set; }
+        public List<LogWeaponFireCount> WeaponFireCountEvents { get; set; }
         public List<LogVehicleRide> VehicleRideEvents { get; set; }
 
         #endregion
@@ -53,16 +61,21 @@ namespace PUBGAPIWrapper.Models
             this.CarePackageLandEvents = new List<LogCarePackageLand>();
             this.CarePackageSpawnEvents = new List<LogCarePackageSpawn>();
             this.GameStatePeriodicEvents = new List<LogGameStatePeriodic>();
+            this.HealEvents = new List<LogHeal>();
             this.ItemAttachEvents = new List<LogItemAttach>();
             this.ItemDetachEvents = new List<LogItemDetach>();
             this.ItemDropEvents = new List<LogItemDrop>();
             this.ItemEquipEvents = new List<LogItemEquip>();
             this.ItemPickupEvents = new List<LogItemPickup>();
+            this.ItemPickupFromCarePackageEvents = new List<LogItemPickupFromCarePackage>();
+            this.ItemPickupFromLootBoxEvents = new List<LogItemPickupFromLootBox>();
             this.ItemUnequipEvents = new List<LogItemUnequip>();
             this.ItemUseEvents = new List<LogItemUse>();
             this.MatchDefinitionEvents = new List<LogMatchDefinition>();
             this.MatchEndEvents = new List<LogMatchEnd>();
             this.MatchStartEvents = new List<LogMatchStart>();
+            this.ObjectDestroyEvents = new List<LogObjectDestroy>();
+            this.ParachuteLandingEvents = new List<LogParachuteLanding>();
             this.PlayerAttackEvents = new List<LogPlayerAttack>();
             this.PlayerCreateEvents = new List<LogPlayerCreate>();
             this.PlayerKillEvents = new List<LogPlayerKill>();
@@ -70,10 +83,13 @@ namespace PUBGAPIWrapper.Models
             this.PlayerLogoutEvents = new List<LogPlayerLogout>();
             this.PlayerPositionEvents = new List<LogPlayerPosition>();
             this.PlayerTakeDamageEvents = new List<LogPlayerTakeDamage>();
+            this.RedZoneEndedEvents = new List<LogRedZoneEnded>();
             this.SwimEndEvents = new List<LogSwimEnd>();
             this.SwimStartEvents = new List<LogSwimStart>();
+            this.VaultStartEvents = new List<LogVaultStart>();
             this.VehicleDestroyEvents = new List<LogVehicleDestroy>();
             this.VehicleLeaveEvents = new List<LogVehicleLeave>();
+            this.WeaponFireCountEvents = new List<LogWeaponFireCount>();
             this.VehicleRideEvents = new List<LogVehicleRide>();
         }
 
@@ -120,8 +136,11 @@ namespace PUBGAPIWrapper.Models
                                 },
                                 Name = obj.character.name,
                                 Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId
-                            }
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
                         };
 
                         t.PlayerCreateEvents.Add(playerCreate);
@@ -147,7 +166,17 @@ namespace PUBGAPIWrapper.Models
                                 },
                                 Name = obj.character.name,
                                 Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Vehicle = new Vehicle()
+                            {
+                                FuelPercent = obj.vehicle.fuelPercent,
+                                HealthPercent = obj.vehicle.healthPercent,
+                                VehicleId = obj.vehicle.vehicleId,
+                                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicle.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicle.vehicleType))
                             },
                             ElapsedTime = obj.elapsedTime,
                             NumAlivePlayers = obj.numAlivePlayers
@@ -176,9 +205,13 @@ namespace PUBGAPIWrapper.Models
                                 },
                                 Name = obj.attacker.name,
                                 Ranking = obj.attacker.ranking,
-                                TeamId = obj.attacker.teamId
+                                TeamId = obj.attacker.teamId,
+                                IsInBlueZone = obj.attacker.isInBlueZone,
+                                IsInRedZone = obj.attacker.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.attacker.zone)
                             },
                             AttackId = obj.attackId,
+                            FireWeaponStackCount = obj.fireWeaponStackCount,
                             AttackType = String.IsNullOrWhiteSpace(Convert.ToString(obj.attackType)) ? null : Enum.Parse(typeof(AttackType), Convert.ToString(obj.attackType)),
                             Weapon = new Item()
                             {
@@ -218,7 +251,10 @@ namespace PUBGAPIWrapper.Models
                                 },
                                 Name = obj.character.name,
                                 Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
                             },
                             Item = new Item()
                             {
@@ -227,7 +263,79 @@ namespace PUBGAPIWrapper.Models
                                 ItemId = obj.item.itemId,
                                 StackCount = obj.item.stackCount,
                                 SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
+                            }
+                        };
+                        break;
+                    case "LogItemPickupFromCarePackage":
+                        LogItemPickup playerPickupFromCarePackage = new LogItemPickup()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
                             },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Item = new Item()
+                            {
+                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
+                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
+                                ItemId = obj.item.itemId,
+                                StackCount = obj.item.stackCount,
+                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
+                            }
+                        };
+                        break;
+                    case "LogItemPickupFromLootBox":
+                        LogItemPickup playerPickupFromLootBox = new LogItemPickup()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Item = new Item()
+                            {
+                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
+                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
+                                ItemId = obj.item.itemId,
+                                StackCount = obj.item.stackCount,
+                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
+                            }
                         };
                         break;
                     case "LogItemEquip":
@@ -251,7 +359,10 @@ namespace PUBGAPIWrapper.Models
                                 },
                                 Name = obj.character.name,
                                 Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
                             },
                             Item = new Item()
                             {
@@ -260,7 +371,7 @@ namespace PUBGAPIWrapper.Models
                                 ItemId = obj.item.itemId,
                                 StackCount = obj.item.stackCount,
                                 SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            },
+                            }
                         };
                         break;
                     case "LogItemUnequip":
@@ -271,8 +382,32 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Item = new Item()
+                            {
+                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
+                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
+                                ItemId = obj.item.itemId,
+                                StackCount = obj.item.stackCount,
+                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
                             }
-
                         };
                         break;
                     case "LogVehicleRide":
@@ -283,15 +418,42 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Vehicle = new Vehicle()
+                            {
+                                FuelPercent = obj.vehicle.fuelPercent,
+                                HealthPercent = obj.vehicle.healthPercent,
+                                VehicleId = obj.vehicle.vehicleId,
+                                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicle.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicle.vehicleType))
                             }
-
                         };
                         break;
                     case "LogMatchDefinition":
                         LogMatchDefinition matchDefinition = new LogMatchDefinition()
                         {
                             Timestamp = obj._D,
-                            Type = obj._T
+                            Type = obj._T,
+                            MatchId = obj.MatchId,
+                            PingQuality = obj.PingQuality,
+                            SeasonState = obj.SeasonState
+                            // This item actually doesnt have a common field
                         };
                         break;
                     case "LogMatchStart":
@@ -326,8 +488,34 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            Vehicle = new Vehicle()
+                            {
+                                VehicleType = obj.vehicle.vehicleType,
+                                VehicleId = obj.vehicle.vehicleId,
+                                HealthPercent = obj.vehicle.healthPercent,
+                                FuelPercent = obj.vehicle.fuelPercent
+                            },
+                            RideDistance = obj.RideDistance,
+                            SeatIndex = obj.seatIndex,
+                            MaxSpeed =  obj.maxSpeed
                         };
                         break;
                     case "LogPlayerTakeDamage":
@@ -350,8 +538,8 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            AccountId = obj.accountId
                         };
                         break;
                     case "LogItemAttach":
@@ -470,8 +658,24 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
                             }
-
                         };
                         break;
                     case "LogSwimEnd":
@@ -482,8 +686,26 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            Character = new Character()
+                            {
+                                AccountId = obj.character.accountId,
+                                Health = obj.character.health,
+                                Location = new Location()
+                                {
+                                    X = obj.character.location.x,
+                                    Y = obj.character.location.y,
+                                    Z = obj.character.location.z
+                                },
+                                Name = obj.character.name,
+                                Ranking = obj.character.ranking,
+                                TeamId = obj.character.teamId,
+                                IsInBlueZone = obj.character.isInBlueZone,
+                                IsInRedZone = obj.character.isInRedZone,
+                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
+                            },
+                            SwimDistance = obj.SwimDistance,
+                            MaxSwimDepthOfWater = obj.maxSwimDepthOfWater
                         };
                         break;
                     case "LogArmorDestroy":
