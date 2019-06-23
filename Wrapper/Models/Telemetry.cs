@@ -429,7 +429,7 @@ namespace PUBGAPIWrapper.Models
                             TeamSize = obj.teamSize,
                             IsCustomGame = obj.isCustomGame,
                             IsEventMode = obj.isEventMode,
-                            BlueZoneCustomOptions = obj.blueZoneCustomOptions
+                            // BlueZoneCustomOptions = obj.blueZoneCustomOptions
                         };
                         t.MatchStartEvents.Add(matchStart);
                         break;
@@ -517,7 +517,15 @@ namespace PUBGAPIWrapper.Models
                                 AccountId = obj.victimGameResult.accountId,
                                 Rank = obj.victimGameResult.rank,
                                 Result = obj.victimGameResult.result,
-                                Stats = obj.victimGameResult.stats,
+                                Stats = new GameStats()
+                                {
+                                    KillCount = obj.victimGameResult.stats.killCount,
+                                    DistanceOnFoot = obj.victimGameResult.stats.distanceOnFoot,
+                                    DistanceOnFreefall = obj.victimGameResult.stats.distanceOnFreefall,
+                                    DistanceOnParachute = obj.victimGameResult.stats.distanceOnParachute,
+                                    DistanceOnSwim = obj.victimGameResult.stats.distanceOnSwim,
+                                    DistanceOnVehicle = obj.victimGameResult.stats.distanceOnVehicle
+                                },
                                 TeamId = obj.victimGameResult.teamId
                             }
                         };
@@ -788,7 +796,7 @@ namespace PUBGAPIWrapper.Models
         public double IsGame { get; set; }
     }
 
-    public class GameResult // new
+    public class GameResult
     {
         public int Rank { get; set; }
         [JsonProperty("gameResult")]
@@ -826,7 +834,7 @@ namespace PUBGAPIWrapper.Models
     {
         public string ItemPackageId { get; set; }
         public Location Location { get; set; }
-        public IEnumerable<Item> Items { get; set; }
+        public List<Item> Items { get; set; }
     }
 
     /// <remarks>
@@ -840,7 +848,7 @@ namespace PUBGAPIWrapper.Models
         public double Z { get; set; }
     }
 
-    public class GameStats // new 
+    public class GameStats
     {
         public int KillCount { get; set; }
         public double DistanceOnFoot { get; set; }
