@@ -93,6 +93,50 @@ namespace PUBGAPIWrapper.Models
             this.VehicleRideEvents = new List<LogVehicleRide>();
         }
 
+        private static Character BuildCharacter(dynamic obj)
+        {
+            return new Character()
+            {
+                AccountId = obj.accountId,
+                Health = obj.health,
+                Location = new Location()
+                {
+                    X = obj.location.x,
+                    Y = obj.location.y,
+                    Z = obj.location.z
+                },
+                Name = obj.name,
+                Ranking = obj.ranking,
+                TeamId = obj.teamId,
+                IsInBlueZone = obj.isInBlueZone,
+                IsInRedZone = obj.isInRedZone,
+                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.zone)
+            };
+        }
+
+        private static Item BuildItem(dynamic obj)
+        {
+            return new Item()
+            {
+                AttachedItems = ((JArray)obj.attachedItems).Select(jv => (string)jv).ToArray(),
+                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.category)),
+                ItemId = obj.itemId,
+                StackCount = obj.stackCount,
+                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.subCategory))
+            };
+        }
+
+        private static Vehicle BuildVehicle(dynamic obj)
+        {
+            return new Vehicle()
+            {
+                FuelPercent = obj.fuelPercent,
+                HealthPercent = obj.healthPercent,
+                VehicleId = obj.vehicleId,
+                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicleType))
+            };
+        }
+
         public static Telemetry Deserialize(string json)
         {
             List<dynamic> results = JsonConvert.DeserializeObject<List<dynamic>>(json);
@@ -103,135 +147,27 @@ namespace PUBGAPIWrapper.Models
             {
                 switch ((string)obj._T)
                 {
-                    case "LogPlayerLogin":
-                        LogPlayerLogin playerLogin = new LogPlayerLogin()
+                    case "LogArmorDestroy":
+                        LogArmorDestroy armorDestroy = new LogArmorDestroy()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            },
-                            AccountId = obj.accountId
-                        };
-                        break;
-                    case "LogPlayerCreate":
-                        LogPlayerCreate playerCreate = new LogPlayerCreate()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                        };
-
-                        t.PlayerCreateEvents.Add(playerCreate);
-                        break;
-                    case "LogPlayerPosition":
-                        LogPlayerPosition playerPosition = new LogPlayerPosition()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Vehicle = new Vehicle()
-                            {
-                                FuelPercent = obj.vehicle.fuelPercent,
-                                HealthPercent = obj.vehicle.healthPercent,
-                                VehicleId = obj.vehicle.vehicleId,
-                                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicle.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicle.vehicleType))
-                            },
-                            ElapsedTime = obj.elapsedTime,
-                            NumAlivePlayers = obj.numAlivePlayers
-                        };
-
-                        t.PlayerPositionEvents.Add(playerPosition);
-                        break;
-                    case "LogPlayerAttack":
-                        LogPlayerAttack playerAttack = new LogPlayerAttack()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Attacker = new Character()
-                            {
-                                AccountId = obj.attacker.accountId,
-                                Health = obj.attacker.health,
-                                Location = new Location()
-                                {
-                                    X = obj.attacker.location.x,
-                                    Y = obj.attacker.location.y,
-                                    Z = obj.attacker.location.z
-                                },
-                                Name = obj.attacker.name,
-                                Ranking = obj.attacker.ranking,
-                                TeamId = obj.attacker.teamId,
-                                IsInBlueZone = obj.attacker.isInBlueZone,
-                                IsInRedZone = obj.attacker.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.attacker.zone)
                             },
                             AttackId = obj.attackId,
-                            FireWeaponStackCount = obj.fireWeaponStackCount,
-                            AttackType = String.IsNullOrWhiteSpace(Convert.ToString(obj.attackType)) ? null : Enum.Parse(typeof(AttackType), Convert.ToString(obj.attackType)),
-                            Weapon = new Item()
-                            {
-                                AttachedItems = ((JArray) obj.weapon.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.weapon.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.weapon.category)),
-                                ItemId = obj.weapon.itemId,
-                                StackCount = obj.weapon.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.weapon.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.weapon.subCategory))
-                            },
-                            Vehicle = new Vehicle()
-                            {
-                                FuelPercent = obj.vehicle.fuelPercent,
-                                HealthPercent = obj.vehicle.healthPercent,
-                                VehicleId = obj.vehicle.vehicleId,
-                                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicle.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicle.vehicleType))
-                            }
+                            Attacker = BuildCharacter(obj.attacker),
+                            Victim = BuildCharacter(obj.victim),
+                            DamageTypeCategory = obj.DamageTypeCategory,
+                            DamageReason = String.IsNullOrWhiteSpace(Convert.ToString(obj.DamageReason)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.DamageReason)),
+                            DamageCauserName = obj.damageCauserName,
+                            Item = BuildItem(obj.item),
+                            Distance = obj.distance
                         };
                         break;
-                    case "LogItemPickup":
-                        LogItemPickup playerPickup = new LogItemPickup()
+                    case "LogCarePackageLand":
+                        LogCarePackageLand carePackageLand = new LogCarePackageLand()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -239,35 +175,11 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Item = new Item()
-                            {
-                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
-                                ItemId = obj.item.itemId,
-                                StackCount = obj.item.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            }
+                            // ItemPackage = ???
                         };
                         break;
-                    case "LogItemPickupFromCarePackage":
-                        LogItemPickup playerPickupFromCarePackage = new LogItemPickup()
+                    case "LogCarePackageSpawn":
+                        LogCarePackageSpawn carePackageSpawn = new LogCarePackageSpawn()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -275,197 +187,7 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Item = new Item()
-                            {
-                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
-                                ItemId = obj.item.itemId,
-                                StackCount = obj.item.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            }
-                        };
-                        break;
-                    case "LogItemPickupFromLootBox":
-                        LogItemPickup playerPickupFromLootBox = new LogItemPickup()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Item = new Item()
-                            {
-                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
-                                ItemId = obj.item.itemId,
-                                StackCount = obj.item.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            }
-                        };
-                        break;
-                    case "LogItemEquip":
-                        LogItemEquip playerEquip = new LogItemEquip()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Item = new Item()
-                            {
-                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
-                                ItemId = obj.item.itemId,
-                                StackCount = obj.item.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            }
-                        };
-                        break;
-                    case "LogItemUnequip":
-                        LogItemUnequip playerUnequip = new LogItemUnequip()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Item = new Item()
-                            {
-                                AttachedItems = ((JArray)obj.item.attachedItems).Select(jv => (string)jv).ToArray(),
-                                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.item.category)),
-                                ItemId = obj.item.itemId,
-                                StackCount = obj.item.stackCount,
-                                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.item.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.item.subCategory))
-                            }
-                        };
-                        break;
-                    case "LogVehicleRide":
-                        LogVehicleRide playerRide = new LogVehicleRide()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Vehicle = new Vehicle()
-                            {
-                                FuelPercent = obj.vehicle.fuelPercent,
-                                HealthPercent = obj.vehicle.healthPercent,
-                                VehicleId = obj.vehicle.vehicleId,
-                                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicle.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicle.vehicleType))
-                            }
-                        };
-                        break;
-                    case "LogMatchDefinition":
-                        LogMatchDefinition matchDefinition = new LogMatchDefinition()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            MatchId = obj.MatchId,
-                            PingQuality = obj.PingQuality,
-                            SeasonState = obj.SeasonState
-                            // This item actually doesnt have a common field
-                        };
-                        break;
-                    case "LogMatchStart":
-                        LogMatchStart matchStart = new LogMatchStart()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
+                            // ItemPackage = ???
                         };
                         break;
                     case "LogGameStatePeriodic":
@@ -480,8 +202,8 @@ namespace PUBGAPIWrapper.Models
 
                         };
                         break;
-                    case "LogVehicleLeave":
-                        LogVehicleLeave vehicleLeave = new LogVehicleLeave()
+                    case "LogItemAttach":
+                        LogItemAttach itemAttach = new LogItemAttach()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -489,37 +211,141 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
-                            Vehicle = new Vehicle()
-                            {
-                                VehicleType = obj.vehicle.vehicleType,
-                                VehicleId = obj.vehicle.vehicleId,
-                                HealthPercent = obj.vehicle.healthPercent,
-                                FuelPercent = obj.vehicle.fuelPercent
-                            },
-                            RideDistance = obj.RideDistance,
-                            SeatIndex = obj.seatIndex,
-                            MaxSpeed =  obj.maxSpeed
+                            Character = BuildCharacter(obj.character),
+                            ParentItem = BuildItem(obj.parentItem),
+                            ChildItem = BuildItem(obj.childItem)
                         };
                         break;
-                    case "LogPlayerTakeDamage":
-                        LogPlayerTakeDamage playerTakeDamage = new LogPlayerTakeDamage()
+                    case "LogItemDetach":
+                        LogItemDetach itemDetach = new LogItemDetach()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            ParentItem = BuildItem(obj.parentItem),
+                            ChildItem = BuildItem(obj.childItem)
+                        };
+                        break;
+                    case "LogItemDrop":
+                        LogItemDrop itemDrop = new LogItemDrop()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemEquip":
+                        LogItemEquip playerEquip = new LogItemEquip()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemPickup":
+                        LogItemPickup playerPickup = new LogItemPickup()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemPickupFromCarePackage":
+                        LogItemPickup playerPickupFromCarePackage = new LogItemPickup()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemPickupFromLootBox":
+                        LogItemPickup playerPickupFromLootBox = new LogItemPickup()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemUnequip":
+                        LogItemUnequip playerUnequip = new LogItemUnequip()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogItemUse":
+                        LogItemUse itemUse = new LogItemUse()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Item = BuildItem(obj.item)
+                        };
+                        break;
+                    case "LogMatchDefinition":
+                        LogMatchDefinition matchDefinition = new LogMatchDefinition()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            MatchId = obj.MatchId,
+                            PingQuality = obj.PingQuality,
+                            SeasonState = obj.SeasonState
+                            // This item actually doesnt have a common field
+                        };
+                        break;
+                    case "LogMatchEnd":
+                        LogMatchEnd matchEnd = new LogMatchEnd()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            // Characters = ???
+                        };
+                        break;
+                    case "LogMatchStart":
+                        LogMatchStart matchStart = new LogMatchStart()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -528,6 +354,70 @@ namespace PUBGAPIWrapper.Models
                                 IsGame = obj.common.isGame
                             }
 
+                        };
+                        break;
+                    case "LogPlayerAttack":
+                        LogPlayerAttack playerAttack = new LogPlayerAttack()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Attacker = BuildCharacter(obj.attacker),
+                            AttackId = obj.attackId,
+                            FireWeaponStackCount = obj.fireWeaponStackCount,
+                            AttackType = String.IsNullOrWhiteSpace(Convert.ToString(obj.attackType)) ? null : Enum.Parse(typeof(AttackType), Convert.ToString(obj.attackType)),
+                            Weapon = BuildItem(obj.weapon),
+                            Vehicle = BuildVehicle(obj.vehicle)
+                        };
+                        break;
+                    case "LogPlayerCreate":
+                        LogPlayerCreate playerCreate = new LogPlayerCreate()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character)
+                        };
+                        t.PlayerCreateEvents.Add(playerCreate);
+                        break;
+                    case "LogPlayerKill":
+                        LogPlayerKill playerKill = new LogPlayerKill()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            AttackId = obj.attackId,
+                            Killer = BuildCharacter(obj.killer),
+                            Victim = BuildCharacter(obj.victim),
+                            Assistant = BuildCharacter(obj.assistant),
+                            DBNOId = obj.dBNOId,
+                            DamageTypeCategory = obj.damageTypeCategory,
+                            DamageCauserName = obj.damageCauserName,
+                            DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo,
+                            DamageReason = obj.damageReason,
+                            Distance = obj.distance
+                            // GameResult = ???
+                        };
+                        break;
+                    case "LogPlayerLogin":
+                        LogPlayerLogin playerLogin = new LogPlayerLogin()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            AccountId = obj.accountId
                         };
                         break;
                     case "LogPlayerLogout":
@@ -542,116 +432,8 @@ namespace PUBGAPIWrapper.Models
                             AccountId = obj.accountId
                         };
                         break;
-                    case "LogItemAttach":
-                        LogItemAttach itemAttach = new LogItemAttach()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogItemDrop":
-                        LogItemDrop itemDrop = new LogItemDrop()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogPlayerKill":
-                        LogPlayerKill playerKill = new LogPlayerKill()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogItemDetach":
-                        LogItemDetach itemDetach = new LogItemDetach()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogItemUse":
-                        LogItemUse itemUse = new LogItemUse()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogCarePackageSpawn":
-                        LogCarePackageSpawn carePackageSpawn = new LogCarePackageSpawn()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogVehicleDestroy":
-                        LogVehicleDestroy vehicleDestroy = new LogVehicleDestroy()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogCarePackageLand":
-                        LogCarePackageLand carePackageLand = new LogCarePackageLand()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogMatchEnd":
-                        LogMatchEnd matchEnd = new LogMatchEnd()
-                        {
-                            Timestamp = obj._D,
-                            Type = obj._T,
-                            Common = new Common()
-                            {
-                                IsGame = obj.common.isGame
-                            }
-
-                        };
-                        break;
-                    case "LogSwimStart":
-                        LogSwimStart swimStart = new LogSwimStart()
+                    case "LogPlayerPosition":
+                        LogPlayerPosition playerPosition = new LogPlayerPosition()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -659,23 +441,30 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            Character = new Character()
+                            Character = BuildCharacter(obj.character),
+                            Vehicle = BuildVehicle(obj.vehicle),
+                            ElapsedTime = obj.elapsedTime,
+                            NumAlivePlayers = obj.numAlivePlayers
+                        };
+
+                        t.PlayerPositionEvents.Add(playerPosition);
+                        break;
+                    case "LogPlayerTakeDamage":
+                        LogPlayerTakeDamage playerTakeDamage = new LogPlayerTakeDamage()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
                             {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            }
+                                IsGame = obj.common.isGame
+                            },
+                            AttackId = obj.attackId,
+                            Attacker = BuildCharacter(obj.attacker),
+                            Victim = BuildCharacter(obj.victim),
+                            DamageTypeCategory = obj.damageTypeCategory,
+                            DamageReason = String.IsNullOrWhiteSpace(Convert.ToString(obj.DamageReason)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.DamageReason)),
+                            Damage = obj.damage,
+                            DamageCauserName = obj.damageCauserName
                         };
                         break;
                     case "LogSwimEnd":
@@ -687,41 +476,72 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            Character = new Character()
-                            {
-                                AccountId = obj.character.accountId,
-                                Health = obj.character.health,
-                                Location = new Location()
-                                {
-                                    X = obj.character.location.x,
-                                    Y = obj.character.location.y,
-                                    Z = obj.character.location.z
-                                },
-                                Name = obj.character.name,
-                                Ranking = obj.character.ranking,
-                                TeamId = obj.character.teamId,
-                                IsInBlueZone = obj.character.isInBlueZone,
-                                IsInRedZone = obj.character.isInRedZone,
-                                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.character.zone)
-                            },
+                            Character = BuildCharacter(obj.character),
                             SwimDistance = obj.SwimDistance,
                             MaxSwimDepthOfWater = obj.maxSwimDepthOfWater
                         };
                         break;
-                    case "LogArmorDestroy":
-                        LogArmorDestroy armorDestroy = new LogArmorDestroy()
+                    case "LogSwimStart":
+                        LogSwimStart swimStart = new LogSwimStart()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            Character = BuildCharacter(obj.character),
+                        };
+                        break;
+                    case "LogVehicleDestroy":
+                        LogVehicleDestroy vehicleDestroy = new LogVehicleDestroy()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            AttackId = obj.attackId,
+                            Attacker = BuildCharacter(obj.attacker),
+                            Vehicle = BuildVehicle(obj.vehicle),
+                            DamageTypeCategory = obj.damageTypeCategory,
+                            DamageCauserName = obj.damageCauserName,
+                            Distance = obj.distance
+                        };
+                        break;
+                    case "LogVehicleLeave":
+                        LogVehicleLeave vehicleLeave = new LogVehicleLeave()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Vehicle = BuildVehicle(obj.vehicle),
+                            RideDistance = obj.RideDistance,
+                            SeatIndex = obj.seatIndex,
+                            MaxSpeed = obj.maxSpeed
+                        };
+                        break;
+                    case "LogVehicleRide":
+                        LogVehicleRide playerRide = new LogVehicleRide()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Vehicle = BuildVehicle(obj.vehicle)
                         };
                         break;
                     default:
-                        throw new NotImplementedException("Events list contained event not seen before.");
+                        continue;
+                        //throw new NotImplementedException("Events list contained event not seen before.");
                 }
             }
 

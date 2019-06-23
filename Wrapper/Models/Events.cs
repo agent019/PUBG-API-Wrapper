@@ -27,7 +27,7 @@ namespace PUBGAPIWrapper.Models
         public DamageReason DamageReason { get; set; }
         public string DamageCauserName { get; set; }
         public Item Item { get; set; }
-        public float Distance { get; set; }
+        public double Distance { get; set; }
     }
 
     public class LogCarePackageLand : Event
@@ -172,7 +172,7 @@ namespace PUBGAPIWrapper.Models
         public string DamageCauserName { get; set; }
         public string DamageCauserAdditionalInfo { get; set; } // new
         public string DamageReason { get; set; }
-        public float Distance { get; set; }
+        public double Distance { get; set; }
         public GameResult VictimGameResult { get; set; } // new
     }
 
@@ -195,7 +195,7 @@ namespace PUBGAPIWrapper.Models
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
         public string DamageCauserAdditionalInfo { get; set; } // new
-        public float Distance { get; set; }
+        public double Distance { get; set; }
         public bool IsAttackerInVehicle { get; set; }
         public int DBNOId { get; set; }
     }
@@ -204,7 +204,7 @@ namespace PUBGAPIWrapper.Models
     {
         public Character Character { get; set; }
         public Vehicle Vehicle { get; set; } // new
-        public float ElapsedTime { get; set; }
+        public double ElapsedTime { get; set; }
         public int NumAlivePlayers { get; set; }
     }
 
@@ -226,7 +226,7 @@ namespace PUBGAPIWrapper.Models
         /// 1.0 Damage = 1.0 Health
         /// Net damage after armor; Damage to health
         /// </remarks>
-        public float Damage { get; set; }
+        public double Damage { get; set; }
         public string DamageCauserName { get; set; }
     }
 
@@ -259,14 +259,14 @@ namespace PUBGAPIWrapper.Models
         public Vehicle Vehicle { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public float Distance { get; set; }
+        public double Distance { get; set; }
     }
 
     public class LogVehicleLeave : Event
     {
         public Character Character { get; set; }
         public Vehicle Vehicle { get; set; }
-        public float RideDistance { get; set; }
+        public double RideDistance { get; set; }
         public int SeatIndex { get; set; }
         public double MaxSpeed { get; set; } // new
     }
