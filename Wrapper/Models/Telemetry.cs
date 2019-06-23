@@ -50,8 +50,9 @@ namespace PUBGAPIWrapper.Models
         public List<LogVaultStart> VaultStartEvents { get; set; }
         public List<LogVehicleDestroy> VehicleDestroyEvents { get; set; }
         public List<LogVehicleLeave> VehicleLeaveEvents { get; set; }
-        public List<LogWeaponFireCount> WeaponFireCountEvents { get; set; }
         public List<LogVehicleRide> VehicleRideEvents { get; set; }
+        public List<LogWeaponFireCount> WeaponFireCountEvents { get; set; }
+        public List<LogWheelDestroy> WheelDestroyEvents { get; set; }
 
         #endregion
 
@@ -97,20 +98,20 @@ namespace PUBGAPIWrapper.Models
         {
             return new Character()
             {
-                AccountId = obj.accountId,
-                Health = obj.health,
+                AccountId = obj?.accountId,
+                Health = obj?.health,
                 Location = new Location()
                 {
-                    X = obj.location.x,
-                    Y = obj.location.y,
-                    Z = obj.location.z
+                    X = obj?.location?.x,
+                    Y = obj?.location?.y,
+                    Z = obj?.location?.z
                 },
-                Name = obj.name,
-                Ranking = obj.ranking,
-                TeamId = obj.teamId,
-                IsInBlueZone = obj.isInBlueZone,
-                IsInRedZone = obj.isInRedZone,
-                Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.zone)
+                Name = obj?.name,
+                Ranking = obj?.ranking,
+                TeamId = obj?.teamId,
+                IsInBlueZone = obj?.isInBlueZone,
+                IsInRedZone = obj?.isInRedZone,
+                //Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.zone)
             };
         }
 
@@ -118,11 +119,11 @@ namespace PUBGAPIWrapper.Models
         {
             return new Item()
             {
-                AttachedItems = ((JArray)obj.attachedItems).Select(jv => (string)jv).ToArray(),
-                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj.category)),
-                ItemId = obj.itemId,
-                StackCount = obj.stackCount,
-                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj.subCategory))
+                AttachedItems = ((JArray)obj?.attachedItems).Select(jv => (string)jv).ToArray(),
+                Category = String.IsNullOrWhiteSpace(Convert.ToString(obj?.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj?.category)),
+                ItemId = obj?.itemId,
+                StackCount = obj?.stackCount,
+                SubCategory = String.IsNullOrWhiteSpace(Convert.ToString(obj?.subCategory)) ? null : Enum.Parse(typeof(SubCategory), Convert.ToString(obj?.subCategory))
             };
         }
 
@@ -130,10 +131,48 @@ namespace PUBGAPIWrapper.Models
         {
             return new Vehicle()
             {
-                FuelPercent = obj.fuelPercent,
-                HealthPercent = obj.healthPercent,
-                VehicleId = obj.vehicleId,
-                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj.vehicleType))
+                FuelPercent = obj?.fuelPercent,
+                HealthPercent = obj?.healthPercent,
+                VehicleId = obj?.vehicleId,
+                VehicleType = String.IsNullOrWhiteSpace(Convert.ToString(obj?.vehicleType)) ? null : Enum.Parse(typeof(VehicleType), Convert.ToString(obj?.vehicleType))
+            };
+        }
+
+        private static GameState BuildGameState(dynamic obj)
+        {
+            return new GameState()
+            {
+                ElapsedTime = obj.elapsedTime,
+                NumAliveTeams = obj.numAliveTeams,
+                NumJoinPlayers = obj.numJoinPlayers,
+                NumStartPlayers = obj.numStartPlayers,
+                NumAlivePlayers = obj.numAlivePlayers,
+                SafetyZonePosition = BuildLocation(obj.safetyZonePosition),
+                SafetyZoneRadius = obj.safetyZoneRadius,
+                PoisonGasWarningPosition = BuildLocation(obj.poisonGasWarningPosition),
+                PoisonGasWarningRadius = obj.poisonGasWarningRadius,
+                RedZonePosition = BuildLocation(obj.redZonePosition),
+                RedZoneRadius = obj.redZoneRadius
+            };
+        }
+
+        private static Location BuildLocation(dynamic obj)
+        {
+            return new Location()
+            {
+                X = obj.x,
+                Y = obj.y,
+                Z = obj.z
+            };
+        }
+
+        private static ItemPackage BuildItemPackage(dynamic obj)
+        {
+            return new ItemPackage()
+            {
+                ItemPackageId = obj.itemPackageId,
+                Location = BuildLocation(obj.location),
+                // Items = ???
             };
         }
 
@@ -165,6 +204,7 @@ namespace PUBGAPIWrapper.Models
                             Item = BuildItem(obj.item),
                             Distance = obj.distance
                         };
+                        t.ArmorDestroyEvents.Add(armorDestroy);
                         break;
                     case "LogCarePackageLand":
                         LogCarePackageLand carePackageLand = new LogCarePackageLand()
@@ -175,8 +215,9 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            // ItemPackage = ???
+                            ItemPackage = BuildItemPackage(obj.itemPackage)
                         };
+                        t.CarePackageLandEvents.Add(carePackageLand);
                         break;
                     case "LogCarePackageSpawn":
                         LogCarePackageSpawn carePackageSpawn = new LogCarePackageSpawn()
@@ -187,20 +228,37 @@ namespace PUBGAPIWrapper.Models
                             {
                                 IsGame = obj.common.isGame
                             },
-                            // ItemPackage = ???
+                            ItemPackage = BuildItemPackage(obj.itemPackage)
                         };
+                        t.CarePackageSpawnEvents.Add(carePackageSpawn);
                         break;
                     case "LogGameStatePeriodic":
-                        LogGameStatePeriodic GameStatePeriodic = new LogGameStatePeriodic()
+                        LogGameStatePeriodic gameStatePeriodic = new LogGameStatePeriodic()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            GameState = BuildGameState(obj.gameState)
                         };
+                        t.GameStatePeriodicEvents.Add(gameStatePeriodic);
+                        break;
+                    case "LogHeal":
+                        LogHeal heal = new LogHeal()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            HealAmount = obj.healAmount,
+                            Item = BuildItem(obj.item)
+                        };
+                        t.HealEvents.Add(heal);
                         break;
                     case "LogItemAttach":
                         LogItemAttach itemAttach = new LogItemAttach()
@@ -215,6 +273,7 @@ namespace PUBGAPIWrapper.Models
                             ParentItem = BuildItem(obj.parentItem),
                             ChildItem = BuildItem(obj.childItem)
                         };
+                        t.ItemAttachEvents.Add(itemAttach);
                         break;
                     case "LogItemDetach":
                         LogItemDetach itemDetach = new LogItemDetach()
@@ -229,6 +288,7 @@ namespace PUBGAPIWrapper.Models
                             ParentItem = BuildItem(obj.parentItem),
                             ChildItem = BuildItem(obj.childItem)
                         };
+                        t.ItemDetachEvents.Add(itemDetach);
                         break;
                     case "LogItemDrop":
                         LogItemDrop itemDrop = new LogItemDrop()
@@ -242,6 +302,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemDropEvents.Add(itemDrop);
                         break;
                     case "LogItemEquip":
                         LogItemEquip playerEquip = new LogItemEquip()
@@ -255,6 +316,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemEquipEvents.Add(playerEquip);
                         break;
                     case "LogItemPickup":
                         LogItemPickup playerPickup = new LogItemPickup()
@@ -268,9 +330,10 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemPickupEvents.Add(playerPickup);
                         break;
                     case "LogItemPickupFromCarePackage":
-                        LogItemPickup playerPickupFromCarePackage = new LogItemPickup()
+                        LogItemPickupFromCarePackage playerPickupFromCarePackage = new LogItemPickupFromCarePackage()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -281,9 +344,10 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemPickupFromCarePackageEvents.Add(playerPickupFromCarePackage);
                         break;
                     case "LogItemPickupFromLootBox":
-                        LogItemPickup playerPickupFromLootBox = new LogItemPickup()
+                        LogItemPickupFromLootBox playerPickupFromLootBox = new LogItemPickupFromLootBox()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -294,6 +358,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemPickupFromLootBoxEvents.Add(playerPickupFromLootBox);
                         break;
                     case "LogItemUnequip":
                         LogItemUnequip playerUnequip = new LogItemUnequip()
@@ -307,6 +372,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemUnequipEvents.Add(playerUnequip);
                         break;
                     case "LogItemUse":
                         LogItemUse itemUse = new LogItemUse()
@@ -320,6 +386,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
+                        t.ItemUseEvents.Add(itemUse);
                         break;
                     case "LogMatchDefinition":
                         LogMatchDefinition matchDefinition = new LogMatchDefinition()
@@ -331,6 +398,7 @@ namespace PUBGAPIWrapper.Models
                             SeasonState = obj.SeasonState
                             // This item actually doesnt have a common field
                         };
+                        t.MatchDefinitionEvents.Add(matchDefinition);
                         break;
                     case "LogMatchEnd":
                         LogMatchEnd matchEnd = new LogMatchEnd()
@@ -343,6 +411,7 @@ namespace PUBGAPIWrapper.Models
                             },
                             // Characters = ???
                         };
+                        t.MatchEndEvents.Add(matchEnd);
                         break;
                     case "LogMatchStart":
                         LogMatchStart matchStart = new LogMatchStart()
@@ -352,9 +421,46 @@ namespace PUBGAPIWrapper.Models
                             Common = new Common()
                             {
                                 IsGame = obj.common.isGame
-                            }
-
+                            },
+                            MapName = obj.mapName,
+                            WeatherId = obj.weatherId,
+                            // Characters = ???,
+                            CameraViewBehaviour = obj.cameraViewBehaviour,
+                            TeamSize = obj.teamSize,
+                            IsCustomGame = obj.isCustomGame,
+                            IsEventMode = obj.isEventMode,
+                            BlueZoneCustomOptions = obj.blueZoneCustomOptions
                         };
+                        t.MatchStartEvents.Add(matchStart);
+                        break;
+                    case "LogObjectDestroy":
+                        LogObjectDestroy objectDestroy = new LogObjectDestroy()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            ObjectType = obj.objectType,
+                            ObjectLocation = BuildLocation(obj.objectLocation)
+                        };
+                        t.ObjectDestroyEvents.Add(objectDestroy);
+                        break;
+                    case "LogParachuteLanding":
+                        LogParachuteLanding parachuteLanding = new LogParachuteLanding()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            Distance = obj.distance
+                        };
+                        t.ParachuteLandingEvents.Add(parachuteLanding);
                         break;
                     case "LogPlayerAttack":
                         LogPlayerAttack playerAttack = new LogPlayerAttack()
@@ -370,8 +476,9 @@ namespace PUBGAPIWrapper.Models
                             FireWeaponStackCount = obj.fireWeaponStackCount,
                             AttackType = String.IsNullOrWhiteSpace(Convert.ToString(obj.attackType)) ? null : Enum.Parse(typeof(AttackType), Convert.ToString(obj.attackType)),
                             Weapon = BuildItem(obj.weapon),
-                            Vehicle = BuildVehicle(obj.vehicle)
+                            Vehicle = obj?.vehicle != null ? BuildVehicle(obj.vehicle) : null
                         };
+                        t.PlayerAttackEvents.Add(playerAttack);
                         break;
                     case "LogPlayerCreate":
                         LogPlayerCreate playerCreate = new LogPlayerCreate()
@@ -402,11 +509,19 @@ namespace PUBGAPIWrapper.Models
                             DBNOId = obj.dBNOId,
                             DamageTypeCategory = obj.damageTypeCategory,
                             DamageCauserName = obj.damageCauserName,
-                            DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo,
+                            // DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo,
                             DamageReason = obj.damageReason,
-                            Distance = obj.distance
-                            // GameResult = ???
+                            Distance = obj.distance,
+                            VictimGameResult = new GameResult()
+                            {
+                                AccountId = obj.victimGameResult.accountId,
+                                Rank = obj.victimGameResult.rank,
+                                Result = obj.victimGameResult.result,
+                                Stats = obj.victimGameResult.stats,
+                                TeamId = obj.victimGameResult.teamId
+                            }
                         };
+                        t.PlayerKillEvents.Add(playerKill);
                         break;
                     case "LogPlayerLogin":
                         LogPlayerLogin playerLogin = new LogPlayerLogin()
@@ -419,6 +534,7 @@ namespace PUBGAPIWrapper.Models
                             },
                             AccountId = obj.accountId
                         };
+                        t.PlayerLoginEvents.Add(playerLogin);
                         break;
                     case "LogPlayerLogout":
                         LogPlayerLogout playerLogout = new LogPlayerLogout()
@@ -431,6 +547,7 @@ namespace PUBGAPIWrapper.Models
                             },
                             AccountId = obj.accountId
                         };
+                        t.PlayerLogoutEvents.Add(playerLogout);
                         break;
                     case "LogPlayerPosition":
                         LogPlayerPosition playerPosition = new LogPlayerPosition()
@@ -446,7 +563,6 @@ namespace PUBGAPIWrapper.Models
                             ElapsedTime = obj.elapsedTime,
                             NumAlivePlayers = obj.numAlivePlayers
                         };
-
                         t.PlayerPositionEvents.Add(playerPosition);
                         break;
                     case "LogPlayerTakeDamage":
@@ -466,6 +582,20 @@ namespace PUBGAPIWrapper.Models
                             Damage = obj.damage,
                             DamageCauserName = obj.damageCauserName
                         };
+                        t.PlayerTakeDamageEvents.Add(playerTakeDamage);
+                        break;
+                    case "LogRedZoneEnded":
+                        LogRedZoneEnded redZoneEnded = new LogRedZoneEnded()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            // Drivers = ???
+                        };
+                        t.RedZoneEndedEvents.Add(redZoneEnded);
                         break;
                     case "LogSwimEnd":
                         LogSwimEnd swimEnd = new LogSwimEnd()
@@ -477,9 +607,10 @@ namespace PUBGAPIWrapper.Models
                                 IsGame = obj.common.isGame
                             },
                             Character = BuildCharacter(obj.character),
-                            SwimDistance = obj.SwimDistance,
+                            SwimDistance = obj.swimDistance,
                             MaxSwimDepthOfWater = obj.maxSwimDepthOfWater
                         };
+                        t.SwimEndEvents.Add(swimEnd);
                         break;
                     case "LogSwimStart":
                         LogSwimStart swimStart = new LogSwimStart()
@@ -492,6 +623,20 @@ namespace PUBGAPIWrapper.Models
                             },
                             Character = BuildCharacter(obj.character),
                         };
+                        t.SwimStartEvents.Add(swimStart);
+                        break;
+                    case "LogVaultStart":
+                        LogVaultStart vaultStart = new LogVaultStart()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                        };
+                        t.VaultStartEvents.Add(vaultStart);
                         break;
                     case "LogVehicleDestroy":
                         LogVehicleDestroy vehicleDestroy = new LogVehicleDestroy()
@@ -509,6 +654,7 @@ namespace PUBGAPIWrapper.Models
                             DamageCauserName = obj.damageCauserName,
                             Distance = obj.distance
                         };
+                        t.VehicleDestroyEvents.Add(vehicleDestroy);
                         break;
                     case "LogVehicleLeave":
                         LogVehicleLeave vehicleLeave = new LogVehicleLeave()
@@ -521,10 +667,11 @@ namespace PUBGAPIWrapper.Models
                             },
                             Character = BuildCharacter(obj.character),
                             Vehicle = BuildVehicle(obj.vehicle),
-                            RideDistance = obj.RideDistance,
+                            RideDistance = obj.rideDistance,
                             SeatIndex = obj.seatIndex,
                             MaxSpeed = obj.maxSpeed
                         };
+                        t.VehicleLeaveEvents.Add(vehicleLeave);
                         break;
                     case "LogVehicleRide":
                         LogVehicleRide playerRide = new LogVehicleRide()
@@ -538,10 +685,43 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Vehicle = BuildVehicle(obj.vehicle)
                         };
+                        t.VehicleRideEvents.Add(playerRide);
+                        break;
+                    case "LogWeaponFireCount":
+                        LogWeaponFireCount weaponFireCount = new LogWeaponFireCount()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            Character = BuildCharacter(obj.character),
+                            FireCount = obj.fireCount,
+                            WeaponId = obj.weaponId
+                        };
+                        t.WeaponFireCountEvents.Add(weaponFireCount);
+                        break;
+                    case "LogWheelDestroy":
+                        LogWheelDestroy wheelDestroy = new LogWheelDestroy()
+                        {
+                            Timestamp = obj._D,
+                            Type = obj._T,
+                            Common = new Common()
+                            {
+                                IsGame = obj.common.isGame
+                            },
+                            AttackId = obj.attackId,
+                            Attacker = BuildCharacter(obj.attacker),
+                            Vehicle = BuildVehicle(obj.vehicle),
+                            DamageTypeCategory = obj.damageTypeCategory,
+                            DamageCauserName = obj.damageCauserName
+                        };
+                        t.WheelDestroyEvents.Add(wheelDestroy);
                         break;
                     default:
                         continue;
-                        //throw new NotImplementedException("Events list contained event not seen before.");
+                        throw new NotImplementedException("Events list contained event not seen before.");
                 }
             }
 
