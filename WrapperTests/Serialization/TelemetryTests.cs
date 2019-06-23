@@ -1297,9 +1297,345 @@ namespace WrapperTests.Serialization
         #endregion
 
         [TestMethod, TestCategory("Unit")]
-        public void ItDeserializesEventsCorrectly()
+        public void ItDeserializesArmorDestroyEventsCorrectly()
         {
             Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ArmorDestroyEvents.Count);
+
+            Assert.AreEqual("6/19/1019 11:39:37 PM", telemetry.ArmorDestroyEvents[0].Timestamp.ToString());
+            Assert.AreEqual("LogArmorDestroy", telemetry.ArmorDestroyEvents[0].Type);
+            Assert.AreEqual(1, telemetry.ArmorDestroyEvents[0].Common.IsGame);
+
+            Assert.AreEqual("Damage_Gun", telemetry.ArmorDestroyEvents[0].DamageTypeCategory);
+            Assert.AreEqual("TorsoShot", telemetry.ArmorDestroyEvents[0].DamageReason);
+            Assert.AreEqual("WeapBerylM762_C", telemetry.ArmorDestroyEvents[0].DamageCauserName);
+            Assert.AreEqual(530.1838989257813, telemetry.ArmorDestroyEvents[0].Distance);
+
+            Assert.AreEqual("Player1", telemetry.ArmorDestroyEvents[0].Attacker.Name);
+            Assert.AreEqual(1, telemetry.ArmorDestroyEvents[0].Attacker.TeamId);
+            Assert.AreEqual(100, telemetry.ArmorDestroyEvents[0].Attacker.Health);
+            Assert.AreEqual(0, telemetry.ArmorDestroyEvents[0].Attacker.Ranking);
+            Assert.AreEqual("account.id-123", telemetry.ArmorDestroyEvents[0].Attacker.AccountId);
+            Assert.IsFalse(telemetry.ArmorDestroyEvents[0].Attacker.IsInBlueZone);
+            Assert.IsFalse(telemetry.ArmorDestroyEvents[0].Attacker.IsInRedZone);
+            // Assert.AreEqual("Player1", telemetry.ArmorDestroyEvents[0].Attacker.Zone);
+            Assert.AreEqual(468019.34375, telemetry.ArmorDestroyEvents[0].Attacker.Location.X);
+            Assert.AreEqual(644856.4375, telemetry.ArmorDestroyEvents[0].Attacker.Location.Y);
+            Assert.AreEqual(161.77999877929688, telemetry.ArmorDestroyEvents[0].Attacker.Location.Z);
+
+            Assert.AreEqual("Player2", telemetry.ArmorDestroyEvents[0].Victim.Name);
+            Assert.AreEqual(2, telemetry.ArmorDestroyEvents[0].Victim.TeamId);
+            Assert.AreEqual(0, telemetry.ArmorDestroyEvents[0].Victim.Health);
+            Assert.AreEqual(0, telemetry.ArmorDestroyEvents[0].Victim.Ranking);
+            Assert.AreEqual("account.id-456", telemetry.ArmorDestroyEvents[0].Victim.AccountId);
+            Assert.IsFalse(telemetry.ArmorDestroyEvents[0].Victim.IsInBlueZone);
+            Assert.IsFalse(telemetry.ArmorDestroyEvents[0].Victim.IsInRedZone);
+            // Assert.AreEqual("Player1", telemetry.ArmorDestroyEvents[0].Attacker.Zone);
+            Assert.AreEqual(467627.0625, telemetry.ArmorDestroyEvents[0].Victim.Location.X);
+            Assert.AreEqual(645212, telemetry.ArmorDestroyEvents[0].Victim.Location.Y);
+            Assert.AreEqual(133.75, telemetry.ArmorDestroyEvents[0].Victim.Location.Z);
+
+            Assert.AreEqual("Item_Armor_D_01_Lv2_C", telemetry.ArmorDestroyEvents[0].Item.ItemId);
+            Assert.AreEqual(1, telemetry.ArmorDestroyEvents[0].Item.StackCount);
+            Assert.AreEqual("Equipment", telemetry.ArmorDestroyEvents[0].Item.Category);
+            Assert.AreEqual("Vest", telemetry.ArmorDestroyEvents[0].Item.SubCategory);
+            Assert.AreEqual("", telemetry.ArmorDestroyEvents[0].Item.AttachedItems);
+
+        }
+        
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesCarePackageLandEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents.Count);
+
+            Assert.AreEqual("6/19/1019 11:42:41 PM", telemetry.CarePackageLandEvents[0].Timestamp.ToString());
+            Assert.AreEqual("LogCarePackageLand", telemetry.CarePackageLandEvents[0].Type);
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].Common.IsGame);
+
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.ItemPackageId);
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.Location.X);
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.Location.Y);
+            Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.Location.Z);
+
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items.Count);
+
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].ItemId);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].StackCount);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].Category);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].SubCategory);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].AttachedItems);
+
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].ItemId);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].StackCount);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].Category);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].SubCategory);
+            Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].AttachedItems);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesCarePackageSpawnEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.CarePackageSpawnEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesGameStatePeriodicEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.GameStatePeriodicEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesHealEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.HealEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemAttachEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemAttachEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemDetachEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemDetachEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemDropEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemDropEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemEquipEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemEquipEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemPickupEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemPickupEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemPickupFromCarePackageEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemPickupFromCarePackageEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemPickupFromLootBoxEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemPickupFromLootBoxEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemUnequipEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemUnequipEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesItemUseEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ItemUseEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesMatchDefinitionEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.MatchDefinitionEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesMatchEndEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.MatchEndEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesMatchStartsEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.MatchStartEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesObjectDestroyEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ObjectDestroyEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesParachuteLandingEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.ParachuteLandingEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerAttackEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerAttackEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerCreateEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerCreateEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerKillEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerKillEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerLoginEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerLoginEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerLogoutEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerLogoutEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerPositionEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerPositionEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerTakeDamageEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerTakeDamageEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesRedZoneEndedEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.RedZoneEndedEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesSwimEndEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.SwimEndEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesSwimStartEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.SwimStartEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesVaultStartEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.VaultStartEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesVehicleDestroyEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.VehicleDestroyEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesVehicleLeaveEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.VehicleLeaveEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesVehicleRideEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.VehicleRideEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesWeaponFireCountCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.WeaponFireCountEvents.Count);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesWheelDestroyEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.WheelDestroyEvents.Count);
         }
     }
 }
