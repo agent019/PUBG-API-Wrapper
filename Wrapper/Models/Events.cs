@@ -83,7 +83,7 @@ namespace PUBGAPIWrapper.Models
         public Item Item { get; set; }
     }
 
-    public class LogItemPickupFromCarePackage : Event
+    public class LogItemPickupFromCarepackage : Event
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
