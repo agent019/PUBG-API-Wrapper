@@ -28,7 +28,7 @@ namespace PUBGAPIWrapper.Models
         public List<LogItemDrop> ItemDropEvents { get; set; }
         public List<LogItemEquip> ItemEquipEvents { get; set; }
         public List<LogItemPickup> ItemPickupEvents { get; set; }
-        public List<LogItemPickupFromCarePackage> ItemPickupFromCarePackageEvents { get; set; }
+        public List<LogItemPickupFromCarepackage> ItemPickupFromCarePackageEvents { get; set; }
         public List<LogItemPickupFromLootBox> ItemPickupFromLootBoxEvents { get; set; }
         public List<LogItemUnequip> ItemUnequipEvents { get; set; }
         public List<LogItemUse> ItemUseEvents { get; set; }
@@ -68,7 +68,7 @@ namespace PUBGAPIWrapper.Models
             this.ItemDropEvents = new List<LogItemDrop>();
             this.ItemEquipEvents = new List<LogItemEquip>();
             this.ItemPickupEvents = new List<LogItemPickup>();
-            this.ItemPickupFromCarePackageEvents = new List<LogItemPickupFromCarePackage>();
+            this.ItemPickupFromCarePackageEvents = new List<LogItemPickupFromCarepackage>();
             this.ItemPickupFromLootBoxEvents = new List<LogItemPickupFromLootBox>();
             this.ItemUnequipEvents = new List<LogItemUnequip>();
             this.ItemUseEvents = new List<LogItemUse>();
@@ -92,6 +92,7 @@ namespace PUBGAPIWrapper.Models
             this.VehicleLeaveEvents = new List<LogVehicleLeave>();
             this.WeaponFireCountEvents = new List<LogWeaponFireCount>();
             this.VehicleRideEvents = new List<LogVehicleRide>();
+            this.WheelDestroyEvents = new List<LogWheelDestroy>();
         }
 
         private static Character BuildCharacter(dynamic obj)
@@ -332,8 +333,8 @@ namespace PUBGAPIWrapper.Models
                         };
                         t.ItemPickupEvents.Add(playerPickup);
                         break;
-                    case "LogItemPickupFromCarePackage":
-                        LogItemPickupFromCarePackage playerPickupFromCarePackage = new LogItemPickupFromCarePackage()
+                    case "LogItemPickupFromCarepackage":
+                        LogItemPickupFromCarepackage playerPickupFromCarepackage = new LogItemPickupFromCarepackage()
                         {
                             Timestamp = obj._D,
                             Type = obj._T,
@@ -344,7 +345,7 @@ namespace PUBGAPIWrapper.Models
                             Character = BuildCharacter(obj.character),
                             Item = BuildItem(obj.item)
                         };
-                        t.ItemPickupFromCarePackageEvents.Add(playerPickupFromCarePackage);
+                        t.ItemPickupFromCarePackageEvents.Add(playerPickupFromCarepackage);
                         break;
                     case "LogItemPickupFromLootBox":
                         LogItemPickupFromLootBox playerPickupFromLootBox = new LogItemPickupFromLootBox()
