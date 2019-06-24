@@ -1264,7 +1264,7 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(1, telemetry.ArmorDestroyEvents[0].Common.IsGame);
 
             Assert.AreEqual("Damage_Gun", telemetry.ArmorDestroyEvents[0].DamageTypeCategory);
-            Assert.AreEqual("TorsoShot", telemetry.ArmorDestroyEvents[0].DamageReason);
+            Assert.AreEqual(DamageReason.TorsoShot, telemetry.ArmorDestroyEvents[0].DamageReason);
             Assert.AreEqual("WeapBerylM762_C", telemetry.ArmorDestroyEvents[0].DamageCauserName);
             Assert.AreEqual(530.1838989257813, telemetry.ArmorDestroyEvents[0].Distance);
 
@@ -1294,8 +1294,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Armor_D_01_Lv2_C", telemetry.ArmorDestroyEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ArmorDestroyEvents[0].Item.StackCount);
-            Assert.AreEqual("Equipment", telemetry.ArmorDestroyEvents[0].Item.Category);
-            Assert.AreEqual("Vest", telemetry.ArmorDestroyEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Equipment, telemetry.ArmorDestroyEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Vest, telemetry.ArmorDestroyEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ArmorDestroyEvents[0].Item.AttachedItems);
 
         }
@@ -1319,14 +1319,14 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_AUG_C", telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].ItemId);
             Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].StackCount);
-            Assert.AreEqual("Weapon", telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].Category);
-            Assert.AreEqual("Main", telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].SubCategory);
             // Assert.AreEqual("", telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].AttachedItems);
 
             Assert.AreEqual("Item_Armor_C_01_Lv3_C", telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].ItemId);
             Assert.AreEqual(1, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].StackCount);
-            Assert.AreEqual("Equipment", telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].Category);
-            Assert.AreEqual("Vest", telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].SubCategory);
+            Assert.AreEqual(Category.Equipment, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].Category);
+            Assert.AreEqual(SubCategory.Vest, telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].SubCategory);
             // Assert.AreEqual("", telemetry.CarePackageLandEvents[0].ItemPackage.Items[1].AttachedItems);
         }
 
@@ -1342,22 +1342,22 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(1.5, telemetry.CarePackageSpawnEvents[0].Common.IsGame);
 
             Assert.AreEqual("Carapackage_RedBox_C", telemetry.CarePackageSpawnEvents[0].ItemPackage.ItemPackageId);
-            Assert.AreEqual(730582.25, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.X);
-            Assert.AreEqual(373777.5, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.Y);
+            Assert.AreEqual(725696.125, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.X);
+            Assert.AreEqual(261458.0625, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.Y);
             Assert.AreEqual(30000, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.Z);
 
             Assert.AreEqual(2, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items.Count);
 
             Assert.AreEqual("Item_Weapon_AUG_C", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].ItemId);
             Assert.AreEqual(1, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].StackCount);
-            Assert.AreEqual("Weapon", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].Category);
-            Assert.AreEqual("Main", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].SubCategory);
             // Assert.AreEqual("", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].AttachedItems);
 
             Assert.AreEqual("Item_Armor_C_01_Lv3_C", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].ItemId);
             Assert.AreEqual(1, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].StackCount);
-            Assert.AreEqual("Equipment", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].Category);
-            Assert.AreEqual("Vest", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].SubCategory);
+            Assert.AreEqual(Category.Equipment, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].Category);
+            Assert.AreEqual(SubCategory.Vest, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].SubCategory);
             // Assert.AreEqual("", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[1].AttachedItems);
         }
 
@@ -1404,11 +1404,11 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(2, telemetry.HealEvents.Count);
 
             // "Passive" healing
-            Assert.AreEqual("06/19/2019 23:46:30", telemetry.HealEvents[0].Timestamp.ToString());
+            Assert.AreEqual("06/19/2019 23:46:26", telemetry.HealEvents[0].Timestamp.ToString());
             Assert.AreEqual("LogHeal", telemetry.HealEvents[0].Type);
             Assert.AreEqual(1.5, telemetry.HealEvents[0].Common.IsGame);
 
-            Assert.AreEqual(1, telemetry.HealEvents[0].HealAmount);
+            Assert.AreEqual(7.4346160888671879, telemetry.HealEvents[0].HealAmount);
 
             Assert.AreEqual("Player1", telemetry.HealEvents[0].Character.Name);
             Assert.AreEqual(1, telemetry.HealEvents[0].Character.TeamId);
@@ -1424,8 +1424,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("", telemetry.HealEvents[0].Item.ItemId);
             Assert.AreEqual(254345235, telemetry.HealEvents[0].Item.StackCount);
-            Assert.AreEqual("", telemetry.HealEvents[0].Item.Category);
-            Assert.AreEqual("", telemetry.HealEvents[0].Item.SubCategory);
+            Assert.AreEqual(null, telemetry.HealEvents[0].Item.Category);
+            Assert.AreEqual(null, telemetry.HealEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.HealEvents[0].Item.AttachedItems);
 
             // "Active" healing
@@ -1435,7 +1435,7 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual(97.19999694824219, telemetry.HealEvents[1].HealAmount);
 
-            Assert.AreEqual("Player1", telemetry.HealEvents[1].Character.Name);
+            Assert.AreEqual("Player3", telemetry.HealEvents[1].Character.Name);
             Assert.AreEqual(1, telemetry.HealEvents[1].Character.TeamId);
             Assert.AreEqual(100, telemetry.HealEvents[1].Character.Health);
             Assert.AreEqual(490206.71875, telemetry.HealEvents[1].Character.Location.X);
@@ -1449,8 +1449,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Heal_MedKit_C", telemetry.HealEvents[1].Item.ItemId);
             Assert.AreEqual(1, telemetry.HealEvents[1].Item.StackCount);
-            Assert.AreEqual("Use", telemetry.HealEvents[1].Item.Category);
-            Assert.AreEqual("Heal", telemetry.HealEvents[1].Item.SubCategory);
+            Assert.AreEqual(Category.Use, telemetry.HealEvents[1].Item.Category);
+            Assert.AreEqual(SubCategory.Heal, telemetry.HealEvents[1].Item.SubCategory);
             // Assert.AreEqual("", telemetry.HealEvents[1].Item.AttachedItems);
         }
 
@@ -1479,14 +1479,14 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_M24_C", telemetry.ItemAttachEvents[0].ParentItem.ItemId);
             Assert.AreEqual(1, telemetry.ItemAttachEvents[0].ParentItem.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemAttachEvents[0].ParentItem.Category);
-            Assert.AreEqual("Main", telemetry.ItemAttachEvents[0].ParentItem.SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.ItemAttachEvents[0].ParentItem.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.ItemAttachEvents[0].ParentItem.SubCategory);
             // Assert.AreEqual("", telemetry.ItemAttachEvents[0].ParentItem.AttachedItems);
 
             Assert.AreEqual("Item_Attach_Weapon_Magazine_Extended_SniperRifle_C", telemetry.ItemAttachEvents[0].ChildItem.ItemId);
             Assert.AreEqual(1, telemetry.ItemAttachEvents[0].ChildItem.StackCount);
-            Assert.AreEqual("Attachment", telemetry.ItemAttachEvents[0].ChildItem.Category);
-            Assert.AreEqual("None", telemetry.ItemAttachEvents[0].ChildItem.SubCategory);
+            Assert.AreEqual(Category.Attachment, telemetry.ItemAttachEvents[0].ChildItem.Category);
+            Assert.AreEqual(SubCategory.None, telemetry.ItemAttachEvents[0].ChildItem.SubCategory);
             // Assert.AreEqual("", telemetry.ItemAttachEvents[0].ChildItem.AttachedItems);
         }
 
@@ -1515,15 +1515,15 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_SCAR-L_C", telemetry.ItemDetachEvents[0].ParentItem.ItemId);
             Assert.AreEqual(1, telemetry.ItemDetachEvents[0].ParentItem.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemDetachEvents[0].ParentItem.Category);
-            Assert.AreEqual("Main", telemetry.ItemDetachEvents[0].ParentItem.SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.ItemDetachEvents[0].ParentItem.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.ItemDetachEvents[0].ParentItem.SubCategory);
             // Assert.AreEqual("", telemetry.ItemDetachEvents[0].ParentItem.AttachedItems);
             // Item_Attach_Weapon_Upper_DotSight_01_C, Item_Attach_Weapon_Lower_Foregrip_C, Item_Attach_Weapon_Magazine_QuickDraw_Large_C
 
             Assert.AreEqual("Item_Attach_Weapon_Upper_DotSight_01_C", telemetry.ItemDetachEvents[0].ChildItem.ItemId);
             Assert.AreEqual(1, telemetry.ItemDetachEvents[0].ChildItem.StackCount);
-            Assert.AreEqual("Attachment", telemetry.ItemDetachEvents[0].ChildItem.Category);
-            Assert.AreEqual("None", telemetry.ItemDetachEvents[0].ChildItem.SubCategory);
+            Assert.AreEqual(Category.Attachment, telemetry.ItemDetachEvents[0].ChildItem.Category);
+            Assert.AreEqual(SubCategory.None, telemetry.ItemDetachEvents[0].ChildItem.SubCategory);
             // Assert.AreEqual("", telemetry.ItemDetachEvents[0].ChildItem.AttachedItems);
         }
 
@@ -1552,8 +1552,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_SCAR-L_C", telemetry.ItemDropEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemDropEvents[0].Item.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemDropEvents[0].Item.Category);
-            Assert.AreEqual("Main", telemetry.ItemDropEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.ItemDropEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.ItemDropEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemDropEvents[0].Item.AttachedItems);
         }
 
@@ -1582,8 +1582,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_HK416_C", telemetry.ItemEquipEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemEquipEvents[0].Item.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemEquipEvents[0].Item.Category);
-            Assert.AreEqual("Main", telemetry.ItemEquipEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.ItemEquipEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.ItemEquipEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemEquipEvents[0].Item.AttachedItems);
         }
 
@@ -1612,8 +1612,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Weapon_HK416_C", telemetry.ItemPickupEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemPickupEvents[0].Item.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemPickupEvents[0].Item.Category);
-            Assert.AreEqual("Main", telemetry.ItemPickupEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Weapon, telemetry.ItemPickupEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.ItemPickupEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemPickupEvents[0].Item.AttachedItems);
         }
 
@@ -1642,8 +1642,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Head_G_01_Lv3_C", telemetry.ItemPickupFromCarePackageEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemPickupFromCarePackageEvents[0].Item.StackCount);
-            Assert.AreEqual("Equipment", telemetry.ItemPickupFromCarePackageEvents[0].Item.Category);
-            Assert.AreEqual("Headgear", telemetry.ItemPickupFromCarePackageEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Equipment, telemetry.ItemPickupFromCarePackageEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Headgear, telemetry.ItemPickupFromCarePackageEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemPickupFromCarePackageEvents[0].Item.AttachedItems);
         }
 
@@ -1675,8 +1675,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Attach_Weapon_Muzzle_Compensator_Large_C", telemetry.ItemPickupFromLootBoxEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemPickupFromLootBoxEvents[0].Item.StackCount);
-            Assert.AreEqual("Attachment", telemetry.ItemPickupFromLootBoxEvents[0].Item.Category);
-            Assert.AreEqual("None", telemetry.ItemPickupFromLootBoxEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Attachment, telemetry.ItemPickupFromLootBoxEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.None, telemetry.ItemPickupFromLootBoxEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemPickupFromLootBoxEvents[0].Item.AttachedItems);
         }
 
@@ -1705,8 +1705,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Armor_E_01_Lv1_C", telemetry.ItemUnequipEvents[0].Item.ItemId);
             Assert.AreEqual(1, telemetry.ItemUnequipEvents[0].Item.StackCount);
-            Assert.AreEqual("Equipment", telemetry.ItemUnequipEvents[0].Item.Category);
-            Assert.AreEqual("Vest", telemetry.ItemUnequipEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Equipment, telemetry.ItemUnequipEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Vest, telemetry.ItemUnequipEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemUnequipEvents[0].Item.AttachedItems);
         }
 
@@ -1735,8 +1735,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("Item_Boost_EnergyDrink_C", telemetry.ItemUseEvents[0].Item.ItemId);
             Assert.AreEqual(2, telemetry.ItemUseEvents[0].Item.StackCount);
-            Assert.AreEqual("Use", telemetry.ItemUseEvents[0].Item.Category);
-            Assert.AreEqual("Boost", telemetry.ItemUseEvents[0].Item.SubCategory);
+            Assert.AreEqual(Category.Use, telemetry.ItemUseEvents[0].Item.Category);
+            Assert.AreEqual(SubCategory.Boost, telemetry.ItemUseEvents[0].Item.SubCategory);
             // Assert.AreEqual("", telemetry.ItemUseEvents[0].Item.AttachedItems);
         }
 
@@ -1938,7 +1938,7 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual(1577058344, telemetry.PlayerAttackEvents[0].AttackId);
             Assert.AreEqual(13, telemetry.PlayerAttackEvents[0].FireWeaponStackCount);
-            Assert.AreEqual("Weapon", telemetry.PlayerAttackEvents[0].AttackType);
+            Assert.AreEqual(AttackType.Weapon, telemetry.PlayerAttackEvents[0].AttackType);
 
             Assert.AreEqual("Player1", telemetry.PlayerAttackEvents[0].Attacker.Name);
             Assert.AreEqual(1, telemetry.PlayerAttackEvents[0].Attacker.TeamId);
@@ -1952,11 +1952,11 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.PlayerAttackEvents[0].Attacker.IsInRedZone);
             // Assert.AreEqual("", telemetry.PlayerAttackEvents[0].Attacker.Zone);
 
-            Assert.AreEqual("Item_Weapon_Mini14_C", telemetry.ItemUseEvents[0].Item.ItemId);
-            Assert.AreEqual(1, telemetry.ItemUseEvents[0].Item.StackCount);
-            Assert.AreEqual("Weapon", telemetry.ItemUseEvents[0].Item.Category);
-            Assert.AreEqual("Main", telemetry.ItemUseEvents[0].Item.SubCategory);
-            // Assert.AreEqual("", telemetry.ItemUseEvents[0].Item.AttachedItems);
+            Assert.AreEqual("Item_Weapon_Mini14_C", telemetry.PlayerAttackEvents[0].Weapon.ItemId);
+            Assert.AreEqual(1, telemetry.PlayerAttackEvents[0].Weapon.StackCount);
+            Assert.AreEqual(Category.Weapon, telemetry.PlayerAttackEvents[0].Weapon.Category);
+            Assert.AreEqual(SubCategory.Main, telemetry.PlayerAttackEvents[0].Weapon.SubCategory);
+            // Assert.AreEqual("", telemetry.PlayerAttackEvents[0].Weapon.AttachedItems);
             // "Item_Attach_Weapon_Magazine_ExtendedQuickDraw_Large_C", "Item_Attach_Weapon_Upper_CQBSS_C"
 
             Assert.IsNull(telemetry.PlayerAttackEvents[0].Vehicle);
@@ -2042,7 +2042,7 @@ namespace WrapperTests.Serialization
             // Assert.AreEqual("yasnayapolyana", telemetry.PlayerKillEvents[0].Assistant.Zone);
 
             Assert.AreEqual(0, telemetry.PlayerKillEvents[0].VictimGameResult.Rank);
-            Assert.AreEqual("", telemetry.PlayerKillEvents[0].VictimGameResult.Result);
+            Assert.AreEqual(null, telemetry.PlayerKillEvents[0].VictimGameResult.Result);
             Assert.AreEqual(2, telemetry.PlayerKillEvents[0].VictimGameResult.TeamId);
             Assert.AreEqual(0, telemetry.PlayerKillEvents[0].VictimGameResult.Stats.KillCount);
             Assert.AreEqual(77.72235870361328, telemetry.PlayerKillEvents[0].VictimGameResult.Stats.DistanceOnFoot);
@@ -2060,11 +2060,11 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual(1, telemetry.PlayerLoginEvents.Count);
 
-            Assert.AreEqual("06/19/2019 23:34:29", telemetry.PlayerLogoutEvents[0].Timestamp.ToString());
-            Assert.AreEqual("LogPlayerLogin", telemetry.PlayerLogoutEvents[0].Type);
-            Assert.AreEqual(0, telemetry.PlayerLogoutEvents[0].Common.IsGame);
+            Assert.AreEqual("06/19/2019 23:34:29", telemetry.PlayerLoginEvents[0].Timestamp.ToString());
+            Assert.AreEqual("LogPlayerLogin", telemetry.PlayerLoginEvents[0].Type);
+            Assert.AreEqual(0, telemetry.PlayerLoginEvents[0].Common.IsGame);
 
-            Assert.AreEqual("account.id-123", telemetry.PlayerLogoutEvents[0].AccountId);
+            Assert.AreEqual("account.id-123", telemetry.PlayerLoginEvents[0].AccountId);
         }
 
         [TestMethod, TestCategory("Unit")]
@@ -2079,6 +2079,28 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(1, telemetry.PlayerLogoutEvents[0].Common.IsGame);
 
             Assert.AreEqual("account.id-456", telemetry.PlayerLogoutEvents[0].AccountId);
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesPlayerMakeGroggyEventsCorrectly()
+        {
+            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+
+            Assert.AreEqual(1, telemetry.PlayerMakeGroggyEvents.Count);
+
+            Assert.AreEqual("06/19/2019 23:39:34", telemetry.PlayerMakeGroggyEvents[0].Timestamp.ToString());
+            Assert.AreEqual("LogPlayerMakeGroggy", telemetry.PlayerMakeGroggyEvents[0].Type);
+            Assert.AreEqual(1, telemetry.PlayerMakeGroggyEvents[0].Common.IsGame);
+
+            Assert.AreEqual(1644167205, telemetry.PlayerMakeGroggyEvents[0].AttackId);
+            Assert.AreEqual(DamageReason.TorsoShot, telemetry.PlayerMakeGroggyEvents[0].DamageReason);
+            Assert.AreEqual("Damage_Gun", telemetry.PlayerMakeGroggyEvents[0].DamageTypeCategory);
+            Assert.AreEqual("WeapBerylM762_C", telemetry.PlayerMakeGroggyEvents[0].DamageCauserName);
+            // Assert.AreEqual("", telemetry.PlayerMakeGroggyEvents[0].DamageCauserAdditionalInfo);
+            // Item_Attach_Weapon_Magazine_ExtendedQuickDraw_Large_C
+            Assert.AreEqual(820.7631225585938, telemetry.PlayerMakeGroggyEvents[0].Distance);
+            Assert.IsFalse(1, telemetry.PlayerMakeGroggyEvents[0].IsAttackerInVehicle);
+            Assert.AreEqual(1526726656, telemetry.PlayerMakeGroggyEvents[0].DBNOId);
         }
 
         [TestMethod, TestCategory("Unit")]
@@ -2107,7 +2129,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.PlayerPositionEvents[0].Character.IsInRedZone);
             // Assert.AreEqual("", telemetry.PlayerPositionEvents[0].Character.Zone);
 
-            Assert.AreEqual("", telemetry.PlayerPositionEvents[0].Vehicle.VehicleType);
+            Assert.AreEqual(null, telemetry.PlayerPositionEvents[0].Vehicle.VehicleType);
             Assert.AreEqual("", telemetry.PlayerPositionEvents[0].Vehicle.VehicleId);
             Assert.AreEqual(0, telemetry.PlayerPositionEvents[0].Vehicle.HealthPercent);
             Assert.AreEqual(0, telemetry.PlayerPositionEvents[0].Vehicle.FuelPercent);
@@ -2126,7 +2148,7 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual(1577058343, telemetry.PlayerTakeDamageEvents[0].AttackId);
             Assert.AreEqual("Damage_Gun", telemetry.PlayerTakeDamageEvents[0].DamageTypeCategory);
-            Assert.AreEqual("PelvisShot", telemetry.PlayerTakeDamageEvents[0].DamageReason);
+            Assert.AreEqual(DamageReason.PelvisShot, telemetry.PlayerTakeDamageEvents[0].DamageReason);
             Assert.AreEqual(28.979999542236329, telemetry.PlayerTakeDamageEvents[0].Damage);
             Assert.AreEqual("WeapMini14_C", telemetry.PlayerTakeDamageEvents[0].DamageCauserName);
 
@@ -2287,7 +2309,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.VehicleDestroyEvents[0].Attacker.IsInRedZone);
             // Assert.AreEqual("", telemetry.VehicleDestroyEvents[0].Attacker.Zone);
 
-            Assert.AreEqual("WheeledVehicle", telemetry.VehicleDestroyEvents[0].Vehicle.VehicleType);
+            Assert.AreEqual(VehicleType.WheeledVehicle, telemetry.VehicleDestroyEvents[0].Vehicle.VehicleType);
             Assert.AreEqual("Uaz_C_01_C", telemetry.VehicleDestroyEvents[0].Vehicle.VehicleId);
             Assert.AreEqual(0, telemetry.VehicleDestroyEvents[0].Vehicle.HealthPercent);
             Assert.AreEqual(37.54453659057617, telemetry.VehicleDestroyEvents[0].Vehicle.FuelPercent);
@@ -2320,7 +2342,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.VehicleLeaveEvents[0].Character.IsInRedZone);
             // Assert.AreEqual("", telemetry.VehicleLeaveEvents[0].Character.Zone);
 
-            Assert.AreEqual("WheeledVehicle", telemetry.VehicleLeaveEvents[0].Vehicle.VehicleType);
+            Assert.AreEqual(VehicleType.WheeledVehicle, telemetry.VehicleLeaveEvents[0].Vehicle.VehicleType);
             Assert.AreEqual("Uaz_C_01_C", telemetry.VehicleLeaveEvents[0].Vehicle.VehicleId);
             Assert.AreEqual(48.400001525878909, telemetry.VehicleLeaveEvents[0].Vehicle.HealthPercent);
             Assert.AreEqual(47.668853759765628, telemetry.VehicleLeaveEvents[0].Vehicle.FuelPercent);
@@ -2351,7 +2373,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.VehicleRideEvents[0].Character.IsInRedZone);
             // Assert.AreEqual("", telemetry.VehicleRideEvents[0].Character.Zone);
 
-            Assert.AreEqual("WheeledVehicle", telemetry.VehicleRideEvents[0].Vehicle.VehicleType);
+            Assert.AreEqual(VehicleType.WheeledVehicle, telemetry.VehicleRideEvents[0].Vehicle.VehicleType);
             Assert.AreEqual("Uaz_C_01_C", telemetry.VehicleRideEvents[0].Vehicle.VehicleId);
             Assert.AreEqual(100, telemetry.VehicleRideEvents[0].Vehicle.HealthPercent);
             Assert.AreEqual(43.97563171386719, telemetry.VehicleRideEvents[0].Vehicle.FuelPercent);
@@ -2395,7 +2417,7 @@ namespace WrapperTests.Serialization
             Assert.AreEqual("LogWheelDestroy", telemetry.WheelDestroyEvents[0].Type);
             Assert.AreEqual(2, telemetry.WheelDestroyEvents[0].Common.IsGame);
 
-            Assert.AreEqual(71.52766418457031, telemetry.WheelDestroyEvents[0].AttackId);
+            Assert.AreEqual(1124073488, telemetry.WheelDestroyEvents[0].AttackId);
             Assert.AreEqual("Damage_Gun", telemetry.WheelDestroyEvents[0].DamageTypeCategory);
             Assert.AreEqual("WeapFNFal_C", telemetry.WheelDestroyEvents[0].DamageCauserName);
 
@@ -2411,7 +2433,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.WheelDestroyEvents[0].Attacker.IsInRedZone);
             // Assert.AreEqual("", telemetry.WheelDestroyEvents[0].Attacker.Zone);
 
-            Assert.AreEqual("WheeledVehicle", telemetry.WheelDestroyEvents[0].Vehicle.VehicleType);
+            Assert.AreEqual(VehicleType.WheeledVehicle, telemetry.WheelDestroyEvents[0].Vehicle.VehicleType);
             Assert.AreEqual("BP_Motorbike_04_SideCar_C", telemetry.WheelDestroyEvents[0].Vehicle.VehicleId);
             Assert.AreEqual(53.36394500732422, telemetry.WheelDestroyEvents[0].Vehicle.HealthPercent);
             Assert.AreEqual(71.52766418457031, telemetry.WheelDestroyEvents[0].Vehicle.FuelPercent);

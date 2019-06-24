@@ -171,7 +171,7 @@ namespace PUBGAPIWrapper.Models
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
         public string DamageCauserAdditionalInfo { get; set; }
-        public string DamageReason { get; set; }
+        public DamageReason? DamageReason { get; set; }
         public double Distance { get; set; }
         public GameResult VictimGameResult { get; set; }
     }
@@ -191,7 +191,7 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
-        public string DamageReason { get; set; }
+        public DamageReason? DamageReason { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
         public string DamageCauserAdditionalInfo { get; set; }

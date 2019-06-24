@@ -11,9 +11,6 @@ namespace PUBGAPIWrapper.Models
     /// Object representation of the Telemetry for a specific PUBG Match.
     /// Contains lists for each of the type of possible events.
     /// </summary>
-    /// <remarks>
-    /// TODO: Deserialize objects tagged with "// new"
-    /// </remarks>
     public class Telemetry
     {
         #region Properties
@@ -736,23 +733,6 @@ namespace PUBGAPIWrapper.Models
 
             return t;
         }
-
-        public override string ToString()
-        {
-            string toString = "Telemetry:\n";
-            foreach (LogPlayerCreate e in PlayerCreateEvents)
-            {
-                toString += e.ToString();
-                toString += "\n";
-            }
-            foreach (LogPlayerPosition e in PlayerPositionEvents)
-            {
-                toString += e.ToString();
-                toString += "\n";
-            }
-
-            return toString;
-        }
     }
 
     public class BlueZoneCustomOptions
@@ -776,9 +756,9 @@ namespace PUBGAPIWrapper.Models
         public Location Location { get; set; }
         public int Ranking { get; set; }
         public string AccountId { get; set; }
-        public bool IsInBlueZone { get; set; } // new
-        public bool IsInRedZone { get; set; } // new
-        public RegionId Zone { get; set; } // new
+        public bool IsInBlueZone { get; set; }
+        public bool IsInRedZone { get; set; }
+        public RegionId Zone { get; set; }
     }
 
     public class Common
@@ -896,7 +876,8 @@ namespace PUBGAPIWrapper.Models
     {
         Desert_Main,
         Erangel_Main,
-        Savage_Main
+        Savage_Main,
+        DihorOtok_Main
     }
 
     public enum VehicleType
@@ -924,7 +905,7 @@ namespace PUBGAPIWrapper.Models
         TorsoShot
     }
 
-    public enum RegionId // new
+    public enum RegionId
     {
         #region Desert_Main
 
@@ -1049,7 +1030,7 @@ namespace PUBGAPIWrapper.Models
         #endregion
     }
 
-    public enum WeatherId // new
+    public enum WeatherId
     {
         Clear,
         Clear_02,
