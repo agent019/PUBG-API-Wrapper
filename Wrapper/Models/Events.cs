@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-// TODO: Verify these objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -44,6 +43,7 @@ namespace PUBGAPIWrapper.Models
     {
         public GameState GameState { get; set; }
     }
+
     public class LogHeal : Event
     {
         public Character Character { get; set; }
@@ -93,6 +93,7 @@ namespace PUBGAPIWrapper.Models
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
+        public int OwnerTeamId { get; set; }
     }
 
     public class LogItemUnequip : Event
@@ -114,6 +115,8 @@ namespace PUBGAPIWrapper.Models
         public string SeasonState { get; set; }
     }
 
+    // TODO: Match samples have RewardDetail and GameResultOnFinished
+    // fields... But the documentation doesn't.
     public class LogMatchEnd : Event
     {
         public List<Character> Characters { get; set; }
@@ -128,8 +131,7 @@ namespace PUBGAPIWrapper.Models
         public int TeamSize { get; set; }
         public bool IsCustomGame { get; set; }
         public bool IsEventMode { get; set; }
-        //TODO: this is a stringified array of objects
-        public string BlueZoneCustomOptions { get; set; }
+        public List<BlueZoneCustomOptions> BlueZoneCustomOptions { get; set; }
     }
 
     public class LogObjectDestroy : Event
@@ -170,8 +172,8 @@ namespace PUBGAPIWrapper.Models
         public int DBNOId { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; }
-        public string DamageReason { get; set; }
+        public List<string> DamageCauserAdditionalInfo { get; set; }
+        public DamageReason? DamageReason { get; set; }
         public double Distance { get; set; }
         public GameResult VictimGameResult { get; set; }
     }
@@ -191,10 +193,10 @@ namespace PUBGAPIWrapper.Models
         public int AttackId { get; set; }
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
-        public string DamageReason { get; set; }
+        public DamageReason? DamageReason { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; }
+        public List<string> DamageCauserAdditionalInfo { get; set; }
         public double Distance { get; set; }
         public bool IsAttackerInVehicle { get; set; }
         public int DBNOId { get; set; }
@@ -221,7 +223,7 @@ namespace PUBGAPIWrapper.Models
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
-        public DamageReason? DamageReason { get; set; } // string?
+        public DamageReason? DamageReason { get; set; }
         /// <remarks>
         /// 1.0 Damage = 1.0 Health
         /// Net damage after armor; Damage to health
