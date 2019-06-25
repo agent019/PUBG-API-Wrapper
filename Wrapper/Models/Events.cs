@@ -93,6 +93,7 @@ namespace PUBGAPIWrapper.Models
     {
         public Character Character { get; set; }
         public Item Item { get; set; }
+        public int OwnerTeamId { get; set; }
     }
 
     public class LogItemUnequip : Event
@@ -114,6 +115,8 @@ namespace PUBGAPIWrapper.Models
         public string SeasonState { get; set; }
     }
 
+    // TODO: Match samples have RewardDetail and GameResultOnFinished
+    // fields... But the documentation doesn't.
     public class LogMatchEnd : Event
     {
         public List<Character> Characters { get; set; }
@@ -221,7 +224,7 @@ namespace PUBGAPIWrapper.Models
         public Character Attacker { get; set; }
         public Character Victim { get; set; }
         public string DamageTypeCategory { get; set; }
-        public DamageReason? DamageReason { get; set; } // string?
+        public DamageReason? DamageReason { get; set; }
         /// <remarks>
         /// 1.0 Damage = 1.0 Health
         /// Net damage after armor; Damage to health

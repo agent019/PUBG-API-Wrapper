@@ -926,7 +926,7 @@ namespace WrapperTests.Serialization
 		},
 		""victim"": {
 			""name"": ""Player2"",
-			""teamId"": 19,
+			""teamId"": 2,
 			""health"": 99.75,
 			""location"": {
 				""x"": 478005.21875,
@@ -1314,7 +1314,7 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(730582.25, telemetry.CarePackageLandEvents[0].ItemPackage.Location.X);
             Assert.AreEqual(373777.5, telemetry.CarePackageLandEvents[0].ItemPackage.Location.Y);
             Assert.AreEqual(-238.90403747558595, telemetry.CarePackageLandEvents[0].ItemPackage.Location.Z);
-
+            
             Assert.AreEqual(2, telemetry.CarePackageLandEvents[0].ItemPackage.Items.Count);
 
             Assert.AreEqual("Item_Weapon_AUG_C", telemetry.CarePackageLandEvents[0].ItemPackage.Items[0].ItemId);
@@ -1345,7 +1345,7 @@ namespace WrapperTests.Serialization
             Assert.AreEqual(725696.125, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.X);
             Assert.AreEqual(261458.0625, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.Y);
             Assert.AreEqual(30000, telemetry.CarePackageSpawnEvents[0].ItemPackage.Location.Z);
-
+            
             Assert.AreEqual(2, telemetry.CarePackageSpawnEvents[0].ItemPackage.Items.Count);
 
             Assert.AreEqual("Item_Weapon_AUG_C", telemetry.CarePackageSpawnEvents[0].ItemPackage.Items[0].ItemId);
@@ -1657,9 +1657,8 @@ namespace WrapperTests.Serialization
             Assert.AreEqual("06/19/2019 23:48:44", telemetry.ItemPickupFromLootBoxEvents[0].Timestamp.ToString());
             Assert.AreEqual("LogItemPickupFromLootBox", telemetry.ItemPickupFromLootBoxEvents[0].Type);
             Assert.AreEqual(1.5, telemetry.ItemPickupFromLootBoxEvents[0].Common.IsGame);
-
-            // Todo: forgot to deserialize this
-            // Assert.AreEqual(2, telemetry.ItemPickupFromLootBoxEvents[0].OwnerTeamId);
+            
+            Assert.AreEqual(2, telemetry.ItemPickupFromLootBoxEvents[0].OwnerTeamId);
 
             Assert.AreEqual("Player1", telemetry.ItemPickupFromLootBoxEvents[0].Character.Name);
             Assert.AreEqual(1, telemetry.ItemPickupFromLootBoxEvents[0].Character.TeamId);
@@ -1749,8 +1748,8 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual("06/19/2019 23:36:54", telemetry.MatchDefinitionEvents[0].Timestamp.ToString());
             Assert.AreEqual("LogMatchDefinition", telemetry.MatchDefinitionEvents[0].Type);
-            // Technically has no Common.IsGame, so defaults to 0
-            Assert.AreEqual(0, telemetry.MatchDefinitionEvents[0].Common.IsGame);
+            // LogMatchDefinition has no common.isGame property
+            Assert.IsNull(telemetry.MatchDefinitionEvents[0].Common);
 
             Assert.AreEqual("match.bro.official.pc-2018-03.steam.squad.sa.2019.06.19.23.546b7a2d-92ef-49c5-926c-7a1101497006", telemetry.MatchDefinitionEvents[0].MatchId);
             Assert.AreEqual("low", telemetry.MatchDefinitionEvents[0].PingQuality);
@@ -1768,10 +1767,10 @@ namespace WrapperTests.Serialization
             Assert.AreEqual("LogMatchEnd", telemetry.MatchEndEvents[0].Type);
             Assert.AreEqual(8, telemetry.MatchEndEvents[0].Common.IsGame);
 
-            // TODO: Forgot to deserialize these
+            // TODO: This is missing from the documentation
             //Assert.AreEqual(3, telemetry.MatchEndEvents[0].RewardDetail);
             //Assert.AreEqual(3, telemetry.MatchEndEvents[0].GameResultsOnFinished);
-
+            
             Assert.AreEqual(3, telemetry.MatchEndEvents[0].Characters.Count);
 
             Assert.AreEqual("Player1", telemetry.MatchEndEvents[0].Characters[0].Name);
@@ -1829,7 +1828,7 @@ namespace WrapperTests.Serialization
             Assert.IsFalse(telemetry.MatchStartEvents[0].IsCustomGame);
             Assert.IsFalse(telemetry.MatchStartEvents[0].IsEventMode);
             // Assert.AreEqual("", telemetry.MatchStartEvents[0].BlueZoneCustomOptions);
-
+            
             Assert.AreEqual(3, telemetry.MatchStartEvents[0].Characters.Count);
 
             Assert.AreEqual("Player1", telemetry.MatchStartEvents[0].Characters[0].Name);
@@ -1999,7 +1998,7 @@ namespace WrapperTests.Serialization
 
             Assert.AreEqual(1040187405, telemetry.PlayerKillEvents[0].AttackId);
             Assert.AreEqual(1308622848, telemetry.PlayerKillEvents[0].DBNOId);
-            Assert.AreEqual("HeadShot", telemetry.PlayerKillEvents[0].DamageReason);
+            Assert.AreEqual(DamageReason.HeadShot, telemetry.PlayerKillEvents[0].DamageReason);
             Assert.AreEqual("Damage_Gun", telemetry.PlayerKillEvents[0].DamageTypeCategory);
             Assert.AreEqual("WeapHK416_C", telemetry.PlayerKillEvents[0].DamageCauserName);
             // Assert.AreEqual("", telemetry.PlayerKillEvents[0].DamageCauserAdditionalInfo);
@@ -2099,8 +2098,32 @@ namespace WrapperTests.Serialization
             // Assert.AreEqual("", telemetry.PlayerMakeGroggyEvents[0].DamageCauserAdditionalInfo);
             // Item_Attach_Weapon_Magazine_ExtendedQuickDraw_Large_C
             Assert.AreEqual(820.7631225585938, telemetry.PlayerMakeGroggyEvents[0].Distance);
-            Assert.IsFalse(1, telemetry.PlayerMakeGroggyEvents[0].IsAttackerInVehicle);
+            Assert.IsFalse(telemetry.PlayerMakeGroggyEvents[0].IsAttackerInVehicle);
             Assert.AreEqual(1526726656, telemetry.PlayerMakeGroggyEvents[0].DBNOId);
+
+            Assert.AreEqual("Player1", telemetry.PlayerMakeGroggyEvents[0].Attacker.Name);
+            Assert.AreEqual(1, telemetry.PlayerMakeGroggyEvents[0].Attacker.TeamId);
+            Assert.AreEqual(100, telemetry.PlayerMakeGroggyEvents[0].Attacker.Health);
+            Assert.AreEqual(467805.78125, telemetry.PlayerMakeGroggyEvents[0].Attacker.Location.X);
+            Assert.AreEqual(644423.25, telemetry.PlayerMakeGroggyEvents[0].Attacker.Location.Y);
+            Assert.AreEqual(161.75, telemetry.PlayerMakeGroggyEvents[0].Attacker.Location.Z);
+            Assert.AreEqual(0, telemetry.PlayerMakeGroggyEvents[0].Attacker.Ranking);
+            Assert.AreEqual("account.id-123", telemetry.PlayerMakeGroggyEvents[0].Attacker.AccountId);
+            Assert.IsFalse(telemetry.PlayerMakeGroggyEvents[0].Attacker.IsInBlueZone);
+            Assert.IsFalse(telemetry.PlayerMakeGroggyEvents[0].Attacker.IsInRedZone);
+            // Assert.AreEqual("sosnovkamilitarybase", telemetry.PlayerMakeGroggyEvents[0].Attacker.Zone);
+
+            Assert.AreEqual("Player2", telemetry.PlayerMakeGroggyEvents[0].Victim.Name);
+            Assert.AreEqual(2, telemetry.PlayerMakeGroggyEvents[0].Victim.TeamId);
+            Assert.AreEqual(0, telemetry.PlayerMakeGroggyEvents[0].Victim.Health);
+            Assert.AreEqual(467785, telemetry.PlayerMakeGroggyEvents[0].Victim.Location.X);
+            Assert.AreEqual(645243.75, telemetry.PlayerMakeGroggyEvents[0].Victim.Location.Y);
+            Assert.AreEqual(161.75, telemetry.PlayerMakeGroggyEvents[0].Victim.Location.Z);
+            Assert.AreEqual(0, telemetry.PlayerMakeGroggyEvents[0].Victim.Ranking);
+            Assert.AreEqual("account.id-456", telemetry.PlayerMakeGroggyEvents[0].Victim.AccountId);
+            Assert.IsFalse(telemetry.PlayerMakeGroggyEvents[0].Victim.IsInBlueZone);
+            Assert.IsFalse(telemetry.PlayerMakeGroggyEvents[0].Victim.IsInRedZone);
+            // Assert.AreEqual("sosnovkamilitarybase", telemetry.PlayerMakeGroggyEvents[0].Victim.Zone);
         }
 
         [TestMethod, TestCategory("Unit")]
@@ -2187,7 +2210,7 @@ namespace WrapperTests.Serialization
             Assert.AreEqual("06/19/2019 23:47:43", telemetry.RedZoneEndedEvents[0].Timestamp.ToString());
             Assert.AreEqual("LogRedZoneEnded", telemetry.RedZoneEndedEvents[0].Type);
             Assert.AreEqual(1.5, telemetry.RedZoneEndedEvents[0].Common.IsGame);
-
+            
             Assert.AreEqual(1, telemetry.RedZoneEndedEvents[0].Drivers.Count);
 
             Assert.AreEqual("Player1", telemetry.RedZoneEndedEvents[0].Drivers[0].Name);
