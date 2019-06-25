@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 
-// TODO: Verify all of these objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -54,6 +52,8 @@ namespace PUBGAPIWrapper.Models
 
         #endregion
 
+        #region Constructors
+
         public Telemetry()
         {
             this.ArmorDestroyEvents = new List<LogArmorDestroy>();
@@ -94,6 +94,10 @@ namespace PUBGAPIWrapper.Models
             this.WheelDestroyEvents = new List<LogWheelDestroy>();
         }
 
+        #endregion
+
+        #region Helpers
+
         private static Character BuildCharacter(dynamic obj)
         {
             return new Character()
@@ -111,7 +115,7 @@ namespace PUBGAPIWrapper.Models
                 TeamId = obj?.teamId,
                 IsInBlueZone = obj?.isInBlueZone,
                 IsInRedZone = obj?.isInRedZone,
-                //Zone = (RegionId)Enum.Parse(typeof(RegionId), (string)obj.zone)
+                Zone = obj.zone.ToObject<List<string>>()
             };
         }
 
@@ -129,7 +133,7 @@ namespace PUBGAPIWrapper.Models
         {
             return new Item()
             {
-                AttachedItems = ((JArray)obj?.attachedItems).Select(jv => (string)jv).ToArray(),
+                AttachedItems = obj.attachedItems.ToObject<List<string>>(),
                 Category = String.IsNullOrWhiteSpace(Convert.ToString(obj?.category)) ? null : Enum.Parse(typeof(Category), Convert.ToString(obj?.category)),
                 ItemId = obj?.itemId,
                 StackCount = obj?.stackCount,
@@ -191,6 +195,10 @@ namespace PUBGAPIWrapper.Models
                 Items = items
             };
         }
+
+        #endregion
+
+        #region Deserialization
 
         public static Telemetry Deserialize(string json)
         {
@@ -431,6 +439,9 @@ namespace PUBGAPIWrapper.Models
                         t.MatchEndEvents.Add(matchEnd);
                         break;
                     case "LogMatchStart":
+                        string optionsAsString = obj.blueZoneCustomOptions.ToObject<string>();
+                        var options = JsonConvert.DeserializeObject<List<BlueZoneCustomOptions>>(optionsAsString);
+                        options.OrderBy(x => x.PhaseNum);
                         LogMatchStart matchStart = new LogMatchStart()
                         {
                             Timestamp = obj._D,
@@ -446,7 +457,7 @@ namespace PUBGAPIWrapper.Models
                             TeamSize = obj.teamSize,
                             IsCustomGame = obj.isCustomGame,
                             IsEventMode = obj.isEventMode,
-                            // BlueZoneCustomOptions = obj.blueZoneCustomOptions
+                            BlueZoneCustomOptions = options
                         };
                         t.MatchStartEvents.Add(matchStart);
                         break;
@@ -526,7 +537,7 @@ namespace PUBGAPIWrapper.Models
                             DBNOId = obj.dBNOId,
                             DamageTypeCategory = obj.damageTypeCategory,
                             DamageCauserName = obj.damageCauserName,
-                            // DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo,
+                            DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo.ToObject<List<string>>(),
                             DamageReason = String.IsNullOrWhiteSpace(Convert.ToString(obj.damageReason)) ? null : Enum.Parse(typeof(DamageReason), Convert.ToString(obj.damageReason)),
                             Distance = obj.distance,
                             VictimGameResult = new GameResult()
@@ -586,7 +597,7 @@ namespace PUBGAPIWrapper.Models
                             Attacker = BuildCharacter(obj.attacker),
                             Victim = BuildCharacter(obj.victim),
                             AttackId = obj.attackId,
-                            // DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo,
+                            DamageCauserAdditionalInfo = obj.damageCauserAdditionalInfo.ToObject<List<string>>(),
                             DamageCauserName = obj.damageCauserName,
                             DamageReason = String.IsNullOrWhiteSpace(Convert.ToString(obj.damageReason)) ? null : Enum.Parse(typeof(DamageReason), Convert.ToString(obj.damageReason)),
                             DamageTypeCategory = obj.damageTypeCategory,
@@ -774,6 +785,8 @@ namespace PUBGAPIWrapper.Models
 
             return t;
         }
+
+        #endregion
     }
 
     public class BlueZoneCustomOptions
@@ -799,7 +812,7 @@ namespace PUBGAPIWrapper.Models
         public string AccountId { get; set; }
         public bool IsInBlueZone { get; set; }
         public bool IsInRedZone { get; set; }
-        public RegionId Zone { get; set; }
+        public List<string> Zone { get; set; }
     }
 
     public class Common
@@ -849,7 +862,7 @@ namespace PUBGAPIWrapper.Models
         public int StackCount { get; set; }
         public Category? Category { get; set; }
         public SubCategory? SubCategory { get; set; }
-        public string[] AttachedItems { get; set; }
+        public List<string> AttachedItems { get; set; }
     }
 
     public class ItemPackage

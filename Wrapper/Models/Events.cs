@@ -1,7 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-// TODO: Verify these objects deserialize correctly
 namespace PUBGAPIWrapper.Models
 {
     /// <summary>
@@ -44,6 +43,7 @@ namespace PUBGAPIWrapper.Models
     {
         public GameState GameState { get; set; }
     }
+
     public class LogHeal : Event
     {
         public Character Character { get; set; }
@@ -131,8 +131,7 @@ namespace PUBGAPIWrapper.Models
         public int TeamSize { get; set; }
         public bool IsCustomGame { get; set; }
         public bool IsEventMode { get; set; }
-        //TODO: this is a stringified array of objects
-        public string BlueZoneCustomOptions { get; set; }
+        public List<BlueZoneCustomOptions> BlueZoneCustomOptions { get; set; }
     }
 
     public class LogObjectDestroy : Event
@@ -173,7 +172,7 @@ namespace PUBGAPIWrapper.Models
         public int DBNOId { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; }
+        public List<string> DamageCauserAdditionalInfo { get; set; }
         public DamageReason? DamageReason { get; set; }
         public double Distance { get; set; }
         public GameResult VictimGameResult { get; set; }
@@ -197,7 +196,7 @@ namespace PUBGAPIWrapper.Models
         public DamageReason? DamageReason { get; set; }
         public string DamageTypeCategory { get; set; }
         public string DamageCauserName { get; set; }
-        public string DamageCauserAdditionalInfo { get; set; }
+        public List<string> DamageCauserAdditionalInfo { get; set; }
         public double Distance { get; set; }
         public bool IsAttackerInVehicle { get; set; }
         public int DBNOId { get; set; }
