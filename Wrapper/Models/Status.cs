@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using PUBGAPIWrapper.Serialization;
 
 namespace PUBGAPIWrapper.Models
 {
@@ -8,6 +9,7 @@ namespace PUBGAPIWrapper.Models
     /// <remarks>
     /// Flattened representation of the JSON provided by the API.
     /// </remarks>
+    [JsonConverter(typeof(StatusJsonConverter))]
     public class Status
     {
         public string Id { get; set; }

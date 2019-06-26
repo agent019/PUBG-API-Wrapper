@@ -68,5 +68,8 @@
       <Version>106.6.9</Version>
     </PackageReference>
   </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Serialization\StatusJsonConverter.cs" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

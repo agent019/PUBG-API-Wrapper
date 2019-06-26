@@ -1,4 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Newtonsoft.Json;
 using PUBGAPIWrapper.Models;
 
 namespace WrapperTests.Serialization
@@ -20,7 +21,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            Status result = Status.Deserialize(SampleStatusJson);
+            Status result = JsonConvert.DeserializeObject<Status>(SampleStatusJson);
             
             Assert.AreEqual("pubg-api", result.Id);
             Assert.AreEqual("status", result.Type);
