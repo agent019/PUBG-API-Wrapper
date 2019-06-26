@@ -16,6 +16,7 @@ namespace PUBGAPIWrapper
     /// <remarks>
     /// TODO: 
     /// - Finish and test these methods
+    /// - Event Vehicle, Victim, Assistant can be null. Test these
     /// </remarks>
     public class RequestService
     {
