@@ -114,27 +114,44 @@ namespace PUBGAPIWrapper.Models
         public static Stats Deserialize(string serialized)
         {
             StatsDTO dto = JsonConvert.DeserializeObject<StatsDTO>(serialized);
+            return BuildStats(dto.Data);
+        }
+
+        public static List<Stats> DeserializeList(string serialized)
+        {
+            StatsListDTO dto = JsonConvert.DeserializeObject<StatsListDTO>(serialized);
+
+            List<Stats> stats = new List<Stats>();
+            foreach (dynamic data in dto.Data)
+            {
+                stats.Add(BuildStats(data));
+            }
+            return stats;
+        }
+
+        private static Stats BuildStats(StatsData data)
+        {
             return new Stats()
             {
-                AccountId = dto.Data.Relationships.Player.Data.Id,
-                SeasonId = dto.Data.Relationships.Season.Data.Id,
-                SoloTPP = dto.Data.Attributes.GameModeStats.Solo,
-                SoloFPP = dto.Data.Attributes.GameModeStats.SoloFPP,
-                DuoTPP = dto.Data.Attributes.GameModeStats.Duo,
-                DuoFPP = dto.Data.Attributes.GameModeStats.DuoFPP,
-                SquadTPP = dto.Data.Attributes.GameModeStats.Squad,
-                SquadFPP = dto.Data.Attributes.GameModeStats.SquadFPP,
-                SoloTPPMatchIds = dto.Data.Relationships.MatchesSolo.Data
+                AccountId = data.Relationships.Player.Data.Id,
+                SeasonId = data.Relationships.Season.Data.Id,
+                SoloTPP = data.Attributes.GameModeStats.Solo,
+                SoloFPP = data.Attributes.GameModeStats.SoloFPP,
+                DuoTPP = data.Attributes.GameModeStats.Duo,
+                DuoFPP = data.Attributes.GameModeStats.DuoFPP,
+                SquadTPP = data.Attributes.GameModeStats.Squad,
+                SquadFPP = data.Attributes.GameModeStats.SquadFPP,
+                SoloTPPMatchIds = data.Relationships.MatchesSolo.Data
                                         .Select(x => x.Id).ToList(),
-                SoloFPPMatchIds = dto.Data.Relationships.MatchesSoloFPP.Data
+                SoloFPPMatchIds = data.Relationships.MatchesSoloFPP.Data
                                         .Select(x => x.Id).ToList(),
-                DuoTPPMatchIds = dto.Data.Relationships.MatchesDuo.Data
+                DuoTPPMatchIds = data.Relationships.MatchesDuo.Data
                                         .Select(x => x.Id).ToList(),
-                DuoFPPMatchIds = dto.Data.Relationships.MatchesDuoFPP.Data
+                DuoFPPMatchIds = data.Relationships.MatchesDuoFPP.Data
                                         .Select(x => x.Id).ToList(),
-                SquadTPPMatchIds = dto.Data.Relationships.MatchesSquad.Data
+                SquadTPPMatchIds = data.Relationships.MatchesSquad.Data
                                         .Select(x => x.Id).ToList(),
-                SquadFPPMatchIds = dto.Data.Relationships.MatchesSquadFPP.Data
+                SquadFPPMatchIds = data.Relationships.MatchesSquadFPP.Data
                                         .Select(x => x.Id).ToList()
             };
         }
@@ -323,6 +340,13 @@ namespace PUBGAPIWrapper.Models
     public class StatsDTO
     {
         public StatsData Data { get; set; }
+        public Links Links { get; set; }
+        public Meta Meta { get; set; }
+    }
+
+    public class StatsListDTO
+    {
+        public List<StatsData> Data { get; set; }
         public Links Links { get; set; }
         public Meta Meta { get; set; }
     }

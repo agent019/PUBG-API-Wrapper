@@ -122,12 +122,7 @@ namespace WrapperTests
         {
             public static RequestService GetInstance(Mock<IRestClient> client)
             {
-                var svc = new RequestService(ApiKey)
-                {
-                    // Replace existing client with mocked one.
-                    // TODO: Do this in a way that doesn't require exposing client.
-                    Client = client.Object
-                };
+                var svc = new RequestService(client.Object, ApiKey);
                 return svc;
             }
         }

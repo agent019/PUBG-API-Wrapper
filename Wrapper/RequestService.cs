@@ -15,8 +15,6 @@ namespace PUBGAPIWrapper
     /// </summary>
     /// <remarks>
     /// TODO: 
-    /// - Deserialize multiple stats
-    /// - Update, verify, and test the telemetry deserialization
     /// - Finish and test these methods
     /// </remarks>
     public class RequestService
@@ -24,7 +22,7 @@ namespace PUBGAPIWrapper
         private const string BaseUri = "https://api.pubg.com/";
 
         private string ApiKey { get; set; }
-        public IRestClient Client { get; set; }
+        private IRestClient Client { get; set; }
 
         private const string RateLimitRemainingHeaderName = "X-Ratelimit-Remaining";
         private const string RateLimitResetHeaderName = "X-Ratelimit-Reset";
@@ -33,7 +31,13 @@ namespace PUBGAPIWrapper
 
         public RequestService(string key)
         {
-            Client = new RestClient(BaseUri);
+            this.Client = new RestClient(BaseUri);
+            this.ApiKey = key;
+        }
+
+        public RequestService(IRestClient client, string key)
+        {
+            this.Client = client;
             this.ApiKey = key;
         }
 
@@ -224,10 +228,7 @@ namespace PUBGAPIWrapper
             string statsUri = shardUri + "seasons/" + seasonId + "/gamemode" + gameMode
                 + "/players?filter[playerIds]=" + String.Join(",", playerIds);
             IRestResponse response = MakeRequest(statsUri);
-            throw new NotImplementedException();
-            
-            // TODO: deserialize multiple stats
-            // return Stats.Deserialize(response.Content);
+            return Stats.DeserializeList(response.Content);
         }
 
         /// <summary>

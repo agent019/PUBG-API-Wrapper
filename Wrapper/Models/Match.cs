@@ -434,8 +434,7 @@ namespace PUBGAPIWrapper.Models
         public string Actor { get; set; }
         public ParticipantStats Stats { get; set; }
     }
-
-    // TODO: some of these are probably not ints
+    
     public class ParticipantStats
     {
         public int DBNOs { get; set; }

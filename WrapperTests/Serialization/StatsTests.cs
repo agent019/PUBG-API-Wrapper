@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PUBGAPIWrapper.Models;
+using System.Collections.Generic;
 
 namespace WrapperTests.Serialization
 {
@@ -319,7 +320,7 @@ namespace WrapperTests.Serialization
             ""season"": {
                 ""data"": {
                     ""type"": ""season"",
-                    ""id"": ""division.bro.official.pc-2018-03""
+                    ""id"": ""season-1""
                 }
             },
             ""player"": {
@@ -664,6 +665,169 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
+        public readonly string StatsListSampleJson = @"{
+    ""data"": [
+        {
+            ""type"": ""playerSeason"",
+            ""attributes"": {
+                ""gameModeStats"": {
+                    ""squad"": {
+                        ""assists"": 0,
+                        ""bestRankPoint"": 5661.111,
+                        ""boosts"": 2,
+                        ""dBNOs"": 7,
+                        ""dailyKills"": 0,
+                        ""dailyWins"": 0,
+                        ""damageDealt"": 960.0909,
+                        ""days"": 6,
+                        ""headshotKills"": 1,
+                        ""heals"": 3,
+                        ""killPoints"": 0,
+                        ""kills"": 7,
+                        ""longestKill"": 27.203735,
+                        ""longestTimeSurvived"": 857.556,
+                        ""losses"": 7,
+                        ""maxKillStreaks"": 3,
+                        ""mostSurvivalTime"": 857.556,
+                        ""rankPoints"": 1021.8562,
+                        ""rankPointsTitle"": ""2-5"",
+                        ""revives"": 0,
+                        ""rideDistance"": 3379.6392,
+                        ""roadKills"": 0,
+                        ""roundMostKills"": 5,
+                        ""roundsPlayed"": 7,
+                        ""suicides"": 2,
+                        ""swimDistance"": 11.177678,
+                        ""teamKills"": 2,
+                        ""timeSurvived"": 2257.8892,
+                        ""top10s"": 0,
+                        ""vehicleDestroys"": 0,
+                        ""walkDistance"": 2840.188,
+                        ""weaponsAcquired"": 18,
+                        ""weeklyKills"": 0,
+                        ""weeklyWins"": 0,
+                        ""winPoints"": 0,
+                        ""wins"": 0
+                    }
+                }
+            },
+            ""relationships"": {
+                ""matchesSquadFPP"": {
+                    ""data"": []
+                },
+                ""season"": {
+                    ""data"": {
+                        ""type"": ""season"",
+                        ""id"": ""season-1""
+                    }
+                },
+                ""player"": {
+                    ""data"": {
+                        ""type"": ""player"",
+                        ""id"": ""account.id-123""
+                    }
+                },
+                ""matchesSolo"": {
+                    ""data"": []
+                },
+                ""matchesSoloFPP"": {
+                    ""data"": []
+                },
+                ""matchesDuo"": {
+                    ""data"": []
+                },
+                ""matchesDuoFPP"": {
+                    ""data"": []
+                },
+                ""matchesSquad"": {
+                    ""data"": []
+                }
+            }
+        },
+        {
+            ""type"": ""playerSeason"",
+            ""attributes"": {
+                ""gameModeStats"": {
+                    ""squad"": {
+                        ""assists"": 0,
+                        ""bestRankPoint"": 0,
+                        ""boosts"": 0,
+                        ""dBNOs"": 0,
+                        ""dailyKills"": 0,
+                        ""dailyWins"": 0,
+                        ""damageDealt"": 0,
+                        ""days"": 0,
+                        ""headshotKills"": 0,
+                        ""heals"": 0,
+                        ""killPoints"": 0,
+                        ""kills"": 0,
+                        ""longestKill"": 0,
+                        ""longestTimeSurvived"": 0,
+                        ""losses"": 0,
+                        ""maxKillStreaks"": 0,
+                        ""mostSurvivalTime"": 0,
+                        ""rankPoints"": 0,
+                        ""rankPointsTitle"": """",
+                        ""revives"": 0,
+                        ""rideDistance"": 0,
+                        ""roadKills"": 0,
+                        ""roundMostKills"": 0,
+                        ""roundsPlayed"": 0,
+                        ""suicides"": 0,
+                        ""swimDistance"": 0,
+                        ""teamKills"": 0,
+                        ""timeSurvived"": 0,
+                        ""top10s"": 0,
+                        ""vehicleDestroys"": 0,
+                        ""walkDistance"": 0,
+                        ""weaponsAcquired"": 0,
+                        ""weeklyKills"": 0,
+                        ""weeklyWins"": 0,
+                        ""winPoints"": 0,
+                        ""wins"": 0
+                    }
+                }
+            },
+            ""relationships"": {
+                ""matchesSquad"": {
+                    ""data"": []
+                },
+                ""matchesSquadFPP"": {
+                    ""data"": []
+                },
+                ""season"": {
+                    ""data"": {
+                        ""type"": ""season"",
+                        ""id"": ""season-1""
+                    }
+                },
+                ""player"": {
+                    ""data"": {
+                        ""type"": ""player"",
+                        ""id"": ""account.id-456""
+                    }
+                },
+                ""matchesSolo"": {
+                    ""data"": []
+                },
+                ""matchesSoloFPP"": {
+                    ""data"": []
+                },
+                ""matchesDuo"": {
+                    ""data"": []
+                },
+                ""matchesDuoFPP"": {
+                    ""data"": []
+                }
+            }
+        }
+    ],
+    ""links"": {
+        ""self"": ""https://api.pubg.com/shards/steam/seasons/division.bro.official.pc-2018-03/gameMode/squad/players?filter[playerIds]=account.c0e530e9b7244b358def282782f893af,account.ef3421a886044ad59ad794f1fe404d81""
+    },
+    ""meta"": {}
+}";
+
         #endregion
         
         [TestMethod, TestCategory("Unit")]
@@ -674,7 +838,7 @@ namespace WrapperTests.Serialization
             #region Assertions
 
             Assert.AreEqual("account.id", seasonStats.AccountId);
-            Assert.AreEqual("division.bro.official.pc-2018-03", seasonStats.SeasonId);
+            Assert.AreEqual("season-1", seasonStats.SeasonId);
             
             Assert.AreEqual("matchid-solo-1", seasonStats.SoloTPPMatchIds[0]);
             Assert.AreEqual("matchid-solo-2", seasonStats.SoloTPPMatchIds[1]);
@@ -1180,6 +1344,127 @@ namespace WrapperTests.Serialization
             // Obsolete
             // Assert.AreEqual(10, lifetimeStats.SquadFPP.KillPoints);
             // Assert.AreEqual(10, lifetimeStats.SquadFPP.WinPoints);
+
+            #endregion
+        }
+
+        [TestMethod, TestCategory("Unit")]
+        public void ItDeserializesStatsListsCorrectly()
+        {
+            List<Stats> stats = Stats.DeserializeList(StatsListSampleJson);
+
+            #region Assertions
+
+            Assert.AreEqual(2, stats.Count);
+            
+            Assert.AreEqual("account.id-123", stats[0].AccountId);
+            Assert.AreEqual("season-1", stats[0].SeasonId);
+
+            Assert.AreEqual(0, stats[0].SoloTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[0].SoloFPPMatchIds.Count);
+            Assert.AreEqual(0, stats[0].DuoTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[0].DuoFPPMatchIds.Count);
+            Assert.AreEqual(0, stats[0].SquadTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[0].SquadFPPMatchIds.Count);
+
+            Assert.IsNull(stats[0].SoloTPP);
+            Assert.IsNull(stats[0].SoloFPP);
+            Assert.IsNull(stats[0].DuoTPP);
+            Assert.IsNull(stats[0].DuoFPP);
+            Assert.IsNull(stats[0].SquadFPP);
+
+            Assert.AreEqual(0, stats[0].SquadTPP.Assists);
+            Assert.AreEqual(5661.111, stats[0].SquadTPP.BestRankPoint);
+            Assert.AreEqual(2, stats[0].SquadTPP.Boosts);
+            Assert.AreEqual(0, stats[0].SquadTPP.DailyKills);
+            Assert.AreEqual(0, stats[0].SquadTPP.DailyWins);
+            Assert.AreEqual(960.0909, stats[0].SquadTPP.DamageDealt);
+            Assert.AreEqual(6, stats[0].SquadTPP.Days);
+            Assert.AreEqual(7, stats[0].SquadTPP.DBNOs);
+            Assert.AreEqual(1, stats[0].SquadTPP.HeadshotKills);
+            Assert.AreEqual(3, stats[0].SquadTPP.Heals);
+            Assert.AreEqual(7, stats[0].SquadTPP.Kills);
+            Assert.AreEqual(27.203735, stats[0].SquadTPP.LongestKill);
+            Assert.AreEqual(857.556, stats[0].SquadTPP.LongestTimeSurvived);
+            Assert.AreEqual(7, stats[0].SquadTPP.Losses);
+            Assert.AreEqual(3, stats[0].SquadTPP.MaxKillStreaks);
+            Assert.AreEqual(857.556, stats[0].SquadTPP.MostSurvivalTime);
+            Assert.AreEqual(1021.8562, stats[0].SquadTPP.RankPoints);
+            Assert.AreEqual("2-5", stats[0].SquadTPP.RankPointsTitle);
+            Assert.AreEqual(0, stats[0].SquadTPP.Revives);
+            Assert.AreEqual(3379.6392, stats[0].SquadTPP.RideDistance);
+            Assert.AreEqual(0, stats[0].SquadTPP.RoadKills);
+            Assert.AreEqual(5, stats[0].SquadTPP.RoundMostKills);
+            Assert.AreEqual(7, stats[0].SquadTPP.RoundsPlayed);
+            Assert.AreEqual(2, stats[0].SquadTPP.Suicides);
+            Assert.AreEqual(11.177678, stats[0].SquadTPP.SwimDistance);
+            Assert.AreEqual(2, stats[0].SquadTPP.TeamKills);
+            Assert.AreEqual(2257.8892, stats[0].SquadTPP.TimeSurvived);
+            Assert.AreEqual(0, stats[0].SquadTPP.Top10s);
+            Assert.AreEqual(0, stats[0].SquadTPP.VehicleDestroys);
+            Assert.AreEqual(2840.188, stats[0].SquadTPP.WalkDistance);
+            Assert.AreEqual(18, stats[0].SquadTPP.WeaponsAcquired);
+            Assert.AreEqual(0, stats[0].SquadTPP.WeeklyKills);
+            Assert.AreEqual(0, stats[0].SquadTPP.WeeklyWins);
+            Assert.AreEqual(0, stats[0].SquadTPP.Wins);
+            // Obsolete
+            // Assert.AreEqual(0, stats[0].SquadTPP.KillPoints);
+            // Assert.AreEqual(0, stats[0].SquadTPP.WinPoints);
+            
+
+            Assert.AreEqual("account.id-456", stats[1].AccountId);
+            Assert.AreEqual("season-1", stats[1].SeasonId);
+
+            Assert.AreEqual(0, stats[1].SoloTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[1].SoloFPPMatchIds.Count);
+            Assert.AreEqual(0, stats[1].DuoTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[1].DuoFPPMatchIds.Count);
+            Assert.AreEqual(0, stats[1].SquadTPPMatchIds.Count);
+            Assert.AreEqual(0, stats[1].SquadFPPMatchIds.Count);
+
+            Assert.IsNull(stats[1].SoloTPP);
+            Assert.IsNull(stats[1].SoloFPP);
+            Assert.IsNull(stats[1].DuoTPP);
+            Assert.IsNull(stats[1].DuoFPP);
+            Assert.IsNull(stats[1].SquadFPP);
+
+            Assert.AreEqual(0, stats[1].SquadTPP.Assists);
+            Assert.AreEqual(0, stats[1].SquadTPP.BestRankPoint);
+            Assert.AreEqual(0, stats[1].SquadTPP.Boosts);
+            Assert.AreEqual(0, stats[1].SquadTPP.DailyKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.DailyWins);
+            Assert.AreEqual(0, stats[1].SquadTPP.DamageDealt);
+            Assert.AreEqual(0, stats[1].SquadTPP.Days);
+            Assert.AreEqual(0, stats[1].SquadTPP.DBNOs);
+            Assert.AreEqual(0, stats[1].SquadTPP.HeadshotKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.Heals);
+            Assert.AreEqual(0, stats[1].SquadTPP.Kills);
+            Assert.AreEqual(0, stats[1].SquadTPP.LongestKill);
+            Assert.AreEqual(0, stats[1].SquadTPP.LongestTimeSurvived);
+            Assert.AreEqual(0, stats[1].SquadTPP.Losses);
+            Assert.AreEqual(0, stats[1].SquadTPP.MaxKillStreaks);
+            Assert.AreEqual(0, stats[1].SquadTPP.MostSurvivalTime);
+            Assert.AreEqual(0, stats[1].SquadTPP.RankPoints);
+            Assert.AreEqual("", stats[1].SquadTPP.RankPointsTitle);
+            Assert.AreEqual(0, stats[1].SquadTPP.Revives);
+            Assert.AreEqual(0, stats[1].SquadTPP.RideDistance);
+            Assert.AreEqual(0, stats[1].SquadTPP.RoadKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.RoundMostKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.RoundsPlayed);
+            Assert.AreEqual(0, stats[1].SquadTPP.Suicides);
+            Assert.AreEqual(0, stats[1].SquadTPP.SwimDistance);
+            Assert.AreEqual(0, stats[1].SquadTPP.TeamKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.TimeSurvived);
+            Assert.AreEqual(0, stats[1].SquadTPP.Top10s);
+            Assert.AreEqual(0, stats[1].SquadTPP.VehicleDestroys);
+            Assert.AreEqual(0, stats[1].SquadTPP.WalkDistance);
+            Assert.AreEqual(0, stats[1].SquadTPP.WeaponsAcquired);
+            Assert.AreEqual(0, stats[1].SquadTPP.WeeklyKills);
+            Assert.AreEqual(0, stats[1].SquadTPP.WeeklyWins);
+            Assert.AreEqual(0, stats[1].SquadTPP.Wins);
+            // Obsolete
+            // Assert.AreEqual(0, stats[1].SquadTPP.KillPoints);
+            // Assert.AreEqual(0, stats[1].SquadTPP.WinPoints);
 
             #endregion
         }
