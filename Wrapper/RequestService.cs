@@ -313,16 +313,6 @@ namespace PUBGAPIWrapper
         #region Tournaments
 
         /// <summary>
-        /// Get the list of available tournaments.
-        /// </summary>
-        public List<Tournament> GetTournamentsList()
-        {
-            string tournamentUri = "/tournaments";
-            IRestResponse response = MakeRequest(tournamentUri);
-            return Tournament.Deserialize(response.Content);
-        }
-
-        /// <summary>
         /// Get information for a single tournament.
         /// </summary>
         /// <remarks>
@@ -335,6 +325,16 @@ namespace PUBGAPIWrapper
             string tournamentMatchesUri = "/tournaments/" + id;
             IRestResponse response = MakeRequest(tournamentMatchesUri);
             return TournamentMatches.Deserialize(response.Content);
+        }
+
+        /// <summary>
+        /// Get the list of available tournaments.
+        /// </summary>
+        public List<Tournament> GetTournamentsList()
+        {
+            string tournamentUri = "/tournaments";
+            IRestResponse response = MakeRequest(tournamentUri);
+            return Tournament.Deserialize(response.Content);
         }
 
         #endregion

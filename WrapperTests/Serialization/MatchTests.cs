@@ -8,7 +8,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public string SampleMatchJson = @"{
+        public static string SampleJson = @"{
     ""data"": {
         ""type"": ""match"",
         ""id"": ""546b7a2d-92ef-49c5-926c-7a1101497006"",
@@ -226,7 +226,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            Match match = Match.Deserialize(SampleMatchJson);
+            Match match = Match.Deserialize(SampleJson);
 
             Assert.AreEqual("546b7a2d-92ef-49c5-926c-7a1101497006", match.Id);
             Assert.AreEqual("6/19/2019 11:36:54 PM", match.Created.ToString());

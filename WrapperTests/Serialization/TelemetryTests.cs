@@ -8,7 +8,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public readonly string SampleEventsArrayJson = @"[
+        public static string SampleJson = @"[
     {
         ""MatchId"": ""match.bro.official.pc-2018-03.steam.squad.sa.2019.06.19.23.546b7a2d-92ef-49c5-926c-7a1101497006"",
         ""PingQuality"": ""low"",
@@ -1327,7 +1327,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesArmorDestroyEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ArmorDestroyEvents.Count);
 
@@ -1377,7 +1377,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCarePackageLandEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
             Assert.AreEqual(1, telemetry.CarePackageLandEvents.Count);
 
             Assert.AreEqual("06/19/2019 23:42:41", telemetry.CarePackageLandEvents[0].Timestamp.ToString());
@@ -1407,7 +1407,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCarePackageSpawnEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.CarePackageSpawnEvents.Count);
 
@@ -1438,7 +1438,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesGameStatePeriodicEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.GameStatePeriodicEvents.Count);
 
@@ -1468,7 +1468,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesHealEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             // There are two "types" of heal events:
             // - "Active", where the user uses an item to heal
@@ -1532,7 +1532,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemAttachEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemAttachEvents.Count);
 
@@ -1569,7 +1569,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemDetachEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemDetachEvents.Count);
 
@@ -1609,7 +1609,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemDropEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemDropEvents.Count);
 
@@ -1640,7 +1640,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemEquipEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemEquipEvents.Count);
 
@@ -1671,7 +1671,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemPickupEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemPickupEvents.Count);
 
@@ -1702,7 +1702,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemPickupFromCarePackageEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemPickupFromCarePackageEvents.Count);
 
@@ -1732,7 +1732,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemPickupFromLootBoxEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemPickupFromLootBoxEvents.Count);
 
@@ -1765,7 +1765,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemUnequipEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemUnequipEvents.Count);
 
@@ -1795,7 +1795,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesItemUseEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ItemUseEvents.Count);
 
@@ -1825,7 +1825,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesMatchDefinitionEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.MatchDefinitionEvents.Count);
 
@@ -1842,7 +1842,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesMatchEndEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.MatchEndEvents.Count);
 
@@ -1896,7 +1896,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesMatchStartsEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.MatchStartEvents.Count);
 
@@ -1975,7 +1975,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesObjectDestroyEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ObjectDestroyEvents.Count);
 
@@ -2005,7 +2005,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesParachuteLandingEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.ParachuteLandingEvents.Count);
 
@@ -2032,7 +2032,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerAttackEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerAttackEvents.Count);
 
@@ -2070,7 +2070,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerCreateEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerCreateEvents.Count);
 
@@ -2094,7 +2094,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerKillEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerKillEvents.Count);
 
@@ -2164,7 +2164,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerLoginEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerLoginEvents.Count);
 
@@ -2178,7 +2178,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerLogoutEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerLogoutEvents.Count);
 
@@ -2192,7 +2192,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerMakeGroggyEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerMakeGroggyEvents.Count);
 
@@ -2241,7 +2241,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerPositionEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerPositionEvents.Count);
 
@@ -2273,7 +2273,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerTakeDamageEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.PlayerTakeDamageEvents.Count);
 
@@ -2315,7 +2315,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesRedZoneEndedEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.RedZoneEndedEvents.Count);
 
@@ -2341,7 +2341,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesSwimEndEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.SwimEndEvents.Count);
 
@@ -2369,7 +2369,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesSwimStartEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.SwimStartEvents.Count);
 
@@ -2393,7 +2393,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesVaultStartEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.VaultStartEvents.Count);
 
@@ -2417,7 +2417,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesVehicleDestroyEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             // There are 3-ish types of vehicle destruction: Destroyed by player, another vehicle,
             // or red zone. We cover all three here.
@@ -2508,7 +2508,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesVehicleLeaveEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.VehicleLeaveEvents.Count);
 
@@ -2541,7 +2541,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesVehicleRideEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.VehicleRideEvents.Count);
 
@@ -2572,7 +2572,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesWeaponFireCountCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.WeaponFireCountEvents.Count);
 
@@ -2599,7 +2599,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesWheelDestroyEventsCorrectly()
         {
-            Telemetry telemetry = Telemetry.Deserialize(SampleEventsArrayJson);
+            Telemetry telemetry = Telemetry.Deserialize(SampleJson);
 
             Assert.AreEqual(1, telemetry.WheelDestroyEvents.Count);
 

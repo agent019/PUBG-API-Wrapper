@@ -9,7 +9,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public readonly string SeasonStatsSampleJson = @"{
+        public static string SampleSeasonJson = @"{
     ""data"": {
         ""type"": ""playerSeason"",
         ""attributes"": {
@@ -326,7 +326,7 @@ namespace WrapperTests.Serialization
             ""player"": {
                 ""data"": {
                     ""type"": ""player"",
-                    ""id"": ""account.id""
+                    ""id"": ""account.id-123""
                 }
             }
         }
@@ -337,7 +337,7 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
-        public readonly string LifetimeStatsSampleJson = @"{
+        public static string SampleLifetimeJson = @"{
     ""data"": {
         ""type"": ""playerSeason"",
         ""attributes"": {
@@ -654,7 +654,7 @@ namespace WrapperTests.Serialization
             ""player"": {
                 ""data"": {
                     ""type"": ""player"",
-                    ""id"": ""account.id""
+                    ""id"": ""account.id-123""
                 }
             }
         }
@@ -665,7 +665,7 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
-        public readonly string StatsListSampleJson = @"{
+        public static string SampleListJson = @"{
     ""data"": [
         {
             ""type"": ""playerSeason"",
@@ -833,11 +833,11 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesSeasonStatsCorrectly()
         {
-            Stats seasonStats = Stats.Deserialize(SeasonStatsSampleJson);
+            Stats seasonStats = Stats.Deserialize(SampleSeasonJson);
 
             #region Assertions
 
-            Assert.AreEqual("account.id", seasonStats.AccountId);
+            Assert.AreEqual("account.id-123", seasonStats.AccountId);
             Assert.AreEqual("season-1", seasonStats.SeasonId);
             
             Assert.AreEqual("matchid-solo-1", seasonStats.SoloTPPMatchIds[0]);
@@ -1092,11 +1092,11 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesLifetimeStatsCorrectly()
         {
-            Stats lifetimeStats = Stats.Deserialize(LifetimeStatsSampleJson);
+            Stats lifetimeStats = Stats.Deserialize(SampleLifetimeJson);
 
             #region Assertions
 
-            Assert.AreEqual("account.id", lifetimeStats.AccountId);
+            Assert.AreEqual("account.id-123", lifetimeStats.AccountId);
             Assert.AreEqual("lifetime", lifetimeStats.SeasonId);
 
             Assert.AreEqual("matchid-solo-1", lifetimeStats.SoloTPPMatchIds[0]);
@@ -1351,7 +1351,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesStatsListsCorrectly()
         {
-            List<Stats> stats = Stats.DeserializeList(StatsListSampleJson);
+            List<Stats> stats = Stats.DeserializeList(SampleListJson);
 
             #region Assertions
 

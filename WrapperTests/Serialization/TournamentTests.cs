@@ -9,7 +9,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
         
-        public readonly string TournamentsSampleJson = @"{
+        public static string SampleJson = @"{
     ""data"": [
         {
             ""type"": ""tournament"",
@@ -32,7 +32,7 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
-        public readonly string TournamentMatchesSampleJson = @"{
+        public static string MatchesSampleJson = @"{
     ""data"": {
         ""type"": ""tournament"",
         ""id"": ""na-nplf"",
@@ -78,7 +78,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesTournamentListsCorrectly()
         {
-            List<Tournament> tournaments = Tournament.Deserialize(TournamentsSampleJson);
+            List<Tournament> tournaments = Tournament.Deserialize(SampleJson);
 
             Assert.AreEqual(2, tournaments.Count);
 
@@ -92,7 +92,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesTournamentMatchesCorrectly()
         {
-            TournamentMatches tournamentMatches = TournamentMatches.Deserialize(TournamentMatchesSampleJson);
+            TournamentMatches tournamentMatches = TournamentMatches.Deserialize(MatchesSampleJson);
 
             Assert.AreEqual("na-nplf", tournamentMatches.Id);
 

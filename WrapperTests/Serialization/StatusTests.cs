@@ -9,7 +9,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public readonly string SampleStatusJson = @"{
+        public static string SampleJson = @"{
     ""data"": {
         ""type"": ""status"",
         ""id"": ""pubg-api""
@@ -21,7 +21,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            Status result = JsonConvert.DeserializeObject<Status>(SampleStatusJson);
+            Status result = JsonConvert.DeserializeObject<Status>(SampleJson);
             
             Assert.AreEqual("pubg-api", result.Id);
             Assert.AreEqual("status", result.Type);

@@ -10,12 +10,12 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
         
-        public string SamplePlayerJson = @"{
+        public static string SampleJson = @"{
     ""data"": {
         ""type"": ""player"",
-        ""id"": ""account.123-abc"",
+        ""id"": ""account.id-123"",
         ""attributes"": {
-            ""name"": ""PlayerName"",
+            ""name"": ""Player1"",
             ""stats"": null,
             ""titleId"": ""bluehole-pubg"",
             ""shardId"": ""steam"",
@@ -49,14 +49,14 @@ namespace WrapperTests.Serialization
     ""meta"": {}
 }";
 
-        public string SamplePlayerListJson = @"{
+        public static string SampleListJson = @"{
     ""data"": [
         {
             ""type"": ""player"",
-            ""id"": ""account.123-abc"",
+            ""id"": ""account.id-123"",
             ""attributes"": {
                 ""patchVersion"": """",
-                ""name"": ""PlayerName"",
+                ""name"": ""Player1"",
                 ""stats"": null,
                 ""titleId"": ""bluehole-pubg"",
                 ""shardId"": ""steam""
@@ -85,11 +85,11 @@ namespace WrapperTests.Serialization
         },
         {
             ""type"": ""player"",
-            ""id"": ""account.abc-123"",
+            ""id"": ""account.id-456"",
             ""attributes"": {
                 ""shardId"": ""steam"",
                 ""patchVersion"": """",
-                ""name"": ""PlayerName-2"",
+                ""name"": ""Player2"",
                 ""stats"": null,
                 ""titleId"": ""bluehole-pubg""
             },
@@ -127,9 +127,10 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerCorrectly()
         {
-            Player result = Player.Deserialize(SamplePlayerJson);
+            Player result = Player.Deserialize(SampleJson);
 
-            Assert.AreEqual("account.123-abc", result.Id);
+            Assert.AreEqual("account.id-123", result.Id);
+            Assert.AreEqual("Player1", result.Name);
             Assert.AreEqual("steam", result.Shard);
             Assert.AreEqual("bluehole-pubg", result.Title);
             Assert.AreEqual("", result.Version);
@@ -142,11 +143,11 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesPlayerListsCorrectly()
         {
-            List<Player> results = Player.DeserializePlayerList(SamplePlayerListJson);
+            List<Player> results = Player.DeserializePlayerList(SampleListJson);
 
             Assert.AreEqual(2, results.Count);
-            Assert.IsTrue(results.Any(x => x.Id == "account.123-abc"));
-            Assert.IsTrue(results.Any(x => x.Id == "account.abc-123"));
+            Assert.IsTrue(results.Any(x => x.Id == "account.id-123"));
+            Assert.IsTrue(results.Any(x => x.Id == "account.id-456"));
         }
     }
 }

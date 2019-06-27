@@ -8,7 +8,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public readonly string SampleLeaderboardJson = @"{
+        public static string SampleJson = @"{
     ""data"": {
         ""type"": ""leaderboard"",
         ""id"": ""0e504272-95b7-4a6e-82c9-d051f19491b8"",
@@ -80,7 +80,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            Leaderboard leaderboard = Leaderboard.Deserialize(SampleLeaderboardJson);
+            Leaderboard leaderboard = Leaderboard.Deserialize(SampleJson);
 
             Assert.AreEqual("steam", leaderboard.Shard);
             Assert.AreEqual("solo", leaderboard.GameMode);

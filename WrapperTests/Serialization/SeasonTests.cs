@@ -9,7 +9,7 @@ namespace WrapperTests.Serialization
     {
         #region Test Data
 
-        public readonly string SeasonSampleJson = @"{
+        public static string SampleJson = @"{
     ""data"": [
         {
             ""type"": ""season"",
@@ -39,7 +39,7 @@ namespace WrapperTests.Serialization
         [TestMethod, TestCategory("Unit")]
         public void ItDeserializesCorrectly()
         {
-            List<Season> season = Season.Deserialize(SeasonSampleJson);
+            List<Season> season = Season.Deserialize(SampleJson);
 
             Assert.AreEqual(2, season.Count);
 
